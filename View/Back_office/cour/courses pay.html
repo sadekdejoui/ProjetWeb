@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion du Paiement du Cours</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2980b9;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .course-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .course-info p {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .course-info strong {
+            color: #34495e;
+        }
+
+        .payment-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .payment-section label {
+            font-size: 1em;
+            color: #34495e;
+        }
+
+        .payment-section input[type="text"],
+        .payment-section input[type="number"],
+        .payment-section input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .payment-section .payment-method {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .payment-method input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .payment-method label {
+            font-size: 1em;
+            color: #34495e;
+        }
+
+        .payment-summary {
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+
+        .payment-summary p {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .payment-summary .total {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2980b9;
+        }
+
+        .button-container {
+            text-align: center;
+        }
+
+        button {
+            background-color: #27ae60;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2ecc71;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Gestion du Paiement du Cours</h1>
+        
+        <!-- Informations du Cours -->
+        <div class="course-info">
+           <input<p><strong>Titre du Cours :</strong> </p>>
+            <p><strong>Catégorie :</strong></p>
+            <p><strong>Durée :</strong> 20 heures</p>
+            <p><strong>Prix :</strong> 99€</p>
+        </div>
+
+        <!-- Section de Paiement -->
+        <div class="payment-section">
+            <label for="nom">Nom :</label>
+            <input type="text" id="nom" name="nom" placeholder="Entrez votre nom" required>
+
+            <label for="email">E-mail :</label>
+            <input type="text" id="email" name="email" placeholder="Entrez votre e-mail" required>
+
+            <label for="date">Date d'achat :</label>
+            <input type="date" id="date" name="date" required>
+
+            <div class="payment-method">
+                <input type="radio" id="credit_card" name="payment_method" value="credit_card" required>
+                <label for="credit_card">Carte de Crédit</label>
+
+                <input type="radio" id="paypal" name="payment_method" value="paypal">
+                <label for="paypal">PayPal</label>
+            </div>
+
+            <!-- Résumé du Paiement -->
+            <div class="payment-summary">
+                <p><strong>Total à Payer :</strong> <span class="total">99€</span></p>
+            </div>
+
+            <!-- Bouton de Paiement -->
+            <div class="button-container">
+                <button type="submit">Effectuer le Paiement</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
