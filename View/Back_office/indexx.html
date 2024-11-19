@@ -1,0 +1,892 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Section d'administration de Questerra</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet" href="css/owl.theme.css">
+    <link rel="stylesheet" href="css/owl.transitions.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/meanmenu.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/educate-custon-icon.css">
+    <link rel="stylesheet" href="css/morrisjs/morris.css">
+    <link rel="stylesheet" href="css/scrollbar/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="css/metisMenu/metisMenu.min.css">
+    <link rel="stylesheet" href="css/metisMenu/metisMenu-vertical.css">
+    <link rel="stylesheet" href="css/calendar/fullcalendar.min.css">
+    <link rel="stylesheet" href="css/calendar/fullcalendar.print.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+
+        <style>
+            /* Changer la couleur de fond du header */
+            .header-top-area {
+                background-color: #ac81f2; /* Remplacez par la couleur de votre choix */
+            }
+
+            /* Changer la couleur du texte dans la navbar */
+            .header-top-wraper .nav-link {
+                color: white; /* Assurez-vous que le texte est lisible */
+            }
+
+            /* Changer la couleur au survol des liens dans la navbar */
+            .header-top-wraper .nav-link:hover {
+                color: #ffcc00; /* Couleur au survol */
+            }
+
+            /* Changer la couleur d'arrière-plan pour le bouton de menu switcher */
+            .menu-switcher-pro .btn {
+                background-color: #ac81f2; /* Remplacez par la couleur de votre choix */
+            }
+
+            /* Changer la couleur de texte des icônes de notification et de message */
+            .header-right-info .nav-link {
+                color: white; /* Assurez-vous que le texte est lisible sur le fond */
+            }
+        </style>
+</head>
+
+<body>
+    <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <!-- Start Left menu area -->
+    <div class="left-sidebar-pro">
+        <nav id="sidebar" class="">
+            <div class="sidebar-header">
+                <a href="index.html"><img class="main-logo" src="C:\Users\sadekk\Desktop\Projet Web\view\Back_office\img\logo\logo.png" alt="" /></a>
+                <strong><a href="index.html"><img src="C:\Users\sadekk\Desktop\Projet Web\view\Back_office\img\logo\logosn.png" alt="" /></a></strong>
+            </div>
+            <div class="left-custom-menu-adp-wrap comment-scrollbar">
+                <nav class="sidebar-nav left-sidebar-menu-pro">
+                    <ul class="metismenu" id="menu1">
+                        <li class="active">
+                            <a class="has-arrow" href="index.html">
+                                <span class="educate-icon educate-home icon-wrap"></span>
+                                <span class="mini-click-non">Education</span>
+                            </a>
+                            <ul class="submenu-angle" aria-expanded="true">
+                                <li><a title="Analytics" href="analytics.html"><span class="mini-sub-pro">Analytique</span></a></li>
+                                <li><a title="Widgets" href="widgets.html"><span class="mini-sub-pro">Widgets</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a title="Landing Page" href="events.html" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Evénement</span></a>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="all-professors.html" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Professeurs</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="All Professors" href="all-professors.html"><span class="mini-sub-pro">Tous les professeurs</span></a></li>
+                                <li><a title="Add Professor" href="add-professor.html"><span class="mini-sub-pro">Ajouter un professeur</span></a></li>
+                                <li><a title="Edit Professor" href="edit-professor.html"><span class="mini-sub-pro">Modifier Professeur</span></a></li>
+                                <li><a title="Professor Profile" href="professor-profile.html"><span class="mini-sub-pro">Profil du professeur</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="all-students.html" aria-expanded="false"><span class="educate-icon educate-student icon-wrap"></span> <span class="mini-click-non">Etudiants</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="All Students" href="all-students.html"><span class="mini-sub-pro">Tous les etudiants</span></a></li>
+                                <li><a title="Add Students" href="add-student.html"><span class="mini-sub-pro">Ajouter un etudiant</span></a></li>
+                                <li><a title="Edit Students" href="edit-student.html"><span class="mini-sub-pro">Modifier etudiant</span></a></li>
+                                <li><a title="Students Profile" href="student-profile.html"><span class="mini-sub-pro">Profil du etudiant</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="all-courses.html" aria-expanded="false"><span class="educate-icon educate-course icon-wrap"></span> <span class="mini-click-non">Cours</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="All Courses" href="C:\Users\sadekk\Desktop\view\View\Back_office\cour\all courses.html"><span class="mini-sub-pro">Tous les cours</span></a></li>
+                                <li><a title="Add Courses" href="C:\Users\sadekk\Desktop\view\View\Back_office\cour\add.html"><span class="mini-sub-pro">Ajouter un cours</span></a></li>
+                                <li><a title="Edit Courses" href="C:\Users\sadekk\Desktop\view\View\Back_office\cour\edit.html"><span class="mini-sub-pro">Modifier le cours</span></a></li>
+                                <li><a title="Courses Profile" href="C:\Users\sadekk\Desktop\view\View\Back_office\cour\courses info.html"><span class="mini-sub-pro">Informations sur les cours</span></a></li>
+                                <li><a title="Product Payment" href="C:\Users\sadekk\Desktop\view\View\Back_office\cour\courses pay.html"><span class="mini-sub-pro">Paiement des cours</span></a></li>
+                            </ul>
+                        </li>
+                        <!-- Réclamation section -->
+                        <li>
+                            <a title="Reclamation" href="REC_FORMBackOffice.html" aria-expanded="false"><span class="educate-icon educate-interface icon-wrap"></span> <span class="mini-click-non">Réclamation</span></a>
+                        </li>
+                        <!-- Blog section -->
+                        <li>
+                            <a title="Blog" href="gestion_blog.html" aria-expanded="false"><span class="educate-icon educate-interface icon-wrap"></span> <span class="mini-click-non">Blog</span></a>
+
+                        </li>
+                        <!-- Forum section -->
+                        <li>
+                            <a class="has-arrow" href="all-forums.html" aria-expanded="false"><span class="educate-icon educate-interface icon-wrap"></span> <span class="mini-click-non">Forum</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="All Forums" href="all-forum.html"><span class="mini-sub-pro">Tous les forums</span></a></li>
+                                <li><a title="Create Forum" href="create-forum.html"><span class="mini-sub-pro">Créer un forum</span></a></li>
+                                <li><a title="Forum Topics" href="forum-topics.html"><span class="mini-sub-pro">Sujets du forum</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><span class="educate-icon educate-message icon-wrap"></span> <span class="mini-click-non">Boîte aux lettres</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="Inbox" href="mailbox.html"><span class="mini-sub-pro">Boîte de réception</span></a></li>
+                                <li><a title="View Mail" href="mailbox-view.html"><span class="mini-sub-pro">Voir le courrier</span></a></li>
+                                <li><a title="Compose Mail" href="mailbox-compose.html"><span class="mini-sub-pro">Rédiger un courrier</span></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </nav>
+    </div>
+    
+    <!-- End Left menu area -->
+    <!-- Start Welcome area -->
+    <div class="all-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="logo-pro">
+                        <a href="index.html"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-advance-area">
+            <div class="header-top-area">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="header-top-wraper">
+                                <div class="row">
+                                    <div class="col-lg-1 col-md-0 col-sm-1 col-xs-12">
+                                        <div class="menu-switcher-pro">
+                                            <button type="button" id="sidebarCollapse" class="btn bar-button-pro header-drl-controller-btn btn-info navbar-btn">
+                                                    <i class="educate-icon educate-nav"></i>
+                                                </button>
+                                        </div>
+                                    </div>
+                                    
+            </div>
+                <!-- Welcome area End -->
+
+            <!-- Mobile Menu start -->
+            <div class="mobile-menu-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="mobile-menu">
+                                <nav id="dropdown">
+                                    <ul class="mobile-menu-nav">
+                                        <li><a data-toggle="collapse" data-target="#Charts" href="#">Accueille<span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                            <ul class="collapse dropdown-header-top">
+                                                <li><a href="index.html">Tableau de bord</a></li>
+                                                <li><a href="analytics.html">Analytics</a></li>
+                                                <li><a href="widgets.html">Widgets</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="events.html">Event</a></li>
+                                        <li><a data-toggle="collapse" data-target="#demoevent" href="#">Professors <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                            <ul id="demoevent" class="collapse dropdown-header-top">
+                                                <li><a href="all-professors.html">All Professors</a>
+                                                </li>
+                                                <li><a href="add-professor.html">Add Professor</a>
+                                                </li>
+                                                <li><a href="edit-professor.html">Edit Professor</a>
+                                                </li>
+                                                <li><a href="professor-profile.html">Professor Profile</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a data-toggle="collapse" data-target="#demopro" href="#">Students <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                            <ul id="demopro" class="collapse dropdown-header-top">
+                                                <li><a href="all-students.html">All Students</a>
+                                                </li>
+                                                <li><a href="add-student.html">Add Student</a>
+                                                </li>
+                                                <li><a href="edit-student.html">Edit Student</a>
+                                                </li>
+                                                <li><a href="student-profile.html">Student Profile</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a data-toggle="collapse" data-target="#democrou" href="#">Courses <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                            <ul id="democrou" class="collapse dropdown-header-top">
+                                                <li><a href="all-courses.html">All Courses</a>
+                                                </li>
+                                                <li><a href="add-course.html">Add Course</a>
+                                                </li>
+                                                <li><a href="edit-course.html">Edit Course</a>
+                                                </li>
+                                                <li><a href="course-profile.html">Courses Info</a>
+                                                </li>
+                                                <li><a href="course-payment.html">Courses Payment</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a data-toggle="collapse" data-target="#demolibra" href="#">Library <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                            <ul id="demolibra" class="collapse dropdown-header-top">
+                                                <li><a href="library-assets.html">Library Assets</a>
+                                                </li>
+                                                <li><a href="add-library-assets.html">Add Library Asset</a>
+                                                </li>
+                                                <li><a href="edit-library-assets.html">Edit Library Asset</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a data-toggle="collapse" data-target="#demodepart" href="#">Departments <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                            <ul id="demodepart" class="collapse dropdown-header-top">
+                                                <li><a href="departments.html">Departments List</a>
+                                                </li>
+                                                <li><a href="add-department.html">Add Departments</a>
+                                                </li>
+                                                <li><a href="edit-department.html">Edit Departments</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a data-toggle="collapse" data-target="#demo" href="#">Mailbox <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                            <ul id="demo" class="collapse dropdown-header-top">
+                                                <li><a href="mailbox.html">Inbox</a>
+                                                </li>
+                                                <li><a href="mailbox-view.html">View Mail</a>
+                                                </li>
+                                                <li><a href="mailbox-compose.html">Compose Mail</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a data-toggle="collapse" data-target="#Miscellaneousmob" href="#">Interface <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                            <ul id="Miscellaneousmob" class="collapse dropdown-header-top">
+                                                <li><a href="google-map.html">Google Map</a>
+                                                </li>
+                                                <li><a href="data-maps.html">Data Maps</a>
+                                                </li>
+                                                <li><a href="pdf-viewer.html">Pdf Viewer</a>
+                                                </li>
+                                                <li><a href="x-editable.html">X-Editable</a>
+                                                </li>
+                                                <li><a href="code-editor.html">Code Editor</a>
+                                                </li>
+                                                <li><a href="tree-view.html">Tree View</a>
+                                                </li>
+                                                <li><a href="preloader.html">Preloader</a>
+                                                </li>
+                                                <li><a href="images-cropper.html">Images Cropper</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a data-toggle="collapse" data-target="#Chartsmob" href="#">Charts <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                            <ul id="Chartsmob" class="collapse dropdown-header-top">
+                                                <li><a href="bar-charts.html">Bar Charts</a>
+                                                </li>
+                                                <li><a href="line-charts.html">Line Charts</a>
+                                                </li>
+                                                <li><a href="area-charts.html">Area Charts</a>
+                                                </li>
+                                                <li><a href="rounded-chart.html">Rounded Charts</a>
+                                                </li>
+                                                <li><a href="c3.html">C3 Charts</a>
+                                                </li>
+                                                <li><a href="sparkline.html">Sparkline Charts</a>
+                                                </li>
+                                                <li><a href="peity.html">Peity Charts</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a data-toggle="collapse" data-target="#Tablesmob" href="#">Tables <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                            <ul id="Tablesmob" class="collapse dropdown-header-top">
+                                                <li><a href="static-table.html">Static Table</a>
+                                                </li>
+                                                <li><a href="data-table.html">Data Table</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a data-toggle="collapse" data-target="#formsmob" href="#">Forms <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                            <ul id="formsmob" class="collapse dropdown-header-top">
+                                                <li><a href="basic-form-element.html">Basic Form Elements</a>
+                                                </li>
+                                                <li><a href="advance-form-element.html">Advanced Form Elements</a>
+                                                </li>
+                                                <li><a href="password-meter.html">Password Meter</a>
+                                                </li>
+                                                <li><a href="multi-upload.html">Multi Upload</a>
+                                                </li>
+                                                <li><a href="tinymc.html">Text Editor</a>
+                                                </li>
+                                                <li><a href="dual-list-box.html">Dual List Box</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a data-toggle="collapse" data-target="#Appviewsmob" href="#">App views <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                            <ul id="Appviewsmob" class="collapse dropdown-header-top">
+                                                <li><a href="basic-form-element.html">Basic Form Elements</a>
+                                                </li>
+                                                <li><a href="advance-form-element.html">Advanced Form Elements</a>
+                                                </li>
+                                                <li><a href="password-meter.html">Password Meter</a>
+                                                </li>
+                                                <li><a href="multi-upload.html">Multi Upload</a>
+                                                </li>
+                                                <li><a href="tinymc.html">Text Editor</a>
+                                                </li>
+                                                <li><a href="dual-list-box.html">Dual List Box</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a data-toggle="collapse" data-target="#Pagemob" href="#">Pages <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                            <ul id="Pagemob" class="collapse dropdown-header-top">
+                                                <li><a href="login.html">Login</a>
+                                                </li>
+                                                <li><a href="register.html">Register</a>
+                                                </li>
+                                                <li><a href="lock.html">Lock</a>
+                                                </li>
+                                                <li><a href="password-recovery.html">Password Recovery</a>
+                                                </li>
+                                                <li><a href="404.html">404 Page</a></li>
+                                                <li><a href="500.html">500 Page</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Menu end -->
+            <div class="breadcome-area">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="breadcome-list">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="breadcome-heading">
+                                            <form role="search" class="sr-input-func">
+                                                <input type="text" placeholder="Recherche..." class="search-int form-control">
+                                                <a href="#"><i class="fa fa-search"></i></a>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <ul class="breadcome-menu">
+                                            <li><a href="#">Accueil</a> <span class="bread-slash">/</span>
+                                            </li>
+                                            <li><span class="bread-blod">Tableau de bord</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="analytics-sparkle-area">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Cours Actifs Box -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="stat-card box">
+                            <h5>Cours Actifs</h5>
+                            <p><strong>Total :</strong> 120</p>
+                            <p><strong>En attente :</strong> 5</p>
+                            <a href="#courses" class="btn btn-info w-100">Gérer les Cours</a>
+                        </div>
+                    </div>
+                    <!-- Étudiants Inscrits Box -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="stat-card box">
+                            <h5>Étudiants Inscrits</h5>
+                            <p><strong>Total :</strong> 350</p>
+                            <p><strong>Actifs :</strong> 200</p>
+                            <a href="#students" class="btn btn-info w-100">Gérer les Étudiants</a>
+                        </div>
+                    </div>
+                    <!-- Professeurs Box -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="stat-card box">
+                            <h5>Professeurs</h5>
+                            <p><strong>Total :</strong> 45</p>
+                            <p><strong>Actifs :</strong> 30</p>
+                            <a href="#teachers" class="btn btn-info w-100">Gérer les Professeurs</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <div class="product-sales-area mg-tb-30">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                        <div class="product-sales-chart">
+                            <div class="portlet-title">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="caption pro-sl-hd">
+                                            <span class="caption-subject"><b>Bénéfices de Questerra</b></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="actions graph-rp graph-rp-dl">
+                                            <p>Tous les gains sont en millions de dinars tunisiens</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="list-inline cus-product-sl-rp">
+                                <li>
+                                    <h5><i class="fa fa-circle" style="color: #006DF0;"></i>CSE</h5>
+                                </li>
+                                <li>
+                                    <h5><i class="fa fa-circle" style="color: #933EC5;"></i>Comptabilité</h5>
+                                </li>
+                                <li>
+                                    <h5><i class="fa fa-circle" style="color: #65b12d;"></i>Électrique</h5>
+                                </li>
+                            </ul>
+                            <div id="extra-area-chart" style="height: 356px;"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                        <div class="white-box analytics-info-cs mg-b-10 res-mg-b-30 res-mg-t-30 table-mg-t-pro-n tb-sm-res-d-n dk-res-t-d-n">
+                            <h3 class="box-title">Visite totale</h3>
+                            <ul class="list-inline two-part-sp">
+                                <li>
+                                    <div id="sparklinedash"></div>
+                                </li>
+                                <li class="text-right sp-cn-r"><i class="fa fa-level-up" aria-hidden="true"></i> <span class="counter text-success">1500</span></li>
+                            </ul>
+                        </div>
+                        <div class="white-box analytics-info-cs mg-b-10 res-mg-b-30 tb-sm-res-d-n dk-res-t-d-n">
+                            <h3 class="box-title">Pages vues</h3>
+                            <ul class="list-inline two-part-sp">
+                                <li>
+                                    <div id="sparklinedash2"></div>
+                                </li>
+                                <li class="text-right graph-two-ctn"><i class="fa fa-level-up" aria-hidden="true"></i> <span class="counter text-purple">3000</span></li>
+                            </ul>
+                        </div>
+                        <div class="white-box analytics-info-cs mg-b-10 res-mg-b-30 tb-sm-res-d-n dk-res-t-d-n">
+                            <h3 class="box-title">Visiteur unique</h3>
+                            <ul class="list-inline two-part-sp">
+                                <li>
+                                    <div id="sparklinedash3"></div>
+                                </li>
+                                <li class="text-right graph-three-ctn"><i class="fa fa-level-up" aria-hidden="true"></i> <span class="counter text-info">5000</span></li>
+                            </ul>
+                        </div>
+                        <div class="white-box analytics-info-cs table-dis-n-pro tb-sm-res-d-n dk-res-t-d-n">
+                            <h3 class="box-title">Taux de rebond</h3>
+                            <ul class="list-inline two-part-sp">
+                                <li>
+                                    <div id="sparklinedash4"></div>
+                                </li>
+                                <li class="text-right graph-four-ctn"><i class="fa fa-level-down" aria-hidden="true"></i> <span class="text-danger"><span class="counter">18</span>%</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="traffic-analysis-area">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                        <div class="social-media-edu">
+                            <i class="fa fa-facebook"></i>
+                            <div class="social-edu-ctn">
+                                <h3><br>20K mentions J'aime</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                        <div class="social-media-edu twitter-cl res-mg-t-30 table-mg-t-pro-n">
+                            <i class="fa fa-twitter"></i>
+                            <div class="social-edu-ctn">
+                                <h3><br>10k abonnés</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                        <div class="social-media-edu linkedin-cl res-mg-t-30 res-tablet-mg-t-30 dk-res-t-pro-30">
+                            <i class="fa fa-linkedin"></i>
+                            <div class="social-edu-ctn">
+                                <h3><br>7k Relations</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                        <div class="social-media-edu youtube-cl res-mg-t-30 res-tablet-mg-t-30 dk-res-t-pro-30">
+                            <i class="fa fa-youtube"></i>
+                            <div class="social-edu-ctn">
+                                <h3><br>50k Abonnées</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="library-book-area mg-t-30">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="single-cards-item">
+                            <div class="single-product-image">
+                                <a href="#"><img src="img/product/profile-bg.jpg" alt=""></a>
+                            </div>
+                            <div class="single-product-text">
+                                <img src="img/imen2.jfif" alt="">
+                                <h4><a class="cards-hd-dn" href="#">Imen Goutali</a></h4>
+                                <h5>Concepteur et développeur Web</h5>
+                                <a class="follow-cards" href="#">Suivre</a>
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <div class="cards-dtn">
+                                            <h3><span class="counter">199</span></h3>
+                                            <p>Articles</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <div class="cards-dtn">
+                                            <h3><span class="counter">599</span></h3>
+                                            <p>Like</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <div class="cards-dtn">
+                                            <h3><span class="counter">399</span></h3>
+                                            <p>Commentaire</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="single-review-st-item res-mg-t-30 table-mg-t-pro-n">
+                            <div class="single-review-st-hd">
+                                <h2>Avis</h2>
+                            </div>
+                            <div class="single-review-st-text">
+                                <img src="img/imen2.jfif" alt="">
+                                <div class="review-ctn-hf">
+                                    <h3>Imen Goutali</h3>
+                                    <p>Je recommande vivement</p>
+                                </div>
+                                <div class="review-item-rating">
+                                    <i class="educate-icon educate-star"></i>
+                                    <i class="educate-icon educate-star"></i>
+                                    <i class="educate-icon educate-star"></i>
+                                    <i class="educate-icon educate-star"></i>
+                                    <i class="educate-icon educate-star-half"></i>
+                                </div>
+                            </div>
+                            <div class="single-review-st-text">
+                                <img src="img/sadek.jpg" alt="">
+                                <div class="review-ctn-hf">
+                                    <h3>Mohamed Sadek Déjoui</h3>
+                                    <p>Super pro</p>
+                                </div>
+                                <div class="review-item-rating">
+                                    <i class="educate-icon educate-star"></i>
+                                    <i class="educate-icon educate-star"></i>
+                                    <i class="educate-icon educate-star"></i>
+                                    <i class="educate-icon educate-star"></i>
+                                    <i class="educate-icon educate-star-half"></i>
+                                </div>
+                            </div>
+                            <div class="single-review-st-text">
+                                <img src="img/malek.jpg" alt="">
+                                <div class="review-ctn-hf">
+                                    <h3>Malek Ben Rejab</h3>
+                                    <p>Excellent site Web</p>
+                                </div>
+                                <div class="review-item-rating">
+                                    <i class="educate-icon educate-star"></i>
+                                    <i class="educate-icon educate-star"></i>
+                                    <i class="educate-icon educate-star"></i>
+                                    <i class="educate-icon educate-star"></i>
+                                    <i class="educate-icon educate-star-half"></i>
+                                </div>
+                            </div>
+                            <div class="single-review-st-text">
+                                <img src="img/chahed.jpg" alt="">
+                                <div class="review-ctn-hf">
+                                    <h3>Chahd Bekir</h3>
+                                    <p>C'est bien</p>
+                                </div>
+                                <div class="review-item-rating">
+                                    <i class="educate-icon educate-star"></i>
+                                    <i class="educate-icon educate-star"></i>
+                                    <i class="educate-icon educate-star"></i>
+                                    <i class="educate-icon educate-star"></i>
+                                    <i class="educate-icon educate-star-half"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="product-sales-area mg-tb-30">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                        <div class="product-sales-chart">
+                            <div class="portlet-title">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="caption pro-sl-hd">
+                                            <span class="caption-subject"><b>Statistiques d'admission</b></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="actions graph-rp actions-graph-rp">
+                                            <a href="#" class="btn btn-dark btn-circle active tip-top" data-toggle="tooltip" title="Refresh">
+                                                    <i class="fa fa-reply" aria-hidden="true"></i>
+                                                </a>
+                                            <a href="#" class="btn btn-blue-grey btn-circle active tip-top" data-toggle="tooltip" title="Delete">
+                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="list-inline cus-product-sl-rp">
+                                <li>
+                                    <h5><i class="fa fa-circle" style="color: #006DF0;"></i>Python</h5>
+                                </li>
+                                <li>
+                                    <h5><i class="fa fa-circle" style="color: #933EC5;"></i>PHP</h5>
+                                </li>
+                                <li>
+                                    <h5><i class="fa fa-circle" style="color: #65b12d;"></i>Java</h5>
+                                </li>
+                            </ul>
+                            <div id="morris-area-chart"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                        <div class="analysis-progrebar res-mg-t-30 mg-ub-10 res-mg-b-30 table-mg-t-pro-n tb-sm-res-d-n dk-res-t-d-n">
+                            <div class="analysis-progrebar-content">
+                                <h5>Usage</h5>
+                                <h2 class="storage-right"><span class="counter">90</span>%</h2>
+                                <div class="progress progress-mini ug-1">
+                                    <div style="width: 68%;" class="progress-bar"></div>
+                                </div>
+                                <div class="m-t-sm small">
+                                    <p>Serveur en panne depuis 13h32.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="analysis-progrebar reso-mg-b-30 res-mg-b-30 mg-ub-10 tb-sm-res-d-n dk-res-t-d-n">
+                            <div class="analysis-progrebar-content">
+                                <h5>Mémoire</h5>
+                                <h2 class="storage-right"><span class="counter">70</span>%</h2>
+                                <div class="progress progress-mini ug-2">
+                                    <div style="width: 78%;" class="progress-bar"></div>
+                                </div>
+                                <div class="m-t-sm small">
+                                    <p>Serveur en panne depuis 12h24.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="analysis-progrebar reso-mg-b-30 res-mg-b-30 res-mg-t-30 mg-ub-10 tb-sm-res-d-n dk-res-t-d-n">
+                            <div class="analysis-progrebar-content">
+                                <h5>Données</h5>
+                                <h2 class="storage-right"><span class="counter">50</span>%</h2>
+                                <div class="progress progress-mini ug-3">
+                                    <div style="width: 38%;" class="progress-bar progress-bar-danger"></div>
+                                </div>
+                                <div class="m-t-sm small">
+                                    <p>Serveur en panne depuis 20h32.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="analysis-progrebar res-mg-t-30 table-dis-n-pro tb-sm-res-d-n dk-res-t-d-n">
+                            <div class="analysis-progrebar-content">
+                                <h5>Espace</h5>
+                                <h2 class="storage-right"><span class="counter">40</span>%</h2>
+                                <div class="progress progress-mini ug-4">
+                                    <div style="width: 28%;" class="progress-bar progress-bar-danger"></div>
+                                </div>
+                                <div class="m-t-sm small">
+                                    <p>Serveur en panne depuis 17h32.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="courses-area mg-b-15">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="white-box">
+                            <h3 class="box-title">État du navigateur</h3>
+                            <ul class="basic-list">
+                                <li>Google Chrome <span class="pull-right label-danger label-1 label">95.8%</span></li>
+                                <li>Mozila Firefox <span class="pull-right label-purple label-2 label">85.8%</span></li>
+                                <li>Apple Safari <span class="pull-right label-success label-3 label">23.8%</span></li>
+                                <li>Internet Explorer <span class="pull-right label-info label-4 label">55.8%</span></li>
+                                <li>Opera mini <span class="pull-right label-warning label-5 label">28.8%</span></li>
+                                <li>Mozila Firefox <span class="pull-right label-purple label-6 label">26.8%</span></li>
+                                <li>Safari <span class="pull-right label-purple label-7 label">31.8%</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="white-box res-mg-t-30 table-mg-t-pro-n">
+                            <h3 class="box-title">Visites de Gouvernerats</h3>
+                            <ul class="country-state">
+                                <li>
+                                    <h2><span class="counter">1250</span></h2> <small>Tunis</small>
+                                    <div class="pull-right">75% <i class="fa fa-level-up text-danger ctn-ic-1"></i></div>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-danger ctn-vs-1" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:75%;"> <span class="sr-only">75% Complete</span></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <h2><span class="counter">1050</span></h2> <small>Ben Arous</small>
+                                    <div class="pull-right">48% <i class="fa fa-level-up text-success ctn-ic-2"></i></div>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-info ctn-vs-2" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:48%;"> <span class="sr-only">48% Complete</span></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <h2><span class="counter">6350</span></h2> <small>Sousse</small>
+                                    <div class="pull-right">55% <i class="fa fa-level-up text-success ctn-ic-3"></i></div>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-success ctn-vs-3" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:55%;"> <span class="sr-only">55% Complete</span></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <h2><span class="counter">950</span></h2> <small>Ariana</small>
+                                    <div class="pull-right">33% <i class="fa fa-level-down text-success ctn-ic-4"></i></div>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-success ctn-vs-4" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:33%;"> <span class="sr-only">33% Complete</span></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <h2><span class="counter">3250</span></h2> <small>Sfax</small>
+                                    <div class="pull-right">60% <i class="fa fa-level-up text-success ctn-ic-5"></i></div>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-inverse ctn-vs-5" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:60%;"> <span class="sr-only">60% Complete</span></div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        <div class="courses-inner res-mg-t-30 table-mg-t-pro-n tb-sm-res-d-n dk-res-t-d-n">
+                            <div class="courses-title">
+                                <a href="#"><img src="img/courses/1.jpg" alt="" /></a>
+                                <h2>Développement d'applications</h2>
+                            </div>
+                            <div class="courses-alaltic">
+                                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-clock"></i></span> 1 Year</span>
+                                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-heart"></i></span> 50</span>
+                                <span class="cr-ic-r"><span class="course-icon"></span><strong>TND</strong> 500 </span>
+                            </div>
+                            <div class="course-des">
+                                <p><span><i class="fa fa-clock"></i></span> <b>Durée:</b> 6 Mois</p>
+                                <p><span><i class="fa fa-clock"></i></span> <b>Professeur:</b> Akrem Jouini</p>
+                                <p><span><i class="fa fa-clock"></i></span> <b>Étudiantes:</b> 100+</p>
+                            </div>
+                            <div class="product-buttons">
+                                <button type="button" class="button-default cart-btn">En savoir plus</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright-area">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- jquery
+		============================================ -->
+    <script src="js/vendor/jquery-1.12.4.min.js"></script>
+    <!-- bootstrap JS
+		============================================ -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- wow JS
+		============================================ -->
+    <script src="js/wow.min.js"></script>
+    <!-- price-slider JS
+		============================================ -->
+    <script src="js/jquery-price-slider.js"></script>
+    <!-- meanmenu JS
+		============================================ -->
+    <script src="js/jquery.meanmenu.js"></script>
+    <!-- owl.carousel JS
+		============================================ -->
+    <script src="js/owl.carousel.min.js"></script>
+    <!-- sticky JS
+		============================================ -->
+    <script src="js/jquery.sticky.js"></script>
+    <!-- scrollUp JS
+		============================================ -->
+    <script src="js/jquery.scrollUp.min.js"></script>
+    <!-- counterup JS
+		============================================ -->
+    <script src="js/counterup/jquery.counterup.min.js"></script>
+    <script src="js/counterup/waypoints.min.js"></script>
+    <script src="js/counterup/counterup-active.js"></script>
+    <!-- mCustomScrollbar JS
+		============================================ -->
+    <script src="js/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="js/scrollbar/mCustomScrollbar-active.js"></script>
+    <!-- metisMenu JS
+		============================================ -->
+    <script src="js/metisMenu/metisMenu.min.js"></script>
+    <script src="js/metisMenu/metisMenu-active.js"></script>
+    <!-- morrisjs JS
+		============================================ -->
+    <script src="js/morrisjs/raphael-min.js"></script>
+    <script src="js/morrisjs/morris.js"></script>
+    <script src="js/morrisjs/morris-active.js"></script>
+    <!-- morrisjs JS
+		============================================ -->
+    <script src="js/sparkline/jquery.sparkline.min.js"></script>
+    <script src="js/sparkline/jquery.charts-sparkline.js"></script>
+    <script src="js/sparkline/sparkline-active.js"></script>
+    <!-- calendar JS
+		============================================ -->
+    <script src="js/calendar/moment.min.js"></script>
+    <script src="js/calendar/fullcalendar.min.js"></script>
+    <script src="js/calendar/fullcalendar-active.js"></script>
+    <!-- plugins JS
+		============================================ -->
+    <script src="js/plugins.js"></script>
+    <!-- main JS
+		============================================ -->
+    <script src="js/main.js"></script>
+    <!-- tawk chat JS
+		============================================ -->
+    <script src="js/tawk-chat.js"></script>
+</body>
+
+</html>
