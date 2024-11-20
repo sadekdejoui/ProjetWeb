@@ -1,3 +1,12 @@
+<?php
+require '../../controller/user_controller.php'; 
+$utilisateur = new utilisateur_controller(); 
+$list = $utilisateur->listUsers2();
+
+
+
+?>
+
 <!doctype html>
 <html class="no-js" lang="en">
 <head>
@@ -91,96 +100,23 @@
             color: white; /* Assurez-vous que le texte est lisible sur le fond */
         }
 
-        /* Changer la couleur de fond du header */
-        .header-top-area {
-            background-color: #ac81f2; /* Remplacez par la couleur de votre choix */
+        #notification-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            text-align: center;
         }
 
-        /* Changer la couleur du texte dans la navbar */
-        .header-top-wraper .nav-link {
-            color: white; /* Assurez-vous que le texte est lisible */
+        .btn-primary {
+            background-color: #ac81f2;
+            border: 1px solid #ac81f2;
         }
 
-        /* Changer la couleur au survol des liens dans la navbar */
-        .header-top-wraper .nav-link:hover {
-            color: #ffcc00; /* Couleur au survol */
+        .btn-primary:hover {
+            background-color: #925eea;
         }
-
-        /* Changer la couleur d'arrière-plan pour le bouton de menu switcher */
-        .menu-switcher-pro .btn {
-            background-color: #ac81f2; /* Remplacez par la couleur de votre choix */
-        }
-
-        /* Changer la couleur de texte des icônes de notification et de message */
-        .header-right-info .nav-link {
-            color: white; /* Assurez-vous que le texte est lisible sur le fond */
-        }
-
-        /* Styles pour la gestion des réclamations */
-        .hidden {
-            display: none;
-        }
-
-        .styled-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-            
-            
-        }
-
-        .styled-table thead tr {
-            background-color: #D8BFD8;
-            color: #000;
-            text-align: left;
-        }
-
-        .styled-table th, .styled-table td {
-            padding: 12px 20px;
-            border: 1px solid #ddd;
-            
-        }
-
-        .styled-table tbody tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        .status-new {
-            background-color: #FFCCCB;
-            color: #000;
-            padding: 4px 8px;
-            border-radius: 4px;
-        }
-
-        .status-urgent {
-            background-color: #F08080;
-            color: #fff;
-            padding: 4px 8px;
-            border-radius: 4px;
-        }
-
-        .status-resolved {
-            background-color: #90EE90;
-            color: #000;
-            padding: 4px 8px;
-            border-radius: 4px;
-        }
-
-        .action-button {
-            background-color: #9370DB;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            margin-right: 5px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .action-button:hover {
-            background-color: #6A5ACD;
-        }
-
     </style>
 
 
@@ -262,20 +198,20 @@
                         <li>
                             <a title="Landing Page" href="..\Back_office\events.html" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Event</span></a>
                         </li>
-                        <li>
-                            <a class="has-arrow" href="..\Back_office\all-professors.html" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Professors</span></a>
+                        <li class="active">
+                            <a class="has-arrow" href="..\Back_office\professor.php" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Professors</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="All Professors" href="..\Back_office\all-professors.html"><span class="mini-sub-pro">All Professors</span></a></li>
+                                <li><a title="All Professors" href="..\Back_office\professor.php"><span class="mini-sub-pro">All Professors</span></a></li>
                                 <li><a title="Add Professor" href="..\Back_office\add-professor.html"><span class="mini-sub-pro">Add Professor</span></a></li>         
-                                <li><a title="Professor Profile" href="..\Back_office\professor-profile.html"><span class="mini-sub-pro">Professor Profile</span></a></li>
+                                <li><a title="Professor Profile" href="..\Back_office\pprofile.php"><span class="mini-sub-pro">Professor Profile</span></a></li>
                             </ul>
                         </li>
-                        <li class="active">
-                            <a class="has-arrow" href="..\Back_office\students.php" aria-expanded="false"><span class="educate-icon educate-student icon-wrap"></span> <span class="mini-click-non">Students</span></a>
+                        <li >
+                            <a class="has-arrow" href="..\Back_office\student.php" aria-expanded="false"><span class="educate-icon educate-student icon-wrap"></span> <span class="mini-click-non">Students</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
                                 <li><a title="All Students" href="..\Back_office\students.php"><span class="mini-sub-pro">All Students</span></a></li>
                                 <li><a title="Add Students" href="..\Back_office\add-student.html"><span class="mini-sub-pro">Add Student</span></a></li>
-                                <li><a title="Students Profile" href="..\Back_office\student-profile.html"><span class="mini-sub-pro">Student Profile</span></a></li>
+                                <li><a title="Students Profile" href="..\Back_office\sprofile.php"><span class="mini-sub-pro">Student Profile</span></a></li>
                             </ul>
                         </li>
                         <li>
@@ -521,21 +457,21 @@
                                         <li><a href="..\Back_office\events.html">Event</a></li>
                                         <li><a data-toggle="collapse" data-target="#demoevent" href="#">Professors <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
                                             <ul id="demoevent" class="collapse dropdown-header-top">
-                                                <li><a href="..\Back_office\all-professors.html">All Professors</a>
+                                                <li><a href="..\Back_office\professor.php">All Professors</a>
                                                 </li>
                                                 <li><a href="..\Back_office\add-professor.html">Add Professor</a>
                                                 </li>
-                                                <li><a href="..\Back_office\professor-profile.html">Professor Profile</a>
+                                                <li><a href="..\Back_office\pprofile.php">Professor Profile</a>
                                                 </li>
                                             </ul>
                                         </li>
                                         <li><a data-toggle="collapse" data-target="#demopro" href="#">Students <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
                                             <ul id="demopro" class="collapse dropdown-header-top">
-                                                <li><a href="..\Back_office\students.php">All Students</a>
+                                                <li><a href="..\Back_office\student.php">All Students</a>
                                                 </li>
                                                 <li><a href="..\Back_office\add-student.html">Add Student</a>
                                                 </li>
-                                                <li><a href="..\Back_office\student-profile.html">Student Profile</a>
+                                                <li><a href="..\Back_office\sprofile.php">Student Profile</a>
                                                 </li>
                                             </ul>
                                         </li>
@@ -687,39 +623,59 @@
                 </div>
             </div>
             <!-- Mobile Menu end -->
-            <div style="padding: 30px 30px 413px 30px;">
-                <table class="styled-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nom</th>
-                            <th>Prénom</th>
-                            <th>Date de derniere mise a jour</th>
-                            <th>Profile</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Déjoui</td>
-                            <td>Mohamed Sadek</td>
-                            <td>16/11/2024</td>
-                            <td>
-                                <button class="action-button">Afficher</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>bessaoud</td>
-                            <td>Maram</td>
-                            <td>16/11/2024</td>
-                            <td>
-                                <button class="action-button">Afficher</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="breadcome-area">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="breadcome-list single-page-breadcome">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="breadcome-heading">          
+                                                <span class="bread-blod">Student Profile</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
 
 
 
@@ -749,13 +705,114 @@
 
 
 
-
-
-
-
-
-
-        
+        <!-- Single pro tab review Start-->
+        <div class="single-pro-review-area mt-t-30 mg-b-15">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        <?php
+                            foreach ($list as $prof) {
+                               
+                        ?> 
+                        <div class="profile-info-inner">
+                            <img src="..\Back_office\sadek.jpg" class="card-img-top" alt="Profile Picture" style="width: 350px; height: 30    0px; margin: 0 auto; display: block;">
+                        <div class="card-body">
+                            <center>
+                                <h5 class="card-title" style="font-family: 'Pacifico', cursive; font-weight: bold; margin-top: 20px; color: #ac81f2;">
+                                    <?php echo $prof['prenom']." ".$prof['nom']; ?>
+                                </h5>
+                            </center>
+                            <p class="card-text">Phone: <?php echo $prof['tel']; ?></p>
+                            <p>Email: <?php echo $prof['email']; ?></p>
+                            <p>Password: <?php echo $prof['psw']; ?></p>
+                            <p>Date De Naissance: <?php echo $prof['date_nai']; ?></p>
+                            <p>Date d'Entretien: <?php echo $prof['date_entre']; ?></p>
+                            <p>Date D'Inscription: <?php echo $prof['date_insc']; ?></p>
+                            <p>Date De Dernière Mise à Jour: <?php echo $prof['date_mise']; ?></p>
+                        </div>
+                        </div>
+                        <?php
+                            }
+                        ?>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                        <div class="product-payment-inner-st res-mg-t-30 analysis-progrebar-ctn">
+                            <ul id="myTabedu1" class="tab-review-design">
+                                <li>
+                                    <a href="#description" style="color: #ac81f2 !important; text-decoration: none !important;">Update Details</a>
+                                </li>
+                            </ul>
+                            <div id="myTabContent" class="tab-content custom-product-edit st-prf-pro">
+                                <div class="product-tab-list tab-pane fade active in" id="description">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="review-content-section">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <input id="logname" type="text" class="form-control" placeholder="Nom">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input id="loglastname" type="text" class="form-control" placeholder="Prénom">  
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input id="logtel" type="tel" class="form-control" placeholder="Numéro de Téléphone">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input id="logemail" type="email" class="form-control" placeholder="Email">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input id="logpass" type="text" class="form-control" placeholder="Mot De Passe">
+                                                        </div>
+                                            
+                                                        <div class="file-upload-inner ts-forms">
+                                                            <div class="input prepend-big-btn">
+                                                                <label class="icon-right" for="prepend-big-btn">
+																		<i class="fa fa-download"></i>
+																</label>
+                                                                <div class="file-button" style="background-color: #ac81f2; border-color: #ac81f2; border: 1px solid #ac81f2;">
+                                                                    <input type="file" onchange="document.getElementById('prepend-big-btn').value = this.value;" style="background-color: #ac81f2; border-color: #ac81f2; border: 1px solid #ac81f2;">
+                                                                    Browse
+                                                                </div>
+                                                                <input type="text" id="prepend-big-btn" placeholder="no file selected">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6" style="padding-top: 30px;">
+                                                        <div class="form-group">
+                                                            <label for="prenom" class="form-label">Date De Naissance</label>
+                                                            <input id="logdaten" type="date" class="form-control">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="prenom" class="form-label">Date d'Entretien</label>
+                                                            <input id="logdatee" type="date" class="form-control">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="prenom" class="form-label">Date D'Inscription</label>
+                                                            <input id="logdatei" type="date" class="form-control" >
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="payment-adress mg-t-15">
+                                                            <button type="button" class="btn btn-primary" style="background-color: #ac81f2; border: 1px solid #ac81f2; margin: 10px;" onclick="verif2()">Update</button>
+                                                            <!--<button type="button" class="btn btn-primary waves-effect waves-light mg-b-15" style="background-color: #ac81f2; border: 1px solid #ac81f2; margin: 10px;" onclick="verif2()">Update</button>-->
+                                                            <button type="submit" class="btn btn-primary waves-effect waves-light mg-b-15" style="background-color: #ac81f2; border: 1px solid #ac81f2; margin: 10px;">Delete</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 
@@ -848,7 +905,6 @@
     <!-- tawk chat JS
 		============================================ -->
     <script src="..\Back_office\js\tawk-chat.js"></script>
-    
 </body>
 
 </html>

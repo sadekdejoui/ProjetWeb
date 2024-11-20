@@ -1,3 +1,9 @@
+<?php
+require '../../controller/user_controller.php'; 
+$utilisateur = new utilisateur_controller(); 
+$list = $utilisateur->listUsers2();  // Get the list of users from the controller
+?>
+
 <!doctype html>
 <html class="no-js" lang="en">
 <head>
@@ -263,11 +269,11 @@
                             <a title="Landing Page" href="..\Back_office\events.html" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Event</span></a>
                         </li>
                         <li>
-                            <a class="has-arrow" href="..\Back_office\all-professors.html" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Professors</span></a>
+                            <a class="has-arrow" href="..\Back_office\professor.php" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Professors</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="All Professors" href="..\Back_office\all-professors.html"><span class="mini-sub-pro">All Professors</span></a></li>
+                                <li><a title="All Professors" href="..\Back_office\professor.php"><span class="mini-sub-pro">All Professors</span></a></li>
                                 <li><a title="Add Professor" href="..\Back_office\add-professor.html"><span class="mini-sub-pro">Add Professor</span></a></li>         
-                                <li><a title="Professor Profile" href="..\Back_office\professor-profile.html"><span class="mini-sub-pro">Professor Profile</span></a></li>
+                                <li><a title="Professor Profile" href="..\Back_office\pprofile.php"><span class="mini-sub-pro">Professor Profile</span></a></li>
                             </ul>
                         </li>
                         <li class="active">
@@ -275,7 +281,7 @@
                             <ul class="submenu-angle" aria-expanded="false">
                                 <li><a title="All Students" href="..\Back_office\students.php"><span class="mini-sub-pro">All Students</span></a></li>
                                 <li><a title="Add Students" href="..\Back_office\add-student.html"><span class="mini-sub-pro">Add Student</span></a></li>
-                                <li><a title="Students Profile" href="..\Back_office\student-profile.html"><span class="mini-sub-pro">Student Profile</span></a></li>
+                                <li><a title="Students Profile" href="..\Back_office\sprofile.php"><span class="mini-sub-pro">Student Profile</span></a></li>
                             </ul>
                         </li>
                         <li>
@@ -521,11 +527,11 @@
                                         <li><a href="..\Back_office\events.html">Event</a></li>
                                         <li><a data-toggle="collapse" data-target="#demoevent" href="#">Professors <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
                                             <ul id="demoevent" class="collapse dropdown-header-top">
-                                                <li><a href="..\Back_office\all-professors.html">All Professors</a>
+                                                <li><a href="..\Back_office\professor.php">All Professors</a>
                                                 </li>
                                                 <li><a href="..\Back_office\add-professor.html">Add Professor</a>
                                                 </li>
-                                                <li><a href="..\Back_office\professor-profile.html">Professor Profile</a>
+                                                <li><a href="..\Back_office\pprofile.php">Professor Profile</a>
                                                 </li>
                                             </ul>
                                         </li>
@@ -535,7 +541,7 @@
                                                 </li>
                                                 <li><a href="..\Back_office\add-student.html">Add Student</a>
                                                 </li>
-                                                <li><a href="..\Back_office\student-profile.html">Student Profile</a>
+                                                <li><a href="..\Back_office\sprofile.php">Student Profile</a>
                                                 </li>
                                             </ul>
                                         </li>
@@ -686,40 +692,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Mobile Menu end -->
-            <div style="padding: 30px 30px 413px 30px;">
-                <table class="styled-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nom</th>
-                            <th>Prénom</th>
-                            <th>Date de derniere mise a jour</th>
-                            <th>Profile</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Déjoui</td>
-                            <td>Mohamed Sadek</td>
-                            <td>16/11/2024</td>
-                            <td>
-                                <button class="action-button">Afficher</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>bessaoud</td>
-                            <td>Maram</td>
-                            <td>16/11/2024</td>
-                            <td>
-                                <button class="action-button">Afficher</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
 
 
 
@@ -727,6 +699,41 @@
 
 
 
+        <div style="padding: 30px 30px 413px 30px;">
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Date de derniere mise a jour</th>
+                        <th>Profile</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        // Check if there are rows returned
+                        if ($list->rowCount() > 0) {
+                            while ($row = $list->fetch(PDO::FETCH_ASSOC)) {
+                                if ($row['tyype'] == 0) { // Check if the condition matches
+                                    echo "<tr>
+                                            <td>".$row['id']."</td>
+                                            <td>".$row['nom']."</td>
+                                            <td>".$row['prenom']."</td>
+                                            <td>".$row['date_nai']."</td>
+                                            <td>
+                                                <a href='sprofile.php'><button class='action-button'>Afficher</button></a>
+                                            </td>
+                                        </tr>";
+                                }
+                            }
+                        } else {
+                            echo "<tr><td colspan='5'>No users found</td></tr>"; // Handle case where no users exist
+                        }
+                    ?>
+                </tbody>
+            </table>
+        </div>
 
 
 
