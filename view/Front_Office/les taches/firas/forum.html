@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum de Discussion</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f0fa;
+            color: #333;
+        }
+
+        /* Container principale */
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Titre du forum */
+        h1 {
+            color: #5b2c6f;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Zone de discussion */
+        .discussion-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .post {
+            background-color: #e8e0f3;
+            padding: 20px;
+            border-radius: 5px;
+            border-left: 4px solid #5b2c6f;
+        }
+
+        .post h3 {
+            color: #5b2c6f;
+            margin: 0 0 10px 0;
+        }
+
+        .post p {
+            color: #555;
+            margin: 0;
+        }
+
+        /* Formulaire de création de discussion */
+        .new-post-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background-color: #f9f7fc;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .new-post-form label {
+            font-weight: bold;
+            color: #5b2c6f;
+        }
+
+        .new-post-form input,
+        .new-post-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            color: #333;
+        }
+
+        .new-post-form textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        /* Bouton de publication */
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #7d3c98;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #9b59b6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Forum de Discussion</h1>
+
+        <!-- Section de discussion -->
+        <div class="discussion-section">
+            <div class="post">
+                <h3>Discussion</h3>
+                <p>Bonjour à tous ! Quelqu'un pourrait-il m'aider à comprendre les bases du CSS ?</p>
+            </div>
+            <div class="post">
+                <h3>Projets JavaScript</h3>
+                <p>Quels sont vos projets JavaScript favoris ? Partagez vos idées et ressources !</p>
+            </div>
+            <!-- Vous pouvez ajouter plus de discussions ici -->
+        </div>
+
+        <!-- Formulaire pour créer une nouvelle discussion -->
+        <div class="new-post-form">
+            <label for="topic">Sujet :</label>
+            <input type="text" id="topic" name="topic" placeholder="Entrez le sujet de votre discussion" required>
+
+            <label for="message">Message :</label>
+            <textarea id="message" name="message" placeholder="Entrez votre message ici" required></textarea>
+
+            <div class="button-container">
+                <a href="C:\Users\sadekk\Desktop\view\View\Front-office\Projet front-end\publier.html"><button type="submit">Publier</button></a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

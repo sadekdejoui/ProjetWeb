@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Questterra</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        /* Header */
+        header {
+            background-color: #ac81f2;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between; /* Répartir les éléments à gauche et à droite */
+            align-items: center;
+            padding: 0 30px; /* Espacement interne */
+        }
+
+        header .navbar-left {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        header .navbar-left .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        header .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 15px; /* Espacement entre les éléments */
+        }
+
+        header .navbar-right a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        header .navbar-right a:hover {
+            color: #ffc107;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            height: 100vh;
+            background-color: #ac81f2;
+            color: #fff;
+            position: fixed;
+            width: 250px;
+            padding-top: 30px;
+            overflow-y: auto; /* Permet de défiler dans la barre latérale */
+        }
+
+        .sidebar h2 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 50px;
+            font-weight: bold;
+        }
+
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 15px;
+            display: block;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #ac81f2;
+        }
+
+        /* Main content */
+        .main-content {
+            margin-left: 270px;
+            padding: 30px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #343a40;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 30px;
+        }
+
+        /* Card Style */
+        .card {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card-header {
+            background-color: #ac81f2;
+            color: #fff;
+        }
+
+        .card-body {
+            background-color: #fff;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            height: 300px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: #f1f1f1;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Notification and Feedback Styles */
+        .notification-card, .feedback-card {
+            background-color: #e9ecef;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            font-size: 1rem;
+        }
+
+        .payment-card {
+            background-color: #e3f2fd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .main-content {
+                margin-left: 220px;
+            }
+
+            .card {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="navbar-left">
+            <div class="navbar-brand">Questterra Dashboard</div>
+        </div>
+
+        <div class="navbar-right">
+            <a href="#notifications"><i class="fas fa-bell"></i> Notifications</a>
+            <a href="#profile"><i class="fas fa-user-circle"></i> Mon Profil</a>
+            <a href="#settings"><i class="fas fa-cogs"></i> Paramètres</a>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Questterra</h2>
+        <a href="#courses"><i class="fas fa-book"></i> Cours</a>
+        <a href="#students"><i class="fas fa-users"></i> Étudiants</a>
+        <a href="#teachers"><i class="fas fa-chalkboard-teacher"></i> Professeurs</a>
+        <a href="#forum"><i class="fas fa-comments"></i> Forum</a>
+        <a href="#blog"><i class="fas fa-blog"></i> Blog</a>
+        <a href="#complaints"><i class="fas fa-exclamation-circle"></i> Réclamations</a>
+        <a href="#mailbox"><i class="fas fa-envelope"></i> Boîte aux lettres</a>
+        <a href="#notifications"><i class="fas fa-bell"></i> Notifications</a>
+        <a href="#feedbacks"><i class="fas fa-comment-dots"></i> Feedbacks</a>
+        <a href="#payments"><i class="fas fa-credit-card"></i> Paiements</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Tableau de bord</h1>
+
+        <!-- Dashboard Stats -->
+        <div class="row">
+            <div class="analytics-sparkle-area">
+                <div class="container-fluid">
+                    <div class="row">
+                        <!-- Cours Actifs Box -->
+                        <div class="col-md-4">
+                            <div class="stat-card box">
+                                <h5>Cours Actifs</h5>
+                                <p><strong>Total :</strong> 120</p>
+                                <p><strong>En attente :</strong> 5</p>
+                                <a href="#courses" class="btn btn-info w-100">Gérer les Cours</a>
+                            </div>
+                        </div>
+                        <!-- Étudiants Inscrits Box -->
+                        <div class="col-md-4">
+                            <div class="stat-card box">
+                                <h5>Étudiants Inscrits</h5>
+                                <p><strong>Total :</strong> 350</p>
+                                <p><strong>Actifs :</strong> 200</p>
+                                <a href="#students" class="btn btn-info w-100">Gérer les Étudiants</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            <!-- Professeurs Stat -->
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <h5>Professeurs</h5>
+                    <p><strong>Total :</strong> 45</p>
+                    <p><strong>Actifs :</strong> 30</p>
+                    <a href="#teachers" class="btn btn-info w-100">Gérer les Professeurs</a>
+                </div>
+            </div>
+        </div>
+         <!-- Notifications Section -->
+         <div class="notification-card">
+            <h4>Notifications</h4>
+            <ul>
+                <li><strong>Nouvelle inscription :</strong> 10 nouveaux étudiants viennent de s'inscrire.</li>
+                <li><strong>Mise à jour des cours :</strong> Le cours sur l'algorithmique a été mis à jour.</li>
+                <li><strong>Réclamation :</strong> Un étudiant a signalé un problème avec le support technique.</li>
+            </ul>
+        </div>
+
+        <!-- Feedback Section -->
+        <div class="feedback-card">
+            <h4>Feedbacks Récents</h4>
+            <p><strong>Feedback de Jean :</strong> "Le cours de Python était très clair, mais j'aurais aimé plus d'exercices pratiques."</p>
+            <p><strong>Feedback de Claire :</strong> "Le site est facile à naviguer, mais il y a quelques bugs sur la page d'accueil."</p>
+        </div>
+
+        <!-- Paiements Section -->
+        <div class="payment-card">
+            <h4>Paiements Récents</h4>
+            <ul>
+                <li><strong>Étudiant X :</strong> Paiement de 50€ pour le cours de JavaScript.</li>
+                <li><strong>Étudiant Y :</strong> Paiement de 75€ pour le cours de développement web.</li>
+            </ul>
+        </div>
+    </div>
+
+        <!-- Course, Complaints, Payments, and Feedback Charts -->
+        <div class="row">
+            <!-- Cours Chart -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Statistiques des Cours</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="coursesChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Réclamations Chart -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Réclamations des Étudiants</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="complaintsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payments Chart -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Statistiques des Paiements</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="paymentsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feedback Chart -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Feedbacks des Étudiants</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="feedbackChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+   
+
+    <script>
+        // Example Chart.js for Cours and Complaints stats
+        var ctx1 = document.getElementById('coursesChart').getContext('2d');
+        var coursesChart = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: ['JavaScript', 'Python', 'HTML/CSS', 'PHP', 'React'],
+                datasets: [{
+                    label: 'Nombre d\'étudiants',
+                    data: [50, 100, 75, 30, 60],
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            }
+        });
+
+        var ctx2 = document.getElementById('complaintsChart').getContext('2d');
+        var complaintsChart = new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: ['Résolu', 'En attente', 'Non résolu'],
+                datasets: [{
+                    data: [40, 25, 35],
+                    backgroundColor: ['#28a745', '#ffc107', '#dc3545'],
+                    hoverOffset: 4
+                }]
+            }
+        });
+
+        // Payments Chart
+        var ctx3 = document.getElementById('paymentsChart').getContext('2d');
+        var paymentsChart = new Chart(ctx3, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai'],
+                datasets: [{
+                    label: 'Paiements mensuels (en €)',
+                    data: [500, 700, 450, 800, 600],
+                    borderColor: '#007bff',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderWidth: 1
+                }]
+            }
+        });
+
+        // Feedback Chart
+        var ctx4 = document.getElementById('feedbackChart').getContext('2d');
+        var feedbackChart = new Chart(ctx4, {
+            type: 'doughnut',
+            data: {
+                labels: ['Positifs', 'Négatifs', 'Neutres'],
+                datasets: [{
+                    data: [60, 30, 10],
+                    backgroundColor: ['#28a745', '#dc3545', '#ffc107'],
+                    hoverOffset: 4
+                }]
+            }
+        });
+        
+    </script>
+     <!-- Footer -->
+     <footer>
+        <p>&copy; 2024 Questterra - Tous droits réservés</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,157 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+header {
+    background-color: #ac81f2; /* Purple header */
+   
+    color: white;
+    padding: 1.5rem;
+    
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header p {
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+/* Page Styles */
+.page {
+    display: none;
+    padding-left: 13rem; /*l page*/
+    animation: fadeIn 0.3s ease-in;
+}
+
+.page.active {
+    display: block;
+}
+
+/* Stats Chart Styles */
+.stats canvas {
+    max-width: 100%;
+    border-radius: 8px;
+}
+
+/* Button Styles */
+button {
+    background-color: #ac81f2; /* Purple button */
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #6a2d8f; /* Darker purple when hovered */
+}
+
+/* Button active (clicked) state */
+button:active {
+    background-color: #ffd891; /* Yellow when clicked */
+    color: #333;
+}
+
+/* Hidden elements */
+.hidden {
+    display: none;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 0.8rem;
+    text-align: left;
+}
+
+table th {
+    background-color: #ac81f2;
+    color: white;
+}
+
+.urgent {
+    background-color: #ffcccc; /* Light red for urgent rows */
+}
+
+/* Modal Styles */
+.modal {
+    background: white;
+    padding: 1.5rem;
+    text-align: center;
+    margin: 2rem auto;
+    width: 50%;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Refusal Message Styles */
+#refusal-message.hidden {
+    display: none;
+}
+
+#refusal-message {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.6); /* Darker background */
+    z-index: 9999;
+}
+
+.refusal-content {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.refusal-content p {
+    font-size: 20px;
+    color: #f44336; /* Red for refusal message */
+}
+
+.refusal-content button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.refusal-content button:hover {
+    background-color: #d32f2f; /* Darker red when hovered */
+}
+
+/* Animation for page transitions */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
