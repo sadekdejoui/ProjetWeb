@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>Questerra</title>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='https://unicons.iconscout.com/release/v2.1.9/css/unicons.css'>
+    <link rel="stylesheet" href="../Front-office/css/style2.css">
+    <link rel="icon" href="../Front-office/img/favicon.ico" type="image/x-icon"/>
+    <style>
+        /* Hide the default radio buttons */
+        input[type="radio"].btn-check {
+            appearance: none; /* Hides the default inner circle */
+            position: absolute; /* Removes visual presence */
+            visibility: hidden; /* Ensures it's not seen */
+        }
+    </style>
+</head>
+<body>
+    <div id="notification-container" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; text-align: center;"></div>
+        <div class="section">
+            <div class="container">
+                <div class="row full-height justify-content-center">
+                    <div class="col-12 text-center align-self-center py-5">
+                        <div class="section pb-5 pt-5 pt-sm-2 text-center">
+                            <h6 class="mb-0 pb-3"><span>Se connecter</span><span>S'inscrire</span></h6>
+                            <input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
+                            <label for="reg-log"></label>
+                            <div class="card-3d-wrap mx-auto">
+
+
+                                <div class="card-3d-wrapper">
+                                    <div class="card-front">
+                                        <div class="center-wrap">
+                                            <div class="section text-center">
+                                                <h4 class="mb-4 pb-3">Se connecter</h4>
+                                                <form action="login.php" method="POST" class="" onsubmit="return verif3()">
+                                                    <div class="form-group">
+                                                        <input type="email" name="logemail1" class="form-style" placeholder="Votre Email" id="logemail1" autocomplete="off">
+                                                        <i class="input-icon uil uil-at"></i>
+                                                    </div>	
+        
+                                                    <div class="form-group mt-2">
+                                                        <input type="password" name="logpass1" class="form-style" placeholder="Votre Mot De Passe" id="logpass1" autocomplete="off">
+                                                        <i class="input-icon uil uil-lock-alt"></i>
+                                                    </div>
+                                                            
+                                                    <div class="form-group mt-2">
+                                                        <input type="text" id="captcha-input" class="form-style" placeholder="Click to generate CAPTCHA">
+                                                        <i class="input-icon uil uil-redo"></i>
+                                                    </div>                                                    
+        
+                                                    <button class="btn mt-4" type="submit">Se connecter</button>
+                                                    <p class="mb-0 mt-4 text-center"><a href="#0" class="link">Mot de passe oublié ?</a></p>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="card-back">
+                                        <div class="center-wrap">
+                                            <div class="section text-center">
+                                                <h4 class="mb-4 pb-3">S'inscrire</h4>
+                                                <form action="incription.php" method="POST" class="" onsubmit="return verif()">
+                                                    <div class="form-group">
+                                                        <input type="text" name="loglastname" class="form-style" placeholder="Votre Prénom" id="loglastname" autocomplete="off">
+                                                        <i class="input-icon uil uil-user"></i>
+                                                    </div>	
+
+                                                    <div class="form-group mt-2">
+                                                        <input type="text" name="logname" class="form-style" placeholder="Votre Nom" id="logname" autocomplete="off">
+                                                        <i class="input-icon uil uil-users-alt"></i>
+                                                    </div>
+
+                                                    <div class="form-group mt-2">
+                                                        <input type="date" name="logdate" class="form-style" placeholder="Votre Date De Naissance" id="logdate" autocomplete="off">
+                                                        <i class="input-icon uil uil-calendar-alt"></i>
+                                                    </div>
+
+                                                    <div class="form-group mt-2">
+                                                        <input type="tel" name="logtel" class="form-style" placeholder="Votre Numéro De Téléphone" id="logtel" autocomplete="off">
+                                                        <i class="input-icon uil uil-phone"></i>
+                                                    </div>
+
+                                                    <div class="form-group mt-2">
+                                                        <input type="email" name="logemail" class="form-style" placeholder="Votre Email" id="logemail" autocomplete="off">
+                                                        <i class="input-icon uil uil-at"></i>
+                                                    </div>
+
+                                                    <div class="form-group mt-2">
+                                                        <input type="password" name="logpass" class="form-style" placeholder="Votre Mot De Passe" id="logpass" autocomplete="off">
+                                                        <i class="input-icon uil uil-lock-alt"></i>
+                                                    </div>
+
+                                                    <div class="form-group mt-2">
+                                                        <input type="password" name="logpass2" class="form-style" placeholder="Confirmer Votre Mot De Passe" id="logpass2" autocomplete="off">
+                                                        <i class="input-icon uil uil-unlock"></i>
+                                                    </div>
+
+                                                    <div class="form-group mt-2">
+                                                        <input type="radio" class="btn-check" id="btn-check-2-outlined" name="logtype" value="0">
+                                                        <label class="btn btn-outline-secondary" for="btn-check-2-outlined">Etudiant</label>
+                                                    
+                                                        <input type="radio" class="btn-check" id="btn-check-outlined" name="logtype" value="1">
+                                                        <label class="btn btn-outline-primary" for="btn-check-outlined">Professeur</label>
+                                                    </div>
+                                                    
+
+                                                    <button class="btn mt-4" type="submit">S'inscrire</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            function showStyledAlert(message) {
+            const container = document.getElementById('notification-container');
+
+            // Create the alert element
+            const alertBox = document.createElement('div');
+            alertBox.style.padding = '15px 20px';
+            alertBox.style.marginBottom = '10px';
+            alertBox.style.borderRadius = '8px';
+            alertBox.style.backgroundColor = '#ffd891';
+            alertBox.style.color = '#102770';
+            alertBox.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+            alertBox.style.fontWeight = '600';
+            alertBox.style.fontSize = '14px';
+            alertBox.style.transition = 'opacity 0.5s ease';
+            alertBox.textContent = message;
+
+            // Add the alert to the container
+            container.appendChild(alertBox);
+
+            // Auto-dismiss the alert after 3 seconds
+            setTimeout(() => {
+                alertBox.style.opacity = '0';
+                setTimeout(() => container.removeChild(alertBox), 500); // Wait for the fade-out transition
+            }, 3000);
+        }
+
+        function verif() {
+            // Input fields
+            const prenom = document.getElementById("logname");
+            const nom = document.getElementById("loglastname");
+            const dateNaissance = document.getElementById("logdate");
+            const tel = document.getElementById("logtel");
+            const email = document.getElementById("logemail");
+            const motDePasse = document.getElementById("logpass");
+            const confirmMotDePasse = document.getElementById("logpass2");
+            const logtypeRadios = document.getElementsByName("logtype");
+
+            // Regex
+            const nameRegex = /^([A-Z][a-z]{0,29})(\s[A-Z][a-z]{0,29})*$/; // Each word starts with uppercase, followed by lowercase, max 30 chars.
+            const telRegex = /^\d{8}$/;
+            const emailRegex = /^[a-z0-9]+@gmail\.com$/; // Only lowercase letters and numbers allowed.
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$/; // Max 30 characters.
+
+            // Validation
+            if (!prenom.value.match(nameRegex) || prenom.value.length > 30) {
+                showStyledAlert("Le prénom doit commencer par une majuscule, suivi de lettres minuscules, peut contenir des noms multiples séparés par des espaces, et avoir une longueur maximale de 30 caractères.");
+                return false;
+            }
+
+            if (!nom.value.match(nameRegex) || nom.value.length > 30) {
+                showStyledAlert("Le nom doit commencer par une majuscule, suivi de lettres minuscules, peut contenir des noms multiples séparés par des espaces, et avoir une longueur maximale de 30 caractères.");
+                return false;
+            }
+
+            if (!dateNaissance.value) {
+                showStyledAlert("La date de naissance est obligatoire.");
+                return false;
+            }
+
+            if (!tel.value.match(telRegex)) {
+                showStyledAlert("Le numéro de téléphone doit contenir exactement 8 chiffres.");
+                return false;
+            }
+
+            if (!email.value.match(emailRegex) || email.value.length > 30) {
+                showStyledAlert("L'email doit contenir uniquement des lettres minuscules et des chiffres, se terminer par '@gmail.com', et avoir une longueur maximale de 30 caractères.");
+                return false;
+            }
+
+            if (!motDePasse.value.match(passwordRegex)) {
+                showStyledAlert("Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre, un symbole, et avoir une longueur maximale de 30 caractères.");
+                return false;
+            }
+
+            if (motDePasse.value !== confirmMotDePasse.value) {
+                showStyledAlert("La confirmation du mot de passe doit être identique au mot de passe.");
+                return false;
+            }
+
+            // Check if one of the radio buttons (logtype) is selected
+            let selectedType = null;
+            logtypeRadios.forEach((radio) => {
+                if (radio.checked) {
+                    selectedType = radio.value;
+                }
+            });
+
+            if (!selectedType) {
+                showStyledAlert("Vous devez sélectionner un type (Professeur ou Étudiant).");
+                return false;
+            }
+
+            return true;
+        }
+
+        let captchaText = '';
+
+        // Function to generate CAPTCHA
+        function generateCaptcha() {
+            captchaText = generateRandomString(4); // Generate a 6-character CAPTCHA
+        }
+
+        // Function to generate a random string
+        function generateRandomString(length) {
+            const characters = '0123456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                result += characters.charAt(randomIndex);
+            }
+            return result;
+        }
+
+        // Event listener for CAPTCHA input field focus
+        document.getElementById('captcha-input').addEventListener('focus', function () {
+            generateCaptcha();  // Generate new CAPTCHA on focus
+            showStyledAlert('Your CAPTCHA: ' + captchaText);  // Show CAPTCHA in alert
+        });
+
+        function verif3() {
+            // Input fields
+            const email = document.getElementById("logemail1");
+            const motDePasse = document.getElementById("logpass1");
+            const captchaInput = document.getElementById("captcha-input");
+
+            // Regex
+            const emailRegex = /^[a-z0-9]+@gmail\.com$/; // Only lowercase letters and numbers allowed.
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$/; // Max 30 characters.
+            // Validation
+
+            if (!email.value.match(emailRegex) || email.value.length > 30) {
+                showStyledAlert("L'email doit contenir uniquement des lettres minuscules et des chiffres, se terminer par '@gmail.com', et avoir une longueur maximale de 30 caractères.");
+                return false;
+            }
+
+            if (!motDePasse.value.match(passwordRegex)) {
+                showStyledAlert("Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre, un symbole, et avoir une longueur maximale de 30 caractères.");
+                return false;
+            }
+
+            if (captchaInput.value !== captchaText) {
+                showStyledAlert("Le CAPTCHA est incorrect. Essayez à nouveau.");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</body>
+</html>
