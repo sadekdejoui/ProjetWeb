@@ -184,7 +184,7 @@ $_SESSION['id']='1';
                     <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
                         <p class="section-title text-secondary">About Us<span></span></p>
                         <h1 class="mb-5">Questerra</h1>
-                        <p class="mb-4">Chez Questterra, nous transformons l’apprentissage en ligne grâce à une plateforme interactive et accessible. En offrant un accès illimité à des cours en ligne, nous nous adaptons aux besoins uniques de chaque utilisateur pour soutenir leur développement personnel et professionnel tout au long de leur parcours de formation.                        </p>
+                        <p class="mb-4">At Questerra, we transform online learning with an interactive platform, offering unlimited courses tailored to each user's growth needs.</p>
                         <div class="skill mb-4">
                             <div class="d-flex justify-content-between">
                                 <p class="mb-2">Etudiants et jeunes diplomés</p>
@@ -264,8 +264,8 @@ $_SESSION['id']='1';
                             <div class="service-icon flex-shrink-0">
                                 <i class="fa fa-search fa-2x"></i>
                             </div>
-                            <h5 class="mb-3">Langues</h5>
-                            <p class="m-0">Développez vos compétences linguistiques à tous niveaux.</p>
+                            <h5 class="mb-3">Languages</h5>
+                            <p class="m-0"> Enhance your language skills at all levels.</p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
@@ -274,7 +274,7 @@ $_SESSION['id']='1';
                                 <i class="fa fa-laptop-code fa-2x"></i>
                             </div>
                             <h5 class="mb-3">Web Design</h5>
-                            <p class="m-0"> Créez des sites web esthétiques et fonctionnels.</p>
+                            <p class="m-0"> Create aesthetic and functional websites.</p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
@@ -283,7 +283,7 @@ $_SESSION['id']='1';
                                 <i class="fab fa-facebook-f fa-2x"></i>
                             </div>
                             <h5 class="mb-3">Marketing</h5>
-                            <p class="m-0">Apprenez les stratégies pour réussir dans le marketing moderne.</p>
+                            <p class="m-0">Learn strategies to succeed in modern marketing.</p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
@@ -292,7 +292,7 @@ $_SESSION['id']='1';
                                 <i class="fa fa-mail-bulk fa-2x"></i>
                             </div>
                             <h5 class="mb-3">Science</h5>
-                            <p class="m-0">Explorez les fondamentaux de la biologie, chimie, et physique.</p>
+                            <p class="m-0">Explore the fundamentals of biology, chemistry, and physics.</p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
@@ -300,8 +300,8 @@ $_SESSION['id']='1';
                             <div class="service-icon flex-shrink-0">
                                 <i class="fa fa-thumbs-up fa-2x"></i>
                             </div>
-                            <h5 class="mb-3">Électronique</h5>
-                            <p class="m-0">Initiez-vous à la conception de circuits et systèmes électroniques.</p>
+                            <h5 class="mb-3">Electronics</h5>
+                            <p class="m-0">Learn the basics of circuit and electronic system design.</p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
@@ -309,7 +309,7 @@ $_SESSION['id']='1';
                             <div class="service-icon flex-shrink-0">
                                 <i class="fab fa-android fa-2x"></i>
                             </div>
-                            <h5 class="mb-3">Développement Informatique</h5>
+                            <h5 class="mb-3">Software Development</h5>
                             <p class="m-0">Maîtrisez les bases du code et des logiciels.</p>
                         </div>
                     </div>
