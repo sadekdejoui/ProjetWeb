@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un Cours</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #b9298b;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form label {
+            font-weight: bold;
+            color: #34495e;
+            display: block;
+            margin-top: 15px;
+        }
+
+        form input, form textarea, form select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        form textarea {
+            resize: vertical;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #b9298b;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #3498db;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Ajouter un Nouveau Cours</h1>
+        <form method="GET" action="../View/Back_office/add.html">
+            <!-- Titre du Cours -->
+            <label for="title">Titre du Cours :</label>
+            <input type="text" id="title" name="title" >    
+
+            <!-- Description du Cours -->
+            <label for="description">Description :</label>
+            <textarea id="description" name="description" rows="4" ></textarea>
+
+            <!-- Prix du Cours -->
+            <label for="price">Prix (€) :</label>
+            <input type="number" id="price" name="price" >
+
+            <!-- Catégorie du Cours -->
+            <label for="category">Catégorie :</label>
+            <select id="category" name="category" >
+                <option value="Anglais">Anglais</option>
+                <option value="francais">Français</option>
+                <option value="Informatique">Informatique</option>
+                <option value="marketing">Marketing</option>
+                <option value="Sciences">Sciences</option>
+                <option value="Architecture">Architecture</option>
+                <!-- Des catégories supplémentaires peuvent être ajoutées ici -->
+            </select>
+
+            <!-- Durée du Cours -->
+            <label for="duration">Durée (en heures) :</label>
+            <input type="number" id="duration" name="duration" >
+
+            <!-- Bouton Ajouter le Cours -->
+            <div class="button-container">
+                <button type="submit">Ajouter le Cours</button>
+            </div>
+        </form>
+    </div>
+    <script >
+                    // Attacher un écouteur d'événements au formulaire
+            document.addEventListener("DOMContentLoaded", function () {
+                const form = document.querySelector("form");
+
+                // Gestion de la soumission du formulaire
+                form.addEventListener("submit", function () {
+                    //event.preventDefault(); // Empêche le comportement par défaut
+
+                    // Récupération des valeurs des champs
+                    const title = document.getElementById("title").value.trim();
+                    const description = document.getElementById("description").value.trim();
+                    const price = document.getElementById("price").value.trim();
+                    const category = document.getElementById("category").value;
+                    const duration = document.getElementById("duration").value.trim();
+
+                    // Vérifier que tous les champs obligatoires sont remplis
+                    if (!title || !description || price <= 0 || duration <= 0) {
+                        alert("Veuillez remplir correctement tous les champs !");
+                        return;
+                    }
+
+                    // Afficher une boîte de confirmation
+                    const confirmation = confirm(
+                        `Confirmez-vous l'ajout du cours suivant ?\n\n` +
+                        `Titre: ${title}\nDescription: ${description}\nPrix: ${price} €\n` +
+                        `Catégorie: ${category}\nDurée: ${duration} heures`
+                    );
+
+                    if (confirmation) {
+                        // Simuler un envoi ou manipuler les données
+                        const courseData = {
+                            title,
+                            description,
+                            price: parseFloat(price),
+                            category,
+                            duration: parseInt(duration, 10),
+                        };
+
+                        // Afficher les données en console pour test
+                        console.log("Données du cours soumis :", courseData);
+
+                        // Réinitialiser le formulaire après soumission
+                        // form.reset();
+
+                        // Message de succès
+                        alert("Le cours a été ajouté avec succès !");
+                    }
+                });
+            });
+
+
+
+
+
+
+
+    </script>
+
+
+</body>
+</html>

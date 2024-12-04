@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Questerra</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="..\Front_Office\img\favicon.ico">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500&family=Jost:wght@500;600;700&display=swap" rel="stylesheet"> 
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="..\Front_Office\lib\animate\animate.min.css" rel="stylesheet">
+    <link href="..\Front_Office\lib\owlcarousel\assets\owl.carousel.min.css" rel="stylesheet">
+    <link href="..\Front_Office\lib\lightbox\css\lightbox.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="..\Front_Office\css\bootstrap.min.css" rel="stylesheet">
+   
+    <!-- Template Stylesheet -->
+    <link href="..\Front_Office\css\style.css" rel="stylesheet">
+
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        h2 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .course-details-container {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .course-title {
+            font-size: 1.5em;
+            color: #34495e;
+            margin-bottom: 15px;
+        }
+
+        .course-description {
+            font-size: 1.1em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .course-progress {
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            background-color: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            height: 10px;
+            width: 100%;
+        }
+
+        .progress {
+            background-color: #ae278e;
+            height: 100%;
+            width: 50%; /* Adjust dynamically based on the actual progress */
+        }
+
+        .back-button {
+            background-color: #b929aa;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+
+        .back-button:hover {
+            background-color: #3498db;
+        }
+    </style>
+
+
+
+
+<!-------------MODAL ---------->
+<style>
+    /* Modal styling */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .modal-content {
+        background-color: white;
+        padding: 30px;
+        border-radius: 15px;
+        width: 400px;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        position: relative;
+    }
+    
+    /* Close button */
+    .close {
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+    
+    .close:hover {
+        color: black;
+    }
+    
+    /* Textarea styling */
+    #studentId, #password {
+        width: calc(100% - 20px); /* Full width with padding considered */
+        padding: 10px;
+        margin: 10px 0; /* Gap between fields */
+        border: 1px solid #ccc;
+        border-radius: 10px; /* Rounded corners */
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+    
+    /* Button styling */
+    .modal-button {
+        background-color: #b929aa; /* Purple */
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+    
+    .modal-button:hover {
+        background-color: #4CAF50; /* Green on hover */
+    }
+    
+    /* Link styling */
+    .join-link {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    
+    .join-link:hover {
+        text-decoration: underline;
+    }
+    </style>
+    
+    
+</head>
+
+<body>
+    
+    
+    <div class="container-xxl bg-white p-0">
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Chargement</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+
+        <!-- Navbar & Hero Start -->
+        <div class="container-xxl position-relative p-0">
+            <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+                <a href="" class="navbar-brand p-0">
+                    <div class="logo-container">
+                        <img src="../Front_Office/img/logo.png" alt="Logo de Questerra">
+                        <h1 class="m-0">Questerra</h1>
+                    </div>
+                    
+                    <!-- <img src="img/logo.png" alt="Logo"> -->
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="fa fa-bars"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav mx-auto py-0">
+                        <a href="../Front_Office/index.html" class="nav-item nav-link">Home</a>
+                        <a href="../Front_Office/les taches/imen/blog.html" class="nav-item nav-link ">Blog</a>
+                        <a href="../Front_Office/Cours.html" class="nav-item nav-link active">Courses</a>
+                       <a href="c:\Users\21628\Downloads\wetransfer_projet-web_2024-11-18_2122\Projet Web\view\Front_Office\les taches\firas\ecahnge.html" class="nav-item nav-link">Questions</a>
+                        <a href="c:\Users\21628\Downloads\wetransfer_projet-web_2024-11-18_2122\Projet Web\view\Front_Office\les taches\nader\event.html" class="nav-item nav-link">Events</a>
+                        <a href="c:\Users\21628\Downloads\wetransfer_projet-web_2024-11-18_2122\Projet Web\view\Front_Office\les taches\maram\contact.html" class="nav-item nav-link">Complaints</a>
+                      
+                    </div>
+                </div>
+                    
+                    <div class="dropdown">
+                        
+                        <button class="dropdown-button">Settings</button>
+                        <div class="dropdown-content">
+                          <a href="c:\Users\21628\Downloads\wetransfer_projet-web_2024-11-18_2122\Projet Web\view\Front_Office\les taches\sadek\account.html">Mon compte</a>
+                          <a href="c:\Users\21628\Downloads\wetransfer_projet-web_2024-11-18_2122\Projet Web\view\Front_Office\les taches\sadek\index.html">Se déconnecter</a>
+                        </div>
+                      </div>
+            </nav>
+
+            <!-- ending of header -->   
+            <div class="container-xxl py-5 bg-primary hero-header">
+                <div class="container my-5 py-5 px-lg-5">
+                    <div class="row g-5 py-5">
+                        <div class="col-12 text-center">
+                            <h1 class="text-white animated slideInDown">Courses</h1>
+                            <hr class="bg-white mx-auto mt-0" style="width: 90px;">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb justify-content-center">
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Navbar & Hero End -->
+
+    <div class="course-details-container">
+        <div class="course-title">Course Title : Marketing</div>
+        <div class="course-description">
+            This course provides a structured approach to mastering Marketing. The content includes:
+            <ul>
+                <li><strong>Marketing Fundamentals:</strong> Understand the key principles of marketing, including market research, segmentation, targeting, and positioning.</li>
+                <li><strong>Digital Marketing:</strong> Explore strategies for online marketing, including SEO, content marketing, social media, and email campaigns.</li>
+                <li><strong>Consumer Behavior:</strong> Learn how to analyze consumer behavior and preferences to tailor marketing efforts effectively.</li>
+                <li><strong>Marketing Strategies:</strong> Gain insight into crafting effective marketing plans, from product launch to brand management, using both traditional and digital methods.</li>
+            </ul>
+            By the end of this course, you will be equipped with the skills to create impactful marketing strategies and drive business success.
+        </div>
+        
+        
+
+        <div class="course-progress">
+            <strong>Progress: 75%</strong>
+            <div class="progress-bar">
+                <div class="progress" style="width: 75%;"></div>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+            <a href="Cours.html" class="back-button">Back to Other Courses</a>
+            <!--<a href="Start_Course.html" class="back-button">Start Now</a>-->
+            <!-- Start Button -->
+<a href="#" class="back-button" id="startCourseBtn">Start Now</a>
+
+<!-- Modal -->
+<div id="membershipModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Join Questerra</h2>
+        <div>
+            <p>If you are already a student, enter your ID and password below:</p>
+            <form id="loginForm">
+                <label for="studentId">Student ID:</label>
+                <input type="text" id="studentId" name="studentId" required>
+                <br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <br>
+                <a href="MarkCourCont.html">
+                    <button type="button" class="modal-button">Log In</button>
+                  </a>
+                  
+            </form>
+        </div>
+        <hr>
+        <div>
+            <p>Not a member yet? <a href="membership.html" class="join-link">Start your membership in Questerra NOW!</a></p>
+        </div>
+    </div>
+</div>
+
+        </div>
+    </div>
+
+
+    <!-- Footer Start -->
+<div class="container-fluid bg-primary text-light footer wow fadeIn" data-wow-delay="0.1s">
+    <div class="container py-5 px-lg-5">
+        <div class="row g-5">
+            <div class="col-md-6 col-lg-3">
+                <p class="section-title text-white h5 mb-4">Address<span></span></p>
+                <p><i class="fa fa-map-marker-alt me-3"></i>2083 Cité La Gazelle, Ariana, Tunisia</p>
+                <p><i class="fa fa-phone-alt me-3"></i>+016 23 989 000</p>
+                <p><i class="fa fa-envelope me-3"></i>questerra@gmail.com</p>
+                <div class="d-flex pt-2">
+                    <a class="btn btn-outline-light btn-social" href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-outline-light btn-social" href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a>
+                    <a class="btn btn-outline-light btn-social" href="https://www.linkedin.com/"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <p class="section-title text-white h5 mb-4">Lien rapide<span></span></p>
+                <a class="btn btn-link" href="c:\Users\21628\Downloads\wetransfer_projet-web_2024-11-18_2122\Projet Web\view\Front-office\les taches\imen\blog.html">Blog</a>
+                <a class="btn btn-link" href="c:\Users\21628\Downloads\wetransfer_projet-web_2024-11-18_2122\Projet Web\view\Front-office\les taches\akrem\Cours.html">    Cours</a>
+                <a class="btn btn-link" href="c:\Users\21628\Downloads\wetransfer_projet-web_2024-11-18_2122\Projet Web\view\Front-office\les taches\firas\ecahnge.html">Questions</a>
+                <a class="btn btn-link" href="c:\Users\21628\Downloads\wetransfer_projet-web_2024-11-18_2122\Projet Web\view\Front-office\les taches\nader\event.html">Evénement</a>
+                <a class="btn btn-link" href="c:\Users\21628\Downloads\wetransfer_projet-web_2024-11-18_2122\Projet Web\view\Front-office\les taches\maram\contact.html" class="nav-item nav-link">Complaint</a>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <p class="section-title text-white h5 mb-4">Founders<span></span></p>
+                <div class="row g-2">
+                    <p>Akrem Jouini</p>
+                    <p>Firas Ben Hamouda</p>
+                    <p>Imen Goutali</p>
+                    <p>Maram Bessaoud</p>
+                    <p>Mohamed Sadek Dejoui</p>
+                    <p>Nader Abdellaoui</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <p class="section-title text-white h5 mb-4">Rapport<span></span></p>
+                <div class="position-relative w-100 mt-3">
+                    <input class="form-control border-0 rounded-pill w-100 ps-4 pe-5" type="text" placeholder="Votre email" style="height: 48px;">
+                    <button type="button" class="btn shadow-none position-absolute top-0 end-0 mt-1 me-2"><i class="fa fa-paper-plane text-primary fs-4"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container px-lg-5">
+        <div class="copyright">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="footer-menu">
+                        <a href="c:\Users\21628\Downloads\wetransfer_projet-web_2024-11-18_2122\Projet Web\view\Front-office\index.html">Accueille</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-secondary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../Front_Office/lib/wow/wow.js"></script>
+<script src="../Front_Office/lib/easing/easing.min.js"></script>
+<script src="../Front_Office/lib/waypoints/waypoints.min.js"></script>
+<script src="../Front_Office/lib/counterup/counterup.min.js"></script>
+<script src="../Front_Office/lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="../Front_Office/lib/isotope/isotope.pkgd.min.js"></script>
+<script src="../Front_Office/lib/lightbox/js/lightbox.min.js"></script>
+
+<!-- Template Javascript -->
+<script src="../Front_Office/js/main.js"></script>
+
+
+
+<!----------------MODAL------------->
+<script>
+    // Get modal and elements
+    const modal = document.getElementById("membershipModal");
+    const startBtn = document.getElementById("startCourseBtn");
+    const closeBtn = document.querySelector(".close");
+    
+    // Show modal on button click
+    startBtn.addEventListener("click", function (event) {
+        event.preventDefault();
+        modal.style.display = "flex";
+    });
+    
+    // Close modal on close button click
+    closeBtn.addEventListener("click", function () {
+        modal.style.display = "none";
+    });
+    
+    // Close modal when clicking outside modal content
+    window.addEventListener("click", function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+    </script>
+    
+
+</body>
+</html>

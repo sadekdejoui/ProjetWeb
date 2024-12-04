@@ -1,0 +1,630 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Section d'administration de Questerra</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet" href="css/owl.theme.css">
+    <link rel="stylesheet" href="css/owl.transitions.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/meanmenu.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/educate-custon-icon.css">
+    <link rel="stylesheet" href="css/morrisjs/morris.css">
+    <link rel="stylesheet" href="css/scrollbar/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="css/metisMenu/metisMenu.min.css">
+    <link rel="stylesheet" href="css/metisMenu/metisMenu-vertical.css">
+    <link rel="stylesheet" href="css/calendar/fullcalendar.min.css">
+    <link rel="stylesheet" href="css/calendar/fullcalendar.print.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+
+        <style>
+            /* Changer la couleur de fond du header */
+            .header-top-area {
+                background-color: #ac81f2; /* Remplacez par la couleur de votre choix */
+            }
+
+            /* Changer la couleur du texte dans la navbar */
+            .header-top-wraper .nav-link {
+                color: white; /* Assurez-vous que le texte est lisible */
+            }
+
+            /* Changer la couleur au survol des liens dans la navbar */
+            .header-top-wraper .nav-link:hover {
+                color: #ffcc00; /* Couleur au survol */
+            }
+
+            /* Changer la couleur d'arrière-plan pour le bouton de menu switcher */
+            .menu-switcher-pro .btn {
+                background-color: #ac81f2; /* Remplacez par la couleur de votre choix */
+            }
+
+            /* Changer la couleur de texte des icônes de notification et de message */
+            .header-right-info .nav-link {
+                color: white; /* Assurez-vous que le texte est lisible sur le fond */
+            }
+        </style>
+        <!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Section d'administration de Questerra</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet" href="css/owl.theme.css">
+    <link rel="stylesheet" href="css/owl.transitions.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/meanmenu.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/educate-custon-icon.css">
+    <link rel="stylesheet" href="css/morrisjs/morris.css">
+    <link rel="stylesheet" href="css/scrollbar/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="css/metisMenu/metisMenu.min.css">
+    <link rel="stylesheet" href="css/metisMenu/metisMenu-vertical.css">
+    <link rel="stylesheet" href="css/calendar/fullcalendar.min.css">
+    <link rel="stylesheet" href="css/calendar/fullcalendar.print.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+
+        <style>
+            /* Changer la couleur de fond du header */
+            .header-top-area {
+                background-color: #ac81f2; /* Remplacez par la couleur de votre choix */
+            }
+
+            /* Changer la couleur du texte dans la navbar */
+            .header-top-wraper .nav-link {
+                color: white; /* Assurez-vous que le texte est lisible */
+            }
+
+            /* Changer la couleur au survol des liens dans la navbar */
+            .header-top-wraper .nav-link:hover {
+                color: #ffcc00; /* Couleur au survol */
+            }
+
+            /* Changer la couleur d'arrière-plan pour le bouton de menu switcher */
+            .menu-switcher-pro .btn {
+                background-color: #ac81f2; /* Remplacez par la couleur de votre choix */
+            }
+
+            /* Changer la couleur de texte des icônes de notification et de message */
+            .header-right-info .nav-link {
+                color: white; /* Assurez-vous que le texte est lisible sur le fond */
+            }
+        </style>
+         <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: whit;
+                color: #333;
+                margin: 0;
+                padding: 20px;
+            }
+    
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            }
+    
+            h1 {
+                color: #2c3e50;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+    
+            form label {
+                font-weight: bold;
+                color: #34495e;
+                display: block;
+                margin-top: 15px;
+            }
+    
+            form input, form textarea, form select {
+                width: 100%;
+                padding: 10px;
+                margin-top: 5px;
+                margin-bottom: 15px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
+    
+            form textarea {
+                resize: vertical;
+            }
+    
+            .button-container {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+            }
+    
+            button {
+                background-color: white;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 1em;
+                transition: background-color 0.3s;
+            }
+    
+            button:hover {
+                background-color: #3498db;
+            }
+        </style>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f9;
+                color: #333;
+                margin: 0;
+                padding: 20px;
+            }
+    
+            h1 {
+                color: #5a2d82;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+    
+            form {
+                max-width: 500px;
+                margin: 0 auto;
+                background: #ffffff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+    
+            label {
+                font-weight: bold;
+                display: block;
+                margin-top: 15px;
+            }
+    
+            input, textarea, select {
+                width: 100%;
+                padding: 10px;
+                margin-top: 5px;
+                margin-bottom: 15px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
+    
+            input:focus, textarea:focus, select:focus {
+                outline: none;
+                border-color: #5a2d82;
+                box-shadow: 0 0 5px rgba(90, 45, 130, 0.5);
+            }
+    
+            button {
+                display: block;
+                width: 100%;
+                background-color: #5a2d82;
+                color: white;
+                padding: 10px 15px;
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+    
+            button:hover {
+                background-color: #3498db;
+            }
+    
+            .container {
+                text-align: center;
+                margin-top: 20px;
+            }
+    
+            .container a {
+                text-decoration: none;
+                color: #5a2d82;
+                font-weight: bold;
+                margin-top: 15px;
+                display: inline-block;
+                transition: color 0.3s;
+            }
+    
+            .container a:hover {
+                color: #3498db;
+            }
+    
+            .error {
+                color: #e74c3c;
+                font-size: 14px;
+                margin-top: -10px;
+                margin-bottom: 10px;
+            }
+        </style>
+    
+    
+</head>
+
+<body>
+    <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <!-- Start Left menu area -->
+    <div class="left-sidebar-pro">
+        <nav id="sidebar" class="">
+            <div class="sidebar-header">
+                <a href="index.html"><img class="main-logo" src="C:\Users\sadekk\Desktop\Projet Web\view\Back_office\img\logo\logo.png" alt="" /></a>
+                <strong><a href="index.html"><img src="C:\Users\sadekk\Desktop\Projet Web\view\Back_office\img\logo\logosn.png" alt="" /></a></strong>
+            </div>
+            <div class="left-custom-menu-adp-wrap comment-scrollbar">
+                <nav class="sidebar-nav left-sidebar-menu-pro">
+                    <ul class="metismenu" id="menu1">
+                        <li class="active">
+                            <a class="has-arrow" href="index.html">
+                                <span class="educate-icon educate-home icon-wrap"></span>
+                                <span class="mini-click-non">Education</span>
+                            </a>
+                            <ul class="submenu-angle" aria-expanded="true">
+                                <li><a title="Analytics" href="analytics.html"><span class="mini-sub-pro">Analytique</span></a></li>
+                                <li><a title="Widgets" href="widgets.html"><span class="mini-sub-pro">Widgets</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a title="Landing Page" href="events.html" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Evénement</span></a>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="all-professors.html" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Professeurs</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="All Professors" href="all-professors.html"><span class="mini-sub-pro">Tous les professeurs</span></a></li>
+                                <li><a title="Add Professor" href="add-professor.html"><span class="mini-sub-pro">Ajouter un professeur</span></a></li>
+                                <li><a title="Edit Professor" href="edit-professor.html"><span class="mini-sub-pro">Modifier Professeur</span></a></li>
+                                <li><a title="Professor Profile" href="professor-profile.html"><span class="mini-sub-pro">Profil du professeur</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="all-students.html" aria-expanded="false"><span class="educate-icon educate-student icon-wrap"></span> <span class="mini-click-non">Etudiants</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="All Students" href="all-students.html"><span class="mini-sub-pro">Tous les etudiants</span></a></li>
+                                <li><a title="Add Students" href="add-student.html"><span class="mini-sub-pro">Ajouter un etudiant</span></a></li>
+                                <li><a title="Edit Students" href="edit-student.html"><span class="mini-sub-pro">Modifier etudiant</span></a></li>
+                                <li><a title="Students Profile" href="student-profile.html"><span class="mini-sub-pro">Profil du etudiant</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="all courses.html" aria-expanded="false"><span class="educate-icon educate-course icon-wrap"></span> <span class="mini-click-non">Cours</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="All Courses" href="C:\Users\sadekk\Desktop\view\View\Back_office\cour\all courses.html"><span class="mini-sub-pro">Tous les cours</span></a></li>
+                                <li><a title="Add Courses" href="C:\Users\sadekk\Desktop\view\View\Back_office\cour\add.html"><span class="mini-sub-pro">Ajouter un cours</span></a></li>
+                                <li><a title="Edit Courses" href="C:\Users\sadekk\Desktop\view\View\Back_office\cour\edit.html"><span class="mini-sub-pro">Modifier le cours</span></a></li>
+                                <li><a title="Courses Profile" href="C:\Users\sadekk\Desktop\view\View\Back_office\cour\courses info.html"><span class="mini-sub-pro">Informations sur les cours</span></a></li>
+                                <li><a title="Product Payment" href="C:\Users\sadekk\Desktop\view\View\Back_office\cour\courses pay.html"><span class="mini-sub-pro">Paiement des cours</span></a></li>
+                            </ul>
+                        </li>
+                        <!-- Réclamation section -->
+                        <li>
+                            <a title="Reclamation" href="REC_FORMBackOffice.html" aria-expanded="false"><span class="educate-icon educate-interface icon-wrap"></span> <span class="mini-click-non">Réclamation</span></a>
+                        </li>
+                        <!-- Blog section -->
+                        <li>
+                            <a title="Blog" href="gestion_blog.html" aria-expanded="false"><span class="educate-icon educate-interface icon-wrap"></span> <span class="mini-click-non">Blog</span></a>
+
+                        </li>
+                        <!-- Forum section -->
+                        <li>
+                            <a class="has-arrow" href="all-forums.html" aria-expanded="false"><span class="educate-icon educate-interface icon-wrap"></span> <span class="mini-click-non">Forum</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="All Forums" href="all-forum.html"><span class="mini-sub-pro">Tous les forums</span></a></li>
+                                <li><a title="Create Forum" href="create-forum.html"><span class="mini-sub-pro">Créer un forum</span></a></li>
+                                <li><a title="Forum Topics" href="forum-topics.html"><span class="mini-sub-pro">Sujets du forum</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><span class="educate-icon educate-message icon-wrap"></span> <span class="mini-click-non">Boîte aux lettres</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="Inbox" href="mailbox.html"><span class="mini-sub-pro">Boîte de réception</span></a></li>
+                                <li><a title="View Mail" href="mailbox-view.html"><span class="mini-sub-pro">Voir le courrier</span></a></li>
+                                <li><a title="Compose Mail" href="mailbox-compose.html"><span class="mini-sub-pro">Rédiger un courrier</span></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </nav>
+    </div>
+    
+    <!-- End Left menu area -->
+</head>
+
+<body>
+    <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <!-- Start Left menu area -->
+    <div class="left-sidebar-pro">
+        <nav id="sidebar" class="">
+            <div class="sidebar-header">
+                <a href="index.html"><img class="main-logo" src="C:\Users\sadekk\Desktop\Projet Web\view\Back_office\img\logo\logo.png" alt="" /></a>
+                <strong><a href="index.html"><img src="C:\Users\sadekk\Desktop\Projet Web\view\Back_office\img\logo\logosn.png" alt="" /></a></strong>
+            </div>
+            <div class="left-custom-menu-adp-wrap comment-scrollbar">
+                <nav class="sidebar-nav left-sidebar-menu-pro">
+                    <ul class="metismenu" id="menu1">
+                        <li class="active">
+                            <a class="has-arrow" href="index.html">
+                                <span class="educate-icon educate-home icon-wrap"></span>
+                                <span class="mini-click-non">Education</span>
+                            </a>
+                            <ul class="submenu-angle" aria-expanded="true">
+                                <li><a title="Analytics" href="analytics.html"><span class="mini-sub-pro">Analytique</span></a></li>
+                                <li><a title="Widgets" href="widgets.html"><span class="mini-sub-pro">Widgets</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a title="Landing Page" href="events.html" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Evénement</span></a>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="all-professors.html" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Professeurs</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="All Professors" href="all-professors.html"><span class="mini-sub-pro">Tous les professeurs</span></a></li>
+                                <li><a title="Add Professor" href="add-professor.html"><span class="mini-sub-pro">Ajouter un professeur</span></a></li>
+                                <li><a title="Edit Professor" href="edit-professor.html"><span class="mini-sub-pro">Modifier Professeur</span></a></li>
+                                <li><a title="Professor Profile" href="professor-profile.html"><span class="mini-sub-pro">Profil du professeur</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="all-students.html" aria-expanded="false"><span class="educate-icon educate-student icon-wrap"></span> <span class="mini-click-non">Etudiants</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="All Students" href="all-students.html"><span class="mini-sub-pro">Tous les etudiants</span></a></li>
+                                <li><a title="Add Students" href="add-student.html"><span class="mini-sub-pro">Ajouter un etudiant</span></a></li>
+                                <li><a title="Edit Students" href="edit-student.html"><span class="mini-sub-pro">Modifier etudiant</span></a></li>
+                                <li><a title="Students Profile" href="student-profile.html"><span class="mini-sub-pro">Profil du etudiant</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="all courses.html" aria-expanded="false"><span class="educate-icon educate-course icon-wrap"></span> <span class="mini-click-non">Cours</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="All Courses" href="C:\Users\sadekk\Desktop\view\View\Back_office\cour\all courses.html"><span class="mini-sub-pro">Tous les cours</span></a></li>
+                                <li><a title="Add Courses" href="C:\Users\sadekk\Desktop\view\View\Back_office\cour\add.html"><span class="mini-sub-pro">Ajouter un cours</span></a></li>
+                                <li><a title="Edit Courses" href="C:\Users\sadekk\Desktop\view\View\Back_office\cour\edit.html"><span class="mini-sub-pro">Modifier le cours</span></a></li>
+                                <li><a title="Courses Profile" href="C:\Users\sadekk\Desktop\view\View\Back_office\cour\courses info.html"><span class="mini-sub-pro">Informations sur les cours</span></a></li>
+                                <li><a title="Product Payment" href="C:\Users\sadekk\Desktop\view\View\Back_office\cour\courses pay.html"><span class="mini-sub-pro">Paiement des cours</span></a></li>
+                            </ul>
+                        </li>
+                        <!-- Réclamation section -->
+                        <li>
+                            <a title="Reclamation" href="REC_FORMBackOffice.html" aria-expanded="false"><span class="educate-icon educate-interface icon-wrap"></span> <span class="mini-click-non">Réclamation</span></a>
+                        </li>
+                        <!-- Blog section -->
+                        <li>
+                            <a title="Blog" href="gestion_blog.html" aria-expanded="false"><span class="educate-icon educate-interface icon-wrap"></span> <span class="mini-click-non">Blog</span></a>
+
+                        </li>
+                        <!-- Forum section -->
+                        <li>
+                            <a class="has-arrow" href="all-forums.html" aria-expanded="false"><span class="educate-icon educate-interface icon-wrap"></span> <span class="mini-click-non">Forum</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="All Forums" href="all-forum.html"><span class="mini-sub-pro">Tous les forums</span></a></li>
+                                <li><a title="Create Forum" href="create-forum.html"><span class="mini-sub-pro">Créer un forum</span></a></li>
+                                <li><a title="Forum Topics" href="forum-topics.html"><span class="mini-sub-pro">Sujets du forum</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><span class="educate-icon educate-message icon-wrap"></span> <span class="mini-click-non">Boîte aux lettres</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="Inbox" href="mailbox.html"><span class="mini-sub-pro">Boîte de réception</span></a></li>
+                                <li><a title="View Mail" href="mailbox-view.html"><span class="mini-sub-pro">Voir le courrier</span></a></li>
+                                <li><a title="Compose Mail" href="mailbox-compose.html"><span class="mini-sub-pro">Rédiger un courrier</span></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </nav>
+    </div>
+    
+    <!-- End Left menu area -->
+      <!-- Start Welcome area -->
+    <div class="all-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="logo-pro">
+                        <a href="index.html"><img class="main-logo" src="../Back_Office/img/logo/logo.png" alt="" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-advance-area">
+            <div class="header-top-area">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="header-top-wraper">
+                                <div class="row">
+                                    <div class="col-lg-1 col-md-0 col-sm-1 col-xs-12">
+                                        <div class="menu-switcher-pro">
+                                            <button type="button" id="sidebarCollapse" class="btn bar-button-pro header-drl-controller-btn btn-info navbar-btn">
+                                                <i class="educate-icon educate-nav"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
+                                        <div class="header-top-menu tabl-d-n">
+                                            <ul class="nav navbar-nav mai-top-nav">
+                                                <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
+                                                <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+                                                <li class="nav-item"><a href="#" class="nav-link">Services</a></li>
+                                                <li class="nav-item dropdown res-dis-nn">
+                                                    <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">Project <span class="angle-down-topmenu"><i class="fa fa-angle-down"></i></span></a>
+                                                    <div role="menu" class="dropdown-menu animated zoomIn">
+                                                        <a href="#" class="dropdown-item">Documentation</a>
+                                                        <a href="#" class="dropdown-item">Expert en back-end</a>
+                                                        <a href="#" class="dropdown-item">Expert en front-end</a>
+                                                        <a href="#" class="dropdown-item">Contacter le support</a>
+                                                    </div>
+                                                </li>
+                                                <li class="nav-item"><a href="#" class="nav-link">Support</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                                        <div class="header-right-info">
+                                            <ul class="nav navbar-nav mai-top-nav header-right-menu">
+                                                <li class="nav-item dropdown">
+                                                    <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="educate-icon educate-message edu-chat-pro" aria-hidden="true"></i><span class="indicator-ms"></span></a>
+                                                    <div role="menu" class="author-message-top dropdown-menu animated zoomIn">
+                                                        <div class="message-single-top">
+                                                            <h1>Message</h1>
+                                                        </div>
+                                                        <ul class="message-menu">
+                                                            <li>
+                                                                <a href="#">
+                                                                    <div class="message-img">
+                                                                        <img src="img/malek.jpg" alt="">
+                                                                    </div>
+                                                                    <div class="message-content">
+                                                                        <span class="message-date">5 nov</span>
+                                                                        <h2>Malek Ben Rejab</h2>
+                                                                        <p>Cristiano Ronaldo is the greatest player of all time.</p>
+                                                                    </div>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="message-view">
+                                                            <a href="#">Show All Messages</a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
+ <span class="admin-name">Admin</span>
+                                                        <i class="fa fa-angle-down edu-icon edu-down-arrow"></i>
+                                                    </a>
+                                                    <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">
+                                                        <li><a href="#"><span class="edu-icon edu-home-admin author-log-ic"></span>My Account</a></li>
+                                                        <li><a href="#"><span class="edu-icon edu-user-rounded author-log-ic"></span>My profile</a></li>
+                                                        <li><a href="#"><span class="edu-icon edu-money author-log-ic"></span>Facturation des utilisateurs</a></li>
+                                                        <li><a href="#"><span class="edu-icon edu-settings author-log-ic"></span>Settings</a></li>
+                                                        <li><a href="#"><span class="edu-icon edu-locked author-log-ic"></span>Log Out</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+
+
+    <!-----------------Form------------------------->
+    <h1>Modifier le Module</h1>
+    <form id="editModuleForm">
+        <label for="title">Titre :</label>
+        <input type="text" id="title" name="title" placeholder="Titre du module" value="Titre existant" required>
+        <span class="error" id="titleError"></span>
+        
+        <label for="description">Description :</label>
+        <textarea id="description" name="description" placeholder="Description du module" required>Description existante</textarea>
+        <span class="error" id="descriptionError"></span>
+        
+        <label for="duration">Durée (heures) :</label>
+        <input type="number" id="duration" name="duration" placeholder="Durée du module" value="10" required>
+        <span class="error" id="durationError"></span>
+        
+        <label for="category">Catégorie :</label>
+        <select id="category" name="category" required>
+            <option value="Programmation">Programmation</option>
+            <option value="Design">Design</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Autre" selected>Autre</option>
+        </select>
+        <span class="error" id="categoryError"></span>
+        
+        <button type="submit">Modifier</button>
+    </form>
+
+    <div class="container">
+        <a href="../affichermodule.php">Retour à la liste des modules</a>
+    </div>
+
+    <script>
+        document.getElementById('editModuleForm').addEventListener('submit', function(event) {
+            let isValid = true;
+
+            // Clear previous error messages
+            document.querySelectorAll('.error').forEach(el => el.textContent = '');
+
+            // Validate Title
+            const title = document.getElementById('title').value.trim();
+            if (title === '') {
+                document.getElementById('titleError').textContent = "Le titre est requis.";
+                isValid = false;
+            } else if (title.length < 3) {
+                document.getElementById('titleError').textContent = "Le titre doit contenir au moins 3 caractères.";
+                isValid = false;
+            }
+
+            // Validate Description
+            const description = document.getElementById('description').value.trim();
+            if (description === '') {
+                document.getElementById('descriptionError').textContent = "La description est requise.";
+                isValid = false;
+            }
+
+            // Validate Duration
+            const duration = document.getElementById('duration').value;
+            if (duration === '' || isNaN(duration) || duration <= 0) {
+                document.getElementById('durationError').textContent = "Veuillez entrer une durée valide.";
+                isValid = false;
+            }
+
+            // Validate Category
+            const category = document.getElementById('category').value;
+            if (category === '') {
+                document.getElementById('categoryError').textContent = "Veuillez choisir une catégorie.";
+                isValid = false;
+            }
+
+            // Prevent form submission if validation fails
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

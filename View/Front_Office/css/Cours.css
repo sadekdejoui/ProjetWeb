@@ -1,0 +1,29 @@
+/* General button styling */
+a.button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Primary button style */
+.start-button {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.start-button:hover {
+    background-color: #45a049;
+}
+
+/* Secondary button style */
+.details-button {
+    background-color: #008CBA;
+    color: white;
+}
+
+.details-button:hover {
+    background-color: #007bb5;
+}

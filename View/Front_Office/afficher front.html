@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Cours</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .course-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .course-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            width: 250px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-card h2 {
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .course-card p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Liste des Cours Disponibles</h1>
+    <form method="POST" action="http://localhost/akrem%20web/View/back_office/show_courses.php">
+    <div class="course-list" id="course-list">
+        <!-- Les cours seront affichés ici -->
+    </div>
+
+    <div id="error-message" class="error-message" style="display:none;"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Appeler le fichier PHP pour récupérer les cours
+            fetch('show_courses.php')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erreur de réponse du serveur');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const courseList = document.getElementById('course-list');
+                    const errorMessage = document.getElementById('error-message');
+
+                    // Si les données sont présentes et valides
+                    if (data.length > 0) {
+                        errorMessage.style.display = 'none'; // Cacher les messages d'erreur
+
+                        // Boucler sur les cours et les afficher
+                        data.forEach(course => {
+                            const courseCard = `
+                                <div class="course-card">
+                                    <h2>${course.title}</h2>
+                                    <p><strong>Description :</strong> ${course.description}</p>
+                                    <p><strong>Prix :</strong> ${course.price} €</p>
+                                    <p><strong>Catégorie :</strong> ${course.category}</p>
+                                    <p><strong>Durée :</strong> ${course.duration} heures</p>
+                                </div>
+                            `;
+                            courseList.innerHTML += courseCard;
+                        });
+                    } else {
+                        // Afficher un message si aucun cours n'est trouvé
+                        errorMessage.textContent = 'Aucun cours trouvé.';
+                        errorMessage.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error("Erreur lors du chargement des cours :", error);
+                    const courseList = document.getElementById('course-list');
+                    courseList.innerHTML = ''; // Effacer les cours existants
+
+                    const errorMessage = document.getElementById('error-message');
+                    errorMessage.textContent = 'Erreur de chargement des cours. Détails : ' + error.message;
+                    errorMessage.style.display = 'block';
+                });
+        });
+    </script>
+</body>
+</html>

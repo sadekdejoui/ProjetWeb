@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Course</title>
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="stylesheet" href="../Back_Office/css/styleComp.css">
+    <link rel="stylesheet" href="../Back_Office/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../Back_Office/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../Back_Office/css/owl.carousel.css">
+    <link rel="stylesheet" href="../Back_Office/css/owl.theme.css">
+    <link rel="stylesheet" href="../Back_Office/css/owl.transitions.css">
+    <link rel="stylesheet" href="../Back_Office/css/animate.css">
+    <link rel="stylesheet" href="../Back_Office/css/normalize.css">
+    <link rel="stylesheet" href="../Back_Office/css/meanmenu.min.css">
+    <link rel="stylesheet" href="../Back_Office/css/main.css">
+    <link rel="stylesheet" href="../Back_Office/css/educate-custon-icon.css">
+    <link rel="stylesheet" href="../Back_Office/css/morrisjs/morris.css">
+    <link rel="stylesheet" href="../Back_Office/css/scrollbar/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="../Back_Office/css/metisMenu/metisMenu.min.css">
+    <link rel="stylesheet" href="../Back_Office/css/metisMenu/metisMenu-vertical.css">
+    <link rel="stylesheet" href="../Back_Office/css/calendar/fullcalendar.min.css">
+    <link rel="stylesheet" href="../Back_Office/css/calendar/fullcalendar.print.min.css">
+    <link rel="stylesheet" href="../Back_Office/style.css">
+    <link rel="stylesheet" href="../Back_Office/css/modal.css">
+    <link rel="stylesheet" href="../Back_Office/css/responsive.css">
+   
+
+    <style>
+        /* Changer la couleur de fond du header */
+        .header-top-area {
+            background-color: #ac81f2; /* Remplacez par la couleur de votre choix */
+        }
+
+        /* Changer la couleur du texte dans la navbar */
+        .header-top-wraper .nav-link {
+            color: white; /* Assurez-vous que le texte est lisible */
+        }
+
+        /* Changer la couleur au survol des liens dans la navbar */
+        .header-top-wraper .nav-link:hover {
+            color: #ffcc00; /* Couleur au survol */
+        }
+
+        /* Changer la couleur d'arrière-plan pour le bouton de menu switcher */
+        .menu-switcher-pro .btn {
+            background-color: #ac81f2; /* Remplacez par la couleur de votre choix */
+        }
+
+        /* Changer la couleur de texte des icônes de notification et de message */
+        .header-right-info .nav-link {
+            color: white; /* Assurez-vous que le texte est lisible sur le fond */
+        }
+
+        /* Styles pour la gestion des réclamations */
+        .hidden {
+            display: none;
+        }
+    </style>
+
+
+<style>
+    <style>
+        /* Global styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;  /* Light pastel blue */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #fffafc; /* Soft pastel lavender */
+        }
+
+        h1 {
+            text-align: center;
+            color: #4c1972;
+            margin-bottom: 20px;
+        }
+
+        .course-info {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-info p {
+            margin: 5px 0;
+            color: #333;
+        }
+
+        .payment-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .payment-section label {
+            margin-top: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .payment-section input[type="text"], 
+        .payment-section input[type="date"] {
+            padding: 12px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .payment-method {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .payment-method input {
+            margin-right: 10px;
+        }
+
+        .payment-method label {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .payment-summary {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f4f7fc;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .total {
+            color: #4c1972;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #4c1972;
+            color: white;
+            font-size: 16px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #69268d;
+        }
+    </style>
+</style>
+  
+</head>
+<body>
+    <!-- Start Left menu area -->
+    <div class="left-sidebar-pro">
+        <nav id="sidebar" class="">
+            <div class="sidebar-header">
+                <a href="index.html"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
+                <strong><a href="index.html"><img src="img/logo/logosn.png" alt="" /></a></strong>
+            </div>
+            <div class="left-custom-menu-adp-wrap comment-scrollbar">
+                <nav class="sidebar-nav left-sidebar-menu-pro">
+                    <ul class="metismenu" id="menu1">
+                        <li class="active">
+                            <a class="has-arrow" href="index.html">
+                                <span class="educate-icon educate-home icon-wrap"></span>
+                                <span class="mini-click-non">Education</span>
+                            </a>
+                            <ul class="submenu-angle" aria-expanded="true">
+                                <li><a title="Analytics" href=""><span class="mini-sub-pro">Analytique</span></a></li><!--href="analytics.html"-->
+                                <li><a title="Widgets" href=""><span class="mini-sub-pro">Widgets</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a title="Landing Page" href="events.html" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Event</span></a>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="all-professors.html" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Professors</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="All Professors" href="all-professors.html"><span class="mini-sub-pro">All</span></a></li>
+                                <li><a title="Add Professor" href="add-professor.html"><span class="mini-sub-pro">Add Professor</span></a></li>
+                                <li><a title="Edit Professor" href="edit-professor.html"><span class="mini-sub-pro">Edit Professor</span></a></li>
+                                <li><a title="Professor Profile" href="professor-profile.html"><span class="mini-sub-pro">Professor Profile</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="all-students.html" aria-expanded="false"><span class="educate-icon educate-student icon-wrap"></span> <span class="mini-click-non">Etudiants</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="All Students" href="all-students.html"><span class="mini-sub-pro">Tous les etudiants</span></a></li>
+                                <li><a title="Add Students" href="add-student.html"><span class="mini-sub-pro">Ajouter un etudiant</span></a></li>
+                                <li><a title="Edit Students" href="edit-student.html"><span class="mini-sub-pro">Modifier etudiant</span></a></li>
+                                <li><a title="Students Profile" href="student-profile.html"><span class="mini-sub-pro">Profil du etudiant</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="all-courses.html" aria-expanded="false"><span class="educate-icon educate-course icon-wrap"></span> <span class="mini-click-non">Courses</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="All Courses" href="all courses.html"><span class="mini-sub-pro">ALL Courses</span></a></li>
+                                <li><a title="Add Courses" href="add.html"><span class="mini-sub-pro">Add Course</span></a></li>
+                                <li><a title="Edit Courses" href="edit.html"><span class="mini-sub-pro">Edit Course</span></a></li>
+                               <!--<li><a title="Courses Profile" href="courses info.html"><span class="mini-sub-pro">Course Infos</span></a></li>-->
+                                <li><a title="Product Payment" href="courses pay.html"><span class="mini-sub-pro">Course Paiement</span></a></li>
+                            </ul>
+                        </li>
+                        <!-- Réclamation section -->
+                        <li>
+                            <a title="Reclamation" href="../Back_Office/REC_FORMBackOffice.php" aria-expanded="false"><span class="educate-icon educate-interface icon-wrap"></span> <span class="mini-click-non">Complaints</span></a>
+                        </li>
+                        <!-- Blog section -->
+                        <li>
+                            <a title="Blog" href="gestion_blog.html" aria-expanded="false"><span class="educate-icon educate-interface icon-wrap"></span> <span class="mini-click-non">Blog</span></a>
+
+                        </li>
+                        <!-- Forum section -->
+                        <li>
+                            <a class="has-arrow" href="all-forums.html" aria-expanded="false"><span class="educate-icon educate-interface icon-wrap"></span> <span class="mini-click-non">Forum</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="All Forums" href="all-forum.html"><span class="mini-sub-pro">All Forums</span></a></li>
+                                <li><a title="Create Forum" href="create-forum.html"><span class="mini-sub-pro">Create Forum</span></a></li>
+                                <li><a title="Forum Topics" href="forum-topics.html"><span class="mini-sub-pro">Forum Subjects</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><span class="educate-icon educate-message icon-wrap"></span> <span class="mini-click-non">EmailBox</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="Inbox" href="mailbox.html"><span class="mini-sub-pro">Inbox</span></a></li>
+                                <li><a title="View Mail" href="mailbox-view.html"><span class="mini-sub-pro">Show ALL Emails</span></a></li>
+                                <li><a title="Compose Mail" href="mailbox-compose.html"><span class="mini-sub-pro">Write An Email</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a title="Settings" href="settings.html" aria-expanded="false"><span class="educate-icon educate-settings icon-wrap"></span> <span class="mini-click-non">Settings</span></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </nav>
+    </div>
+    
+    <!-- End Left menu area -->
+
+    <!-- Start Welcome area -->
+    <div class="all-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="logo-pro">
+                        <a href="index.html"><img class="main-logo" src="../Back_Office/img/logo/logo.png" alt="" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-advance-area">
+            <div class="header-top-area">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="header-top-wraper">
+                                <div class="row">
+                                    <div class="col-lg-1 col-md-0 col-sm-1 col-xs-12">
+                                        <div class="menu-switcher-pro">
+                                            <button type="button" id="sidebarCollapse" class="btn bar-button-pro header-drl-controller-btn btn-info navbar-btn">
+                                                <i class="educate-icon educate-nav"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
+                                        <div class="header-top-menu tabl-d-n">
+                                            <ul class="nav navbar-nav mai-top-nav">
+                                                <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
+                                                <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+                                                <li class="nav-item"><a href="#" class="nav-link">Services</a></li>
+                                                <li class="nav-item dropdown res-dis-nn">
+                                                    <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">Project <span class="angle-down-topmenu"><i class="fa fa-angle-down"></i></span></a>
+                                                    <div role="menu" class="dropdown-menu animated zoomIn">
+                                                        <a href="#" class="dropdown-item">Documentation</a>
+                                                        <a href="#" class="dropdown-item">Expert en back-end</a>
+                                                        <a href="#" class="dropdown-item">Expert en front-end</a>
+                                                        <a href="#" class="dropdown-item">Contacter le support</a>
+                                                    </div>
+                                                </li>
+                                                <li class="nav-item"><a href="#" class="nav-link">Support</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                                        <div class="header-right-info">
+                                            <ul class="nav navbar-nav mai-top-nav header-right-menu">
+                                                <li class="nav-item dropdown">
+                                                    <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="educate-icon educate-message edu-chat-pro" aria-hidden="true"></i><span class="indicator-ms"></span></a>
+                                                    <div role="menu" class="author-message-top dropdown-menu animated zoomIn">
+                                                        <div class="message-single-top">
+                                                            <h1>Message</h1>
+                                                        </div>
+                                                        <ul class="message-menu">
+                                                            <li>
+                                                                <a href="#">
+                                                                    <div class="message-img">
+                                                                        <img src="img/malek.jpg" alt="">
+                                                                    </div>
+                                                                    <div class="message-content">
+                                                                        <span class="message-date">5 nov</span>
+                                                                        <h2>Malek Ben Rejab</h2>
+                                                                        <p>Cristiano Ronaldo is the greatest player of all time.</p>
+                                                                    </div>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="message-view">
+                                                            <a href="#">Show All Messages</a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
+                                                        <span class="admin-name">Admin</span>
+                                                        <i class="fa fa-angle-down edu-icon edu-down-arrow"></i>
+                                                    </a>
+                                                    <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">
+                                                        <li><a href="#"><span class="edu-icon edu-home-admin author-log-ic"></span>My Account</a></li>
+                                                        <li><a href="#"><span class="edu-icon edu-user-rounded author-log-ic"></span>My profile</a></li>
+                                                        <li><a href="#"><span class="edu-icon edu-money author-log-ic"></span>Facturation des utilisateurs</a></li>
+                                                        <li><a href="#"><span class="edu-icon edu-settings author-log-ic"></span>Settings</a></li>
+                                                        <li><a href="#"><span class="edu-icon edu-locked author-log-ic"></span>Log Out</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Welcome area End -->
+
+    <!--------------------------Start pay cours------------------------------------------>
+    <div class="container">
+        <h1>Gestion du Paiement du Cours</h1>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        
+        <!-- Informations du Cours -->
+        <div class="course-info">
+            <p><strong>Titre du Cours :</strong> Développement Web</p>
+            <p><strong>Catégorie :</strong> Informatique</p>
+            <p><strong>Durée :</strong> 20 heures</p>
+            <p><strong>Prix :</strong> 99€</p>
+        </div>
+
+        <!-- Formulaire de Paiement -->
+        <form action="/process_payment" method="post" class="payment-section">
+            <label for="nom">Nom :</label>
+            <input type="text" id="nom" name="nom" placeholder="Entrez votre nom" required>
+
+            <label for="email">E-mail :</label>
+            <input type="email" id="email" name="email" placeholder="Entrez votre e-mail" required>
+
+            <label for="date">Date d'achat :</label>
+            <input type="date" id="date" name="date" required>
+
+            <div class="payment-method">
+                <!-- Carte de Crédit -->
+                <label for="credit_card">
+                    <input type="radio" id="credit_card" name="payment_method" value="credit_card" required>
+                    <img src="téléchargement (1).png" alt="Carte de Crédit">
+                    Carte de Crédit
+                </label>
+
+                <!-- PayPal -->
+                <label for="paypal">
+                    <input type="radio" id="paypal" name="payment_method" value="paypal" required>
+                    <img src="téléchargement.png" alt="PayPal">
+                    PayPal
+                </label>
+            </div>
+
+            <!-- Résumé du Paiement -->
+            <div class="payment-summary">
+                <p><strong>Total à Payer :</strong> <span class="total">99€</span></p>
+            </div>
+
+            <!-- Bouton de Paiement -->
+            <div class="button-container">
+                <button type="submit">Effectuer le Paiement</button>
+            </div>
+        </form>
+
+        <!-- Bouton pour Télécharger la Facture -->
+        <div class="button-container">
+            <button id="download-btn" class="download-btn">Télécharger la Facture</button>
+        </div>
+    </div>
+<!----------------------------END pAY Course------------------------------>
+
+
+<script>
+     document.addEventListener("DOMContentLoaded", () => {
+            // Charger les informations du cours
+            const courseInfo = {
+                title: "Développement Web",
+                category: "Informatique",
+                duration: "20 heures",
+                price: "99€"
+            };
+
+            // Injecter dynamiquement les informations du cours
+            document.querySelector(".course-info").innerHTML = `
+                <p><strong>Titre du Cours :</strong> ${courseInfo.title}</p>
+                <p><strong>Catégorie :</strong> ${courseInfo.category}</p>
+                <p><strong>Durée :</strong> ${courseInfo.duration}</p>
+                <p><strong>Prix :</strong> ${courseInfo.price}</p>
+            `;
+
+            // Validation du formulaire de paiement
+            const form = document.querySelector("form");
+            form.addEventListener("submit", (event) => {
+                event.preventDefault();
+
+                // Récupérer les valeurs des champs
+                const nom = document.getElementById("nom").value.trim();
+                const email = document.getElementById("email").value.trim();
+                const date = document.getElementById("date").value;
+                const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
+
+                // Vérifications simples
+                if (!nom || !email || !date || !paymentMethod) {
+                    alert("Veuillez remplir tous les champs !");
+                    return;
+                }
+
+                if (!validateEmail(email)) {
+                    alert("Veuillez entrer une adresse e-mail valide !");
+                    return;
+                }
+
+                // Confirmation avant soumission
+                const confirmation = confirm(
+                    `Confirmez-vous votre paiement pour le cours "${courseInfo.title}" ?\n\n` +
+                    `Nom : ${nom}\n` +
+                    `E-mail : ${email}\n` +
+                    `Date d'achat : ${date}\n` +
+                    `Mode de Paiement : ${paymentMethod.nextElementSibling.textContent}\n` +
+                    `Montant : ${courseInfo.price}`
+                );
+
+                if (confirmation) {
+                    // Simuler l'envoi au serveur
+                    console.log("Paiement effectué avec succès !", {
+                        nom,
+                        email,
+                        date,
+                        paymentMethod: paymentMethod.value,
+                        course: courseInfo
+                    });
+
+                    alert("Votre paiement a été effectué avec succès !");
+                    form.reset();
+                }
+            });
+
+            // Fonction pour valider une adresse e-mail
+            function validateEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+        });
+
+    document.getElementById('download-btn').addEventListener('click', function() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Récupérer les informations de paiement et de cours
+        const paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value || 'Non sélectionné';
+        const totalAmount = '99€';
+        const date = new Date().toLocaleDateString();
+        const courseTitle = 'Développement Web';
+        const studentName = document.getElementById('nom').value || 'Non renseigné';
+        const studentEmail = document.getElementById('email').value || 'Non renseigné';
+
+        // Détails du PDF
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(28);
+        doc.text("Facture", 105, 40, null, null, 'center');
+
+        doc.setFontSize(18);
+        doc.text("Cours : " + courseTitle, 105, 60, null, null, 'center');
+        doc.text("Nom de l'étudiant : " + studentName, 105, 80, null, null, 'center');
+        doc.text("E-mail : " + studentEmail, 105, 100, null, null, 'center');
+        doc.text("Méthode de Paiement : " + paymentMethod, 105, 120, null, null, 'center');
+        doc.text("Total à Payer : " + totalAmount, 105, 140, null, null, 'center');
+        doc.text("Date : " + date, 105, 160, null, null, 'center');
+
+        // Ajouter un message de remerciement
+        doc.setFontSize(14);
+        doc.text("Merci pour votre paiement !", 105, 180, null, null, 'center');
+
+        // Télécharger la facture sous forme de PDF
+        doc.save('facture.pdf');
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     <!-- jquery
+		============================================ -->
+        <script src="js/vendor/jquery-1.12.4.min.js"></script>
+        <!-- bootstrap JS
+            ============================================ -->
+        <script src="js/bootstrap.min.js"></script>
+        <!-- wow JS
+            ============================================ -->
+        <script src="js/wow.min.js"></script>
+        <!-- price-slider JS
+            ============================================ -->
+        <script src="js/jquery-price-slider.js"></script>
+        <!-- meanmenu JS
+            ============================================ -->
+        <script src="js/jquery.meanmenu.js"></script>
+        <!-- owl.carousel JS
+            ============================================ -->
+        <script src="js/owl.carousel.min.js"></script>
+        <!-- sticky JS
+            ============================================ -->
+        <script src="js/jquery.sticky.js"></script>
+        <!-- scrollUp JS
+            ============================================ -->
+        <script src="js/jquery.scrollUp.min.js"></script>
+        <!-- counterup JS
+            ============================================ -->
+        <script src="js/counterup/jquery.counterup.min.js"></script>
+        <script src="js/counterup/waypoints.min.js"></script>
+        <script src="js/counterup/counterup-active.js"></script>
+        <!-- mCustomScrollbar JS
+            ============================================ -->
+        <script src="js/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script src="js/scrollbar/mCustomScrollbar-active.js"></script>
+        <!-- metisMenu JS
+            ============================================ -->
+        <script src="js/metisMenu/metisMenu.min.js"></script>
+        <script src="js/metisMenu/metisMenu-active.js"></script>
+        <!-- morrisjs JS
+            ============================================ -->
+        <script src="js/morrisjs/raphael-min.js"></script>
+        <script src="js/morrisjs/morris.js"></script>
+        <script src="js/morrisjs/morris-active.js"></script>
+        <!-- morrisjs JS
+            ============================================ -->
+        <script src="js/sparkline/jquery.sparkline.min.js"></script>
+        <script src="js/sparkline/jquery.charts-sparkline.js"></script>
+        <script src="js/sparkline/sparkline-active.js"></script>
+        <!-- calendar JS
+            ============================================ -->
+        <script src="js/calendar/moment.min.js"></script>
+        <script src="js/calendar/fullcalendar.min.js"></script>
+        <script src="js/calendar/fullcalendar-active.js"></script>
+        <!-- plugins JS
+            ============================================ -->
+        <script src="js/plugins.js"></script>
+        <!-- main JS
+            ============================================ -->
+        <script src="js/main.js"></script>
+        <!-- tawk chat JS
+            ============================================ -->
+        <script src="js/tawk-chat.js"></script>
+</body>
+</html>
