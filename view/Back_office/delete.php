@@ -8,7 +8,6 @@ $utilisateur = new utilisateur_controller();
 if (isset($_POST['id'])) {
     $id = $_POST['id'];
 }
-echo $id;
 $utilisateur->deleteUtilisateur($id);
 $utilisateur->updateUserIds($id);
 header('Location: students.php');

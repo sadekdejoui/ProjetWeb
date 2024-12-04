@@ -1,7 +1,22 @@
 <?php
-require '../../controller/user_controller.php'; 
-$utilisateur = new utilisateur_controller(); 
-$list = $utilisateur->listUsers2();  // Get the list of users from the controller
+require '../../controller/user_controller.php';
+$utilisateur = new utilisateur_controller();
+
+// Get the current page from the URL (default to 1)
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$perPage = 5; // Max users per page
+
+// Get the search term from the form
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+$sort = isset($_GET['sort']) ? $_GET['sort'] : 'nom'; // Default sort column
+$order = isset($_GET['order']) ? $_GET['order'] : 'asc'; // Default sort order
+
+// Fetch users based on search and pagination
+$list = $utilisateur->listUsersPaginated($page, $perPage, $search, $sort, $order);
+
+// Get total users for pagination
+$totalUsers = $utilisateur->getTotalUsers();
+$totalPages = ceil($totalUsers / $perPage);
 ?>
 
 <!doctype html>
@@ -185,6 +200,20 @@ $list = $utilisateur->listUsers2();  // Get the list of users from the controlle
 
         .action-button:hover {
             background-color: #6A5ACD;
+        }
+
+        .pagination a {
+            margin: 0 5px;
+            padding: 5px 10px;
+            text-decoration: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 3px;
+        }
+
+        .pagination a.active {
+            font-weight: bold;
+            background-color: #0056b3;
         }
 
     </style>
@@ -678,6 +707,47 @@ $list = $utilisateur->listUsers2();  // Get the list of users from the controlle
             </div>
 
 
+            <div style="padding: 30px 30px 30px 30px;">
+                <form method="GET" action="students.php">
+                    <input type="text" name="search" placeholder="Search by name or email" value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+
+
 
 
 
@@ -687,81 +757,70 @@ $list = $utilisateur->listUsers2();  // Get the list of users from the controlle
             <table class="styled-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Nom</th>
-                        <th>Prénom</th>
-                        <th>Email</th>
+                        <th><a href="?sort=nom&order=<?= (isset($_GET['order']) && $_GET['order'] === 'asc') ? 'desc' : 'asc' ?>">Nom</a></th>
+                        <th><a href="?sort=prenom&order=<?= (isset($_GET['order']) && $_GET['order'] === 'asc') ? 'desc' : 'asc' ?>">Prénom</a></th>
+                        <th><a href="?sort=email&order=<?= (isset($_GET['order']) && $_GET['order'] === 'asc') ? 'desc' : 'asc' ?>">Email</a></th>
                         <th>Type</th>
-                        <th>Date de derniere mise a jour</th>
-                        <th>Profile</th>
+                        <th><a href="?sort=date_mise&order=<?= (isset($_GET['order']) && $_GET['order'] === 'asc') ? 'desc' : 'asc' ?>">Date</a></th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                        // Check if there are rows returned
-                        if ($list->rowCount() > 0) {
-                            while ($row = $list->fetch(PDO::FETCH_ASSOC)) {
-                                if ($row['tyype'] == 0 || $row['tyype'] == 1) {
-                                    $type=$row['tyype'];
-                                    if ($type == 0) {
-                                        $ch="Etudiant";
+                    
+                       
+                <?php foreach ($list as $user): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($user['nom']) ?></td>
+                        <td><?= htmlspecialchars($user['prenom']) ?></td>
+                        <td><?= htmlspecialchars($user['email']) ?></td>
+                        <td><?= htmlspecialchars($user['tyype']) ?></td>
+                        <td><?= htmlspecialchars($user['date_mise']) ?></td>
+                        <td>
+                            <!-- Afficher Button -->
+                            <button class="action-button" style="width: 80px;" 
+                                    onclick="window.location.href='sprofile.php?email=<?= urlencode($user['email']) ?>';">
+                                Afficher
+                            </button>
 
-                                    }else{
-                                        $ch="Professeur";
-                                    } // Check if the condition matches
-                                    echo "<tr>
-                                            <td>".$row['id']."</td>
-                                            <td>".$row['nom']."</td>
-                                            <td>".$row['prenom']."</td>
-                                            <td>".$row['email']."</td>
-                                            <td>".$ch."</td>
-                                            <td>".$row['date_mise']."</td>
-                                            <td> 
-                                                <button class='action-button' onclick=\"window.location.href='sprofile.php?email=".urlencode($row['email'])."';\">Afficher</button>
-                                                <form action='delete.php' method='POST' style='display:inline;'>
-                                                    <input type='hidden' name='id' value='".htmlspecialchars($row['id'])."'>
-                                                    <button type='submit' class='action-button'>Delete</button>
-                                                </form>                                           
-                                            </td>
-                                        </tr>";
-                                }
-                            }
-                        } else {
-                            echo "<tr><td colspan='5'>No users found</td></tr>"; // Handle case where no users exist
-                        }
-                    ?>
+                            <!-- Block Form -->
+                            <form action="delete.php" method="POST" style="display: inline;">
+                                <input type="hidden" name="id" value="<?= htmlspecialchars($user['id']) ?>">
+                                <button type="submit" class="action-button" style="width: 80px;">Block</button>
+                            </form>
+                            
+                            <!-- Desactiver Form -->
+                            <form action="desactiver.php" method="POST" style="display: inline;">
+                                <input type="hidden" name="id" value="<?= htmlspecialchars($user['id']) ?>">
+                                <button type="submit" class="action-button" style="margin-top: 3px; width: 80px;">Desactiver</button>
+                            </form>
+                            
+                            <!-- Activer Form -->
+                            <form action="activer.php" method="POST" style="display: inline;">
+                                <input type="hidden" name="id" value="<?= htmlspecialchars($user['id']) ?>">
+                                <button type="submit" class="action-button" style="margin-top: 3px; width: 80px;">Activer</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+
+                        
+                 
                 </tbody>
             </table>
-        </div>
+            <div class="pagination">
+                <?php if ($page > 1): ?>
+                    <a href="?page=<?= $page - 1 ?>&sort=<?= $sort ?>&order=<?= $order ?>&search=<?= urlencode($search) ?>">Previous</a>
+                <?php endif; ?>
 
+                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                    <a href="?page=<?= $i ?>&sort=<?= $sort ?>&order=<?= $order ?>&search=<?= urlencode($search) ?>"
+                    class="<?= $i === $page ? 'active' : '' ?>"><?= $i ?></a>
+                <?php endfor; ?>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
+                <?php if ($page < $totalPages): ?>
+                    <a href="?page=<?= $page + 1 ?>&sort=<?= $sort ?>&order=<?= $order ?>&search=<?= urlencode($search) ?>">Next</a>
+                <?php endif; ?>
+            </div>
 
 
 

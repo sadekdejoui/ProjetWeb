@@ -8,10 +8,10 @@ $user= null;
 $utilisateur = new utilisateur_controller(); //ayet lel classe eli fih kol chyy
 
 
-if (isset($_POST["loglastname"])  && $_POST["logname"] && $_POST["logdate1"]  && $_POST["logemail"] && $_POST["logtype"] && $_POST["logdate2"] && $_POST["logdate3"] && $_POST["logtel"] && $_POST["logpass"]  && $_POST["logemail"]) {
+if (isset($_POST["loglastname"])  && $_POST["logname"] && $_POST["logdate1"]  && $_POST["logemail"] && $_POST["logdate2"] && $_POST["logdate3"] && $_POST["logtel"] && $_POST["logpass"]  && $_POST["logemail"]) {
 
     $email = $_POST["logemail"];
-    $logtype = (int) $_POST["logtype"];
+    $logtype = $_POST["logtype"];
     $date_nai = new DateTime($_POST['logdate1']);
     $date_entre = new DateTime($_POST['logdate2']);
     $date_insc = new DateTime($_POST['logdate3']);

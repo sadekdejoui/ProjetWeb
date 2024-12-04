@@ -3,12 +3,7 @@
     $utilisateur = new utilisateur_controller(); 
     $email = $_GET['email'];
     $list = $utilisateur->showUser($email);
-    if($list["tyype"]==0){
-        $ch="Etudiant";
-    }
-    if($list["tyype"]==1){
-        $ch="Professeur";
-    }
+    $ch=$list["tyype"];
 ?>
 
 <!doctype html>

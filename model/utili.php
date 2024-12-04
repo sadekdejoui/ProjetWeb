@@ -7,14 +7,15 @@ class utilisateur {
     private ?int $tel;
     private ?string $email;
     private ?string $psw;
-    private ?int $tyype;
+    private ?string $tyype;
     private ?DateTime $date_nai;
     private ?DateTime $date_entre;
     private ?DateTime $date_insc;
     private ?DateTime $date_mise;
+    private ?string $photo;
 
     // Constructor
-    public function __construct(?int $id, ?string $prenom,  ?string $nom, ?int $tel, ?string $email, ?string $psw, ?int $tyype, ?DateTime $date_nai, ?DateTime $date_entre, ?DateTime $date_insc, ?DateTime $date_mise) {
+    public function __construct(?int $id, ?string $prenom,  ?string $nom, ?int $tel, ?string $email, ?string $psw, ?string $tyype, ?DateTime $date_nai, ?DateTime $date_entre, ?DateTime $date_insc, ?DateTime $date_mise, ?string $photo) {
         $this->id = $id;
         $this->prenom = $prenom;
         $this->nom = $nom;
@@ -26,6 +27,7 @@ class utilisateur {
         $this->date_entre = $date_entre;
         $this->date_insc = $date_insc;
         $this->date_mise = $date_mise;
+        $this->photo = $photo;
     }
 
     // Getters and Setters
@@ -78,11 +80,11 @@ class utilisateur {
         $this->psw = $psw;
     }
 
-    public function gettyype(): int {
+    public function gettyype(): string {
         return $this->tyype;
     }
 
-    public function settyype(int $tyype): void {
+    public function settyype(string $tyype): void {
         $this->tyype = $tyype;
     }
 
@@ -116,6 +118,14 @@ class utilisateur {
 
     public function setDate_mise(?DateTime $date_mise): void {
         $this->date_mise = $date_mise;
+    }
+
+    public function getPhoto(): ?string {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): void {
+        $this->photo = $photo;
     }
 }
 ?>

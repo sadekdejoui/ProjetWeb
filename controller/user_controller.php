@@ -106,8 +106,8 @@ class utilisateur_controller{
     }    
 
     public function addUser($user){
-        $sql = "INSERT INTO utilisateur (id, prenom, nom, tel, email, psw, tyype, date_nai, date_entre, date_insc, date_mise)
-                VALUES (:id, :prenom, :nom, :tel, :email, :psw, :tyype, :date_nai, :date_entre, :date_insc, :date_mise)";
+        $sql = "INSERT INTO utilisateur (id, prenom, nom, tel, email, psw, tyype, date_nai, date_entre, date_insc, date_mise, photo)
+                VALUES (:id, :prenom, :nom, :tel, :email, :psw, :tyype, :date_nai, :date_entre, :date_insc, :date_mise, :photo)";
         $db = config::getConnexion();
         try {
             $query = $db->prepare($sql);
@@ -123,6 +123,7 @@ class utilisateur_controller{
                 'date_entre' => $user->getDate_entre()?->format('Y-m-d'),
                 'date_insc' => $user->getDate_insc()?->format('Y-m-d'),
                 'date_mise' => $user->getDate_mise()?->format('Y-m-d'),
+                'photo' => $user->getPhoto(),
             ]);
         } 
         catch (Exception $e) {
@@ -138,7 +139,8 @@ class utilisateur_controller{
                     tel = :tel, 
                     psw = :psw, 
                     date_nai = :date_nai, 
-                    date_mise = :date_mise
+                    date_mise = :date_mise,
+                    photo = :photo
                 WHERE email = :email2";
     
         $db = config::getConnexion();
@@ -151,6 +153,7 @@ class utilisateur_controller{
                 'psw' => $user->getPsw(),
                 'date_nai' => $user->getDate_nai()?->format('Y-m-d'),
                 'date_mise' => $user->getDate_mise()?->format('Y-m-d'),
+                'photo' => $user->getPhoto(),
                 'email2' => $email2 // Add this missing parameter
             ]);
         } 
@@ -166,10 +169,12 @@ class utilisateur_controller{
                     nom = :nom,  
                     tel = :tel, 
                     psw = :psw, 
+                    tyype = :tyype,
                     date_nai = :date_nai, 
                     date_entre = :date_entre,
                     date_insc = :date_insc,
-                    date_mise = :date_mise
+                    date_mise = :date_mise,
+                    photo = :photo
                 WHERE email = :email2";
     
         $db = config::getConnexion();
@@ -180,10 +185,12 @@ class utilisateur_controller{
                 'nom' => $user->getNom(),
                 'tel' => $user->getTel(),
                 'psw' => $user->getPsw(),
+                'tyype' => $user->gettyype(),
                 'date_nai' => $user->getDate_nai()?->format('Y-m-d'),
                 'date_entre' => $user->getDate_entre()?->format('Y-m-d'),
                 'date_insc' => $user->getDate_insc()?->format('Y-m-d'),
                 'date_mise' => $user->getDate_mise()?->format('Y-m-d'),
+                'photo' => $user->getPhoto(),
                 'email2' => $email2 // Add this missing parameter
             ]);
         } 
@@ -207,28 +214,128 @@ class utilisateur_controller{
         }
     }   
 
-    public function updateUserIds($deletedId) {
-        // SQL query to update the IDs of all users with an ID greater than the deleted user's ID
-        $sql = "UPDATE utilisateur SET id = id - 1 WHERE id > :deletedId";
-    
+    public function getUserPhotoByEmail($email) {
+        // SQL query to fetch the photo field (stored as BLOB) for the user
+        $query = "SELECT photo FROM utilisateur WHERE email = :email";  // Table name updated to 'utilisateur'
+        
         $db = config::getConnexion(); // Get database connection
+    
         try {
             // Prepare the query
-            $query = $db->prepare($sql);
+            $stmt = $db->prepare($query);
     
-            // Bind the deleted user's ID to the query
-            $query->bindValue(':deletedId', $deletedId, PDO::PARAM_INT);
+            // Bind the email parameter
+            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
     
-            // Execute the query to update the IDs
-            $query->execute();
-            
-            echo "User IDs updated successfully!";
+            // Execute the query
+            $stmt->execute();
+    
+            // Fetch the binary data (photo)
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            if ($result) {
+                // Ensure that we are only returning the binary data of the image
+                return $result['photo'];  // Return only the image data as string
+            } else {
+                return null;  // Return null if no photo is found
+            }
         } 
         catch (Exception $e) {
             // Handle any errors
             echo 'Error: ' . $e->getMessage();
+            return null;  // Return null in case of an error
+        }
+    }        
+    
+    public function deactivateUtilisateur($id){
+        $db = config::getConnexion();
+
+        try {
+            // Step 1: Get the current minimum deactivated ID
+            $sqlMinId = "SELECT MIN(id) AS min_id FROM utilisateur WHERE id >= 99999999";
+            $queryMinId = $db->prepare($sqlMinId);
+            $queryMinId->execute();
+            $result = $queryMinId->fetch();
+            
+            $nextId = $result['min_id'] ? $result['min_id'] - 1 : 99999999; // Start from 99999999 if no deactivated IDs exist
+
+            // Step 2: Update the user's ID and date_mise
+            $sqlUpdate = "UPDATE utilisateur 
+                        SET id = :nextId, date_mise = NOW() 
+                        WHERE id = :id";
+            $queryUpdate = $db->prepare($sqlUpdate);
+            $queryUpdate->bindValue(':nextId', $nextId, PDO::PARAM_INT);
+            $queryUpdate->bindValue(':id', $id, PDO::PARAM_INT);
+            $queryUpdate->execute();
+
+            echo "User account deactivated with ID $nextId, and date_mise updated to the current date!";
+        } 
+        catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
         }
     }
+
+    public function listUsersPaginated($page, $perPage, $search = '', $sort = 'nom', $order = 'asc') {
+        $offset = ($page - 1) * $perPage;
+    
+        // Sanitize input to avoid SQL injection
+        $validColumns = ['nom', 'prenom', 'email', 'date_mise'];
+        $sort = in_array($sort, $validColumns) ? $sort : 'nom';
+        $order = ($order === 'desc') ? 'desc' : 'asc';
+    
+        $sql = "SELECT * FROM utilisateur WHERE 1";
+    
+        if (!empty($search)) {
+            $sql .= " AND (nom LIKE :search OR prenom LIKE :search OR email LIKE :search)";
+        }
+    
+        $sql .= " ORDER BY $sort $order LIMIT :offset, :perPage";
+    
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+    
+            if (!empty($search)) {
+                $query->bindValue(':search', '%' . $search . '%', PDO::PARAM_STR);
+            }
+    
+            $query->bindValue(':offset', $offset, PDO::PARAM_INT);
+            $query->bindValue(':perPage', $perPage, PDO::PARAM_INT);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            die('Error: ' . $e->getMessage());
+        }
+    }
+    
+    
+
+    public function getTotalUsers($search = '') {
+        $sql = "SELECT COUNT(*) AS total FROM utilisateur WHERE 1";
+    
+        if (!empty($search)) {
+            $sql .= " AND (nom LIKE :search OR email LIKE :search)";
+        }
+    
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+    
+            if (!empty($search)) {
+                $query->bindValue(':search', '%' . $search . '%', PDO::PARAM_STR);
+            }
+    
+            $query->execute();
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+            return $result['total'];
+        } catch (Exception $e) {
+            die('Error: ' . $e->getMessage());
+        }
+    }
+    
+    
+    
+
     
 }
 

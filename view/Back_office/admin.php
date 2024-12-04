@@ -1,8 +1,42 @@
 <?php
+    session_start();
     require '../../controller/user_controller.php'; 
     $utilisateur = new utilisateur_controller(); 
-    $email = $_GET['email'];
+    $email = $_SESSION['email'];
     $list = $utilisateur->showUser($email);
+    $imageData = $utilisateur->getUserPhotoByEmail($email);
+
+    // Initialize the image source (base64-encoded) for displaying in HTML
+    $imageSrc = '';
+
+    if ($imageData) {
+        // Get the image information using getimagesizefromstring
+        $imageInfo = getimagesizefromstring($imageData);
+
+        if ($imageInfo) {
+            // Determine the appropriate image type based on the image data
+            switch ($imageInfo['mime']) {
+                case 'image/jpeg':
+                    $imageType = 'image/jpeg';
+                    break;
+                case 'image/png':
+                    $imageType = 'image/png';
+                    break;
+                case 'image/gif':
+                    $imageType = 'image/gif';
+                    break;
+                default:
+                    $imageType = 'image/jpeg';  // Default to JPEG if type is unknown
+                    break;
+            }
+
+            // Encode the binary data to base64 to embed it in an HTML tag
+            $base64Image = base64_encode($imageData);
+
+            // Create a data URL for the image
+            $imageSrc = 'data:' . $imageType . ';base64,' . $base64Image;
+        }
+    }
 ?>
 
 <!doctype html>
@@ -667,7 +701,7 @@
                                 <div class="product-tab-list tab-pane fade active in" id="description">
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                            <form action="update2.php" method="POST" class="" onsubmit="return verif2()">
+                                            <form action="update2.php" method="POST" class="" onsubmit="return verif2()" enctype="multipart/form-data">
                                                 <div class="review-content-section">
                                                     <div class="row">
                                                         <div class="col-lg-6">
@@ -696,7 +730,7 @@
                                                                             <i class="fa fa-download"></i>
                                                                     </label>
                                                                     <div class="file-button" style="background-color: #ac81f2; border-color: #ac81f2; border: 1px solid #ac81f2;">
-                                                                        <input type="file" onchange="document.getElementById('prepend-big-btn').value = this.value;" style="background-color: #ac81f2; border-color: #ac81f2; border: 1px solid #ac81f2;">
+                                                                        <input type="file" id="logphoto" name="logphoto" onchange="document.getElementById('prepend-big-btn').value = this.value;" style="background-color: #ac81f2; border-color: #ac81f2; border: 1px solid #ac81f2;">
                                                                         Browse
                                                                     </div>
                                                                     <input type="text" id="prepend-big-btn" placeholder="no file selected">
@@ -709,7 +743,7 @@
                                                     <div class="row">
                                                         <div class="col-lg-12">
                                                             <div class="payment-adress mg-t-15">
-                                                            <input type="hidden" name="email" value="<?php echo htmlspecialchars($list['email']); ?>">
+                                        
                                                             <button type="submit" class="btn btn-primary" style="background-color: #ac81f2; border: 1px solid #ac81f2; margin: 10px;">Update</button>
 
                                                                 
@@ -799,6 +833,7 @@
             const tel = document.getElementById("logtel");
             const motDePasse = document.getElementById("logpass");
             const email = document.getElementById("logemail");
+            const photo = document.getElementById("logphoto");
 
             // Regular expressions
             const nameRegex = /^([A-Z][a-z]{0,29})(\s[A-Z][a-z]{0,29})*$/; // Each word starts with uppercase, followed by lowercase, max 30 chars.
@@ -847,6 +882,15 @@
             if (dateNaissance.value.trim()) {
                 updates.push("La Date de naissance est valide.");
             }
+
+            if (photo.value.trim()) {
+                const photoValue = photo.value.toLowerCase();
+                if (!photoValue.endsWith(".png") && !photoValue.endsWith(".jpeg") && !photoValue.endsWith(".jpg")) {
+                    errors.push("La photo doit être au format .png ou .jpeg.");
+                } else {
+                    updates.push("La photo est valide.");
+                }
+            }            
 
             // Display errors or success messages
             if (errors.length > 0) {

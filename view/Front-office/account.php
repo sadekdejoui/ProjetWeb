@@ -1,15 +1,52 @@
 <?php
-    require '../../controller/user_controller.php'; 
-    $utilisateur = new utilisateur_controller(); 
-    $email = $_GET['email'];
-    $list = $utilisateur->showUser($email);
-    $type=$list['tyype'];
-    if ($type == 0) {
-        $ch="Etudiant";
+session_start();
+require '../../controller/user_controller.php';
 
-    }else{
-        $ch="Professeur";
+// Get the email parameter from the URL
+$email = $_SESSION['email'];
+
+// Create an instance of the utilisateur_controller class
+$utilisateur = new utilisateur_controller();
+
+// Fetch the user details and photo binary data
+$list = $utilisateur->showUser($email);
+$imageData = $utilisateur->getUserPhotoByEmail($email);
+  
+
+// Set the user type
+$type = $list['tyype'];
+
+// Initialize the image source (base64-encoded) for displaying in HTML
+$imageSrc = '';
+
+if ($imageData) {
+    // Get the image information using getimagesizefromstring
+    $imageInfo = getimagesizefromstring($imageData);
+
+    if ($imageInfo) {
+        // Determine the appropriate image type based on the image data
+        switch ($imageInfo['mime']) {
+            case 'image/jpeg':
+                $imageType = 'image/jpeg';
+                break;
+            case 'image/png':
+                $imageType = 'image/png';
+                break;
+            case 'image/gif':
+                $imageType = 'image/gif';
+                break;
+            default:
+                $imageType = 'image/jpeg';  // Default to JPEG if type is unknown
+                break;
+        }
+
+        // Encode the binary data to base64 to embed it in an HTML tag
+        $base64Image = base64_encode($imageData);
+
+        // Create a data URL for the image
+        $imageSrc = 'data:' . $imageType . ';base64,' . $base64Image;
     }
+}
 
 ?>
 
@@ -99,12 +136,16 @@
                     <!-- Left Sidebar -->
                     <div class="col-lg-4">
                         <div class="card">
-                        
-                            <img src="" class="card-img-top" alt="Profile Picture">
+                            
+                            <?php if ($imageSrc): ?>
+                                <img src="<?php echo $imageSrc; ?>" alt="Profile Photo" class="card-img-top">
+                            <?php else: ?>
+                                <p>No profile photo available.</p>
+                            <?php endif; ?>
                             <div class="card-body">
 
                                 <center><h5 class="card-title"><?php echo $list['prenom']." ".$list['nom']; ?></h5></center>
-                                <p>Type: <?php echo $ch; ?></p>
+                                <p>Type: <?php echo $type;?></p>
                                 <p class="card-text">Phone: <?php echo $list['tel']; ?></p>
                                 <p>Email: <?php echo $list['email']; ?></p>
                                 <p>Password: <?php echo $list['psw']; ?></p>
@@ -118,7 +159,7 @@
 
                     <!-- Main Content Area -->
                     <div class="col-lg-8">
-                        <form action="update.php" method="POST" class="" onsubmit="return verif2()">
+                        <form action="update.php" method="POST" class="" onsubmit="return verif2()" enctype="multipart/form-data">
 
                             <div class="mb-3">
                                 <label for="name" class="form-label">Nom</label>
@@ -142,9 +183,9 @@
                             </div>
                             <div class="mb-3">
                                 <label for="pfp" class="form-label">Photo de Profil</label>
-                                <input type="file" class="form-control" id="pfp" accept="image/*">
+                                <input type="file" class="form-control" id="logphoto" name="logphoto" accept="image/*">
                             </div>
-                            <input type="hidden" name="email" value="<?php echo htmlspecialchars($list['email']); ?>">
+                            
                             <center><button type="submit" class="btn btn-primary">Update</button></center>
                         </form>
                     </div>
@@ -253,6 +294,7 @@
                 const dateNaissance = document.getElementById("logdate");
                 const tel = document.getElementById("logtel");
                 const motDePasse = document.getElementById("logpass");
+                const photo = document.getElementById("logphoto");
 
                 // Regular expressions
                 const nameRegex = /^([A-Z][a-z]{0,29})(\s[A-Z][a-z]{0,29})*$/; // Each word starts with uppercase, followed by lowercase, max 30 chars.
@@ -299,7 +341,16 @@
                 }
                 
                 if (dateNaissance.value.trim()) {
-                    updates.push("La Date de naissance est valide.");
+                    updates.push("La date de naissance est valide.");
+                }
+
+                if (photo.value.trim()) {
+                    const photoValue = photo.value.toLowerCase();
+                    if (!photoValue.endsWith(".png") && !photoValue.endsWith(".jpeg") && !photoValue.endsWith(".jpg")) {
+                        errors.push("La photo doit être au format .png ou .jpeg.");
+                    } else {
+                        updates.push("La photo est valide.");
+                    }
                 }
 
                 // Display errors or success messages

@@ -1,4 +1,5 @@
 <?php
+session_start();
 require '../../controller/user_controller.php';
 
 
@@ -8,10 +9,11 @@ $user= null;
 $utilisateur = new utilisateur_controller(); //ayet lel classe eli fih kol chyy
 
 
-if (isset($_POST["loglastname"])  && $_POST["logname"] && $_POST["logdate"] && $_POST["logtel"] && $_POST["logpass"]  && $_POST["logemail"] && $_POST["logtype"]) {
+if (isset($_POST["loglastname"])  && $_POST["logname"] && $_POST["logdate"] && $_POST["logtel"] && $_POST["logpass"]  && $_POST["logemail"] ) {
 
     $email = $_POST["logemail"];
-    $logtype = (int) $_POST["logtype"];
+    $logtype = $_POST["logtype"];
+    
     $date_nai = new DateTime($_POST['logdate']);
 
     $date = new DateTime();
@@ -77,6 +79,7 @@ if (isset($_POST["loglastname"])  && $_POST["logname"] && $_POST["logdate"] && $
     else{
         $lastUserId = $utilisateur->getLastUserId(); // Function to get the last user ID
         $newUserId = $lastUserId + 1; // Increment the ID for the new user
+        $photoData = file_get_contents('img/pfp.png');
         $user = new utilisateur(
             $newUserId,
             $_POST["logname"],
@@ -88,10 +91,12 @@ if (isset($_POST["loglastname"])  && $_POST["logname"] && $_POST["logdate"] && $
             $date_nai,
             $date_entre,
             $date_insc,
-            new DateTime()
+            new DateTime(),
+            $photoData
         );
         $utilisateur->addUser($user); //bel fonction sabina fi waset base
-        header('Location: account.php?email='.$email);
+        $_SESSION['email'] = $email;
+        header('Location: account.php');
     }
 }
 

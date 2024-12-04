@@ -704,9 +704,11 @@
                                                 
                                                 <div class="form-group" style="padding-left: 5  0px;">
                                                     <label>Etudiant</label>
-                                                    <input id="etu" name="logtype" type="radio" class=""  value="0">
+                                                    <input id="etu" name="logtype" type="radio" class=""  value="Etudiant">
                                                     <label style="padding-left: 20px;">Professor</label>
-                                                    <input id="pro" name="logtype" type="radio" class="" value="1">
+                                                    <input id="pro" name="logtype" type="radio" class="" value="Professeur">
+                                                    <label style="padding-left: 20px;">Admin</label>
+                                                    <input id="admin" name="logtype" type="radio" class=""  value="Admin">
                                                 </div>
                                                 <!-- Date of Birth -->
                                                 <div class="form-group">
@@ -832,7 +834,7 @@
             });
 
             if (!selectedType) {
-                showStyledAlert("Vous devez sélectionner un type (Professeur ou Étudiant).");
+                showStyledAlert("Vous devez sélectionner un type (Professeur ou Étudiant ou Admin).");
                 return false;
             }
 
