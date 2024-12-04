@@ -43,42 +43,43 @@ function verif() {
     // Validation
     if (!prenom.value.match(nameRegex)) {
         showStyledAlert("Le prénom doit être alphabétique, non vide et avoir une longueur maximale de 20 caractères.");
-        return;
+        return false;
     }
 
     if (!nom.value.match(nameRegex)) {
         showStyledAlert("Le nom doit être alphabétique, non vide et avoir une longueur maximale de 20 caractères.");
-        return;
+        return false;
     }
 
     if (!dateNaissance.value) {
         showStyledAlert("La date de naissance est obligatoire.");
-        return;
+        return false;
     }
 
     if (!tel.value.match(telRegex)) {
         showStyledAlert("Le numéro de téléphone doit contenir exactement 8 chiffres.");
-        return;
+        return false;
     }
 
     if (!email.value.match(emailRegex)) {
         showStyledAlert("L'email doit se terminer par '@gmail.com'.");
-        return;
+        return false;
     }
 
     if (!motDePasse.value.match(passwordRegex)) {
         showStyledAlert(
             "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un symbole."
         );
-        return;
+        return false;
     }
 
     if (motDePasse.value !== confirmMotDePasse.value) {
         showStyledAlert("La confirmation du mot de passe doit être identique au mot de passe.");
-        return;
+        return false;
     }
 
     showStyledAlert("Validation réussie !");
+    return true;
 }
 
 
@@ -187,7 +188,7 @@ function verif2() {
 }
 
 
-function verif() {
+function verif3() {
     // Input fields
     
     const email = document.getElementById("logemail1");
@@ -201,17 +202,18 @@ function verif() {
 
     if (!email.value.match(emailRegex)) {
         showStyledAlert("L'email doit se terminer par '@gmail.com'.");
-        return;
+        return false;
     }
 
     if (!motDePasse.value.match(passwordRegex)) {
         showStyledAlert(
             "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un symbole."
         );
-        return;
+        return false;
     }
 
     showStyledAlert("Validation réussie !");
+    return true;
 }
 
 function onlyOne(checkbox) {

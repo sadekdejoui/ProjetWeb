@@ -7,7 +7,7 @@ class config
             $servername="localhost";
             $username="root";
             $password ="";
-            $dbname="projetweb";  //sonha heya bedha juste badel esm base lina
+            $dbname="questera";  //sonha heya bedha juste badel esm base lina
             try {
                 self::$pdo = new PDO("mysql:host=$servername;dbname=$dbname",
                         $username,

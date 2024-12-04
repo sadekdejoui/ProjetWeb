@@ -6,21 +6,36 @@ $user2= null;
 // Create an instance of the controller
 $utilisateur = new utilisateur_controller();
 
-
-if (isset($_POST["loglastname"])  && $_POST["logname"] && $_POST["logdate"] && $_POST["logtel"] && $_POST["logpass"]  && $_POST["logemail"]) {
-    $date_nai = new DateTime($_POST['logdate']);
-    $user = new utilisateur_controller(
-        $_POST["logname"],
-        $_POST["loglastname"],
-        $_POST["logtel"],
-        $_POST["logemail"],
-        $_POST["logpass"],
-        $date_nai,
-        new DateTime()
-    );
-    $user2 = $utilisateur->showUser($email);
-        
-    $utilisateur->updateSelectedFields2($user, $user2['id']);
-    header('Location:account.php');//3ayet lel fichier offerlist
+if (isset($_POST['email'])) {
+    $email = $_POST['email'];
 }
+
+if (isset($_POST["loglastname"])  || $_POST["logname"] || $_POST["logdate"] || $_POST["logtel"] || $_POST["logpass"]) {
+
+    $user2 = $utilisateur->showUser($email);
+    $lastname = !empty($_POST["loglastname"]) ? $_POST["loglastname"] : $user2['nom'];
+    $name = !empty($_POST["logname"]) ? $_POST["logname"] : $user2['prenom'];
+    $date = !empty($_POST["logdate"]) ? $_POST["logdate"] : $user2['date_nai'];
+    $tel = !empty($_POST["logtel"]) ? (int)$_POST["logtel"] : (int)$user2['tel'];
+    $psw = !empty($_POST["logpass"]) ? $_POST["logpass"] : $user2['psw'];
+    
+    $user = new utilisateur(
+        null,               // id: Do not update (leave as null)
+        $name,              // prenom
+        $lastname,          // nom
+        $tel,               // tel
+        null,            // email
+        $psw,               // psw
+        null,               // tyype: Do not update
+        new DateTime($date), // date_nai (date of birth)
+        null,               // date_entre: Do not update
+        null,               // date_insc: Do not update
+        new DateTime()      // date_mise (date of update)
+    );  
+    
+    // Update only the necessary fields
+    $utilisateur->updateSelectedFields($user, $email);
+    
+    header('Location: account.php?email=' . $user2['email']);
+}  
 ?>

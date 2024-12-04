@@ -1,3 +1,33 @@
+<?php
+require 'config.php';
+
+try {
+    // Establish the database connection
+    $pdo = config::getConnexion();
+    
+    // Default query: Fetch all events
+    $query = "SELECT * FROM evénements";
+
+    // Check if a search term is submitted
+    if (isset($_GET['search']) && !empty($_GET['search'])) {
+        $search = htmlspecialchars($_GET['search']); // Sanitize input
+        $query = "SELECT * FROM evénements WHERE titre LIKE :search";
+    }
+
+    $stmt = $pdo->prepare($query);
+
+    // Bind the search parameter if provided
+    if (isset($search)) {
+        $stmt->bindValue(':search', '%' . $search . '%');
+    }
+
+    $stmt->execute();
+    $events = $stmt->fetchAll();
+} catch (Exception $e) {
+    die("Error: " . $e->getMessage());
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -63,7 +93,7 @@
                         <a href="..\Front-office\blog.html" class="nav-item nav-link ">Blog</a>
                         <a href="..\Front-office\Cours.html" class="nav-item nav-link ">Cours</a>
                         <a href="..\Front-office\ecahnge.html" class="nav-item nav-link ">Questions</a>
-                        <a href="..\Front-office\event.html" class="nav-item nav-link active">Evénement</a>
+                        <a href="..\Front-office\event.php" class="nav-item nav-link active">Evénement</a>
                         <a href="..\Front-office\contact.html" class="nav-item nav-link">Complaint</a>
                       
                     </div>
@@ -73,7 +103,7 @@
                         
                         <button class="dropdown-button">Settings</button>
                         <div class="dropdown-content">
-                          <a href="..\Front-office\account.html">Mon compte</a>
+                          <a href="..\Front-office\account.php">Mon compte</a>
                           <a href="..\Front-office\login.html">Se déconnecter</a>
                         </div>
                       </div>
@@ -101,53 +131,54 @@
 
                     <h1 class="text-center mb-5">Don't Miss Our Latest Events</h1>
                     <h2><span></span>Upcoming Events<span></span></h2>
+                    <form method="GET" action="">
+    <label for="search">Search by Event Name:</label>
+    <input type="text" id="search" name="search" placeholder="Enter event name">
+    <button type="submit">Search</button>
+</form>
                 </div>
-                <div class="row g-4">
-                    <!-- Event 1 -->
-                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                        <div class="card">
-                            <img src="..\Front-office\img\event1.jpg" alt="Webinar on AI" class="card-img-top">
-                            <div class="card-body">
-                                <h5 class="card-title">Webinar on Artificial Intelligence</h5>
-                                <p class="card-date">Date: November 25, 2024</p>
-                                <p class="card-text">Une session instructive sur les fondamentaux et les avancées récentes de l’intelligence artificielle.<br>lieu:Rue La Cité des Sciences à Tunis, Tunis 1082 </p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Event 2 -->
-                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                        <div class="card">
-                            <img src="..\img\event2.jpg" alt="Data Science Workshop" class="card-img-top">
-                            <div class="card-body">
-                                <h5 class="card-title">Data Science Workshop</h5>
-                                <p class="card-date">Date: December 5, 2024</p>
-                                <p class="card-text">Plongez dans les techniques d'analyse de données, d'apprentissage automatique et de visualisation avec une expérience pratique.<br>lieu:Rue La Cité des Sciences à Tunis, Tunis 1082</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Event 3 -->
-                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                        <div class="card">
-                            <img src="..\Front-office\img\event3.jpg" alt="Cybersecurity Basics" class="card-img-top">
-                            <div class="card-body">
-                                <h5 class="card-title">Cybersecurity Basics</h5>
-                                <p class="card-date">Date: December 15, 2024</p>
-                                <p class="card-text">Apprenez les compétences essentielles pour protéger les informations numériques et rester en sécurité en ligne.<br>lieu:Rue La Cité des Sciences à Tunis, Tunis 1082</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Event 4 -->
-                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
-                        <div class="card">
-                            <img src="..\Front-office\img\event4.jpg" alt="Machine Learning Bootcamp" class="card-img-top">
-                            <div class="card-body">
-                                <h5 class="card-title">Machine Learning Bootcamp</h5>
-                                <p class="card-date">Date: January 10, 2025</p>
-                                <p class="card-text">Un bootcamp intensif couvrant les modèles, techniques et applications d'apprentissage automatique.<br>lieu:Rue La Cité des Sciences à Tunis, Tunis 1082</p>
-                            </div>
+                <div class="container my-5">
+    <div class="row g-4">
+        <?php if (!empty($events)) : ?>
+            <?php foreach ($events as $event) : ?>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card shadow-sm">
+                        <!-- Placeholder image for now -->
+                        <img src="1.jpeg" class="card-img-top" alt="<?= htmlspecialchars($event['titre']); ?>">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= htmlspecialchars($event['titre']); ?></h5>
+                            <p class="card-date">
+                                <strong>Date:</strong> <?= htmlspecialchars($event['date']); ?><br>
+                                <strong>Time:</strong> <?= htmlspecialchars($event['heure']); ?>
+                            </p>
+                            <p class="card-text">
+                            <strong>Description:</strong><?= htmlspecialchars($event['description']); ?>
+                            </p>
+                            <p class="card-location">
+                                <strong>Location:</strong> <?= htmlspecialchars($event['emplacement']); ?>
+                            </p>
+                            <p class="card-capacity">
+                                <strong>Capacity:</strong> <?= htmlspecialchars($event['capacité_maximale']); ?>
+                            </p>
+                            <form action="register.php" method="GET" style="display: inline;">
+                            <input type="hidden" name="id_evenement" value="<?= $event['id_evenement']; ?>">
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </form>
+                        <form action="testt.php" method="GET" style="display: inline;">
+                            <input type="hidden" name="id_evenement" value="<?= $event['id_evenement']; ?>">
+                            <button type="submit" class="btn btn-danger">Cancel Registration</button>
+                        </form>
                         </div>
                     </div>
                 </div>
+            <?php endforeach; ?>
+        <?php else : ?>
+            <p class="text-center">No events available.</p>
+        <?php endif; ?>
+    </div>
+</div>
+                
+                
             </div>
         </div>
         <!-- Events Section End -->
@@ -172,7 +203,7 @@
                         <a class="btn btn-link" href="..\Front-office\blog.html">Blog</a>
                         <a class="btn btn-link" href="..\Front-office\Cours.html">    Cours</a>
                         <a class="btn btn-link" href="..\Front-office\ecahnge.html">Questions</a>
-                        <a class="btn btn-link" href="..\Front-office\event.html">Evénement</a>
+                        <a class="btn btn-link" href="..\Front-office\event.php">Evénement</a>
                         <a class="btn btn-link" href="..\Front-office\contact.html" class="nav-item nav-link">Complaint</a>
                     </div>
                     <div class="col-md-6 col-lg-3">

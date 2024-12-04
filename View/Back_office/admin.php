@@ -1,3 +1,10 @@
+<?php
+    require '../../controller/user_controller.php'; 
+    $utilisateur = new utilisateur_controller(); 
+    $email = $_GET['email'];
+    $list = $utilisateur->showUser($email);
+?>
+
 <!doctype html>
 <html class="no-js" lang="en">
 <head>
@@ -91,96 +98,23 @@
             color: white; /* Assurez-vous que le texte est lisible sur le fond */
         }
 
-        /* Changer la couleur de fond du header */
-        .header-top-area {
-            background-color: #ac81f2; /* Remplacez par la couleur de votre choix */
+        #notification-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            text-align: center;
         }
 
-        /* Changer la couleur du texte dans la navbar */
-        .header-top-wraper .nav-link {
-            color: white; /* Assurez-vous que le texte est lisible */
+        .btn-primary {
+            background-color: #ac81f2;
+            border: 1px solid #ac81f2;
         }
 
-        /* Changer la couleur au survol des liens dans la navbar */
-        .header-top-wraper .nav-link:hover {
-            color: #ffcc00; /* Couleur au survol */
+        .btn-primary:hover {
+            background-color: #925eea;
         }
-
-        /* Changer la couleur d'arrière-plan pour le bouton de menu switcher */
-        .menu-switcher-pro .btn {
-            background-color: #ac81f2; /* Remplacez par la couleur de votre choix */
-        }
-
-        /* Changer la couleur de texte des icônes de notification et de message */
-        .header-right-info .nav-link {
-            color: white; /* Assurez-vous que le texte est lisible sur le fond */
-        }
-
-        /* Styles pour la gestion des réclamations */
-        .hidden {
-            display: none;
-        }
-
-        .styled-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-            
-            
-        }
-
-        .styled-table thead tr {
-            background-color: #D8BFD8;
-            color: #000;
-            text-align: left;
-        }
-
-        .styled-table th, .styled-table td {
-            padding: 12px 20px;
-            border: 1px solid #ddd;
-            
-        }
-
-        .styled-table tbody tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        .status-new {
-            background-color: #FFCCCB;
-            color: #000;
-            padding: 4px 8px;
-            border-radius: 4px;
-        }
-
-        .status-urgent {
-            background-color: #F08080;
-            color: #fff;
-            padding: 4px 8px;
-            border-radius: 4px;
-        }
-
-        .status-resolved {
-            background-color: #90EE90;
-            color: #000;
-            padding: 4px 8px;
-            border-radius: 4px;
-        }
-
-        .action-button {
-            background-color: #9370DB;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            margin-right: 5px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .action-button:hover {
-            background-color: #6A5ACD;
-        }
-
     </style>
 
 
@@ -260,22 +194,15 @@
                             </ul>
                         </li>
                         <li>
-                            <a title="Landing Page" href="..\Back_office\events.html" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Event</span></a>
+                            <a title="Landing Page" href="..\Back_office\events.php" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Event</span></a>
                         </li>
+                        
                         <li>
-                            <a class="has-arrow" href="..\Back_office\all-professors.html" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Professors</span></a>
+                            <a class="has-arrow" href="..\Back_office\students.php" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Utilisateurs</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="All Professors" href="..\Back_office\all-professors.html"><span class="mini-sub-pro">All Professors</span></a></li>
-                                <li><a title="Add Professor" href="..\Back_office\add-professor.html"><span class="mini-sub-pro">Add Professor</span></a></li>         
-                                <li><a title="Professor Profile" href="..\Back_office\professor-profile.html"><span class="mini-sub-pro">Professor Profile</span></a></li>
-                            </ul>
-                        </li>
-                        <li class="active">
-                            <a class="has-arrow" href="..\Back_office\students.php" aria-expanded="false"><span class="educate-icon educate-student icon-wrap"></span> <span class="mini-click-non">Students</span></a>
-                            <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="All Students" href="..\Back_office\students.php"><span class="mini-sub-pro">All Students</span></a></li>
-                                <li><a title="Add Students" href="..\Back_office\add-student.html"><span class="mini-sub-pro">Add Student</span></a></li>
-                                <li><a title="Students Profile" href="..\Back_office\student-profile.html"><span class="mini-sub-pro">Student Profile</span></a></li>
+                                <li><a title="All Students" href="..\Back_office\students.php"><span class="mini-sub-pro">All Utilisateurs</span></a></li>
+                                <li><a title="Add Students" href="..\Back_office\add-student.html"><span class="mini-sub-pro">Add Utilisateur</span></a></li>
+                               <li><a title="Students Profile" href="..\Back_office\sprofile.php"><span class="mini-sub-pro">Utilisateur Profile</span></a></li>
                             </ul>
                         </li>
                         <li>
@@ -450,18 +377,18 @@
                                             
                                         </div>
                                     </div>
-                                    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-                                        <div class="header-right-info">
-                                            <ul class="nav navbar-nav mai-top-nav header-right-menu">
-                                                <li class="nav-item">
+                                    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12" >
+                                        <div class="header-right-info" style="margin-right: 49px;" >
+                                            <ul class="nav navbar-nav mai-top-nav header-right-menu" >
+                                                <li class="nav-item" >
                                                     <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
-                                                            <span class="admin-name">Imen Goutali</span>
+                                                            <span class="admin-name" >Admin</span>
                                                             <i class="fa fa-angle-down edu-icon edu-down-arrow"></i>
                                                         </a>
-                                                    <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">
                                                         
-                                                        <li><a href="..\Front-office\index.html"><span class="edu-icon edu-locked author-log-ic"></span>Se déconnecter</a>
-                                                        </li>
+                                                    <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn" >
+                                                        <li ><a href="admin.php"><span class="edu-icon edu-locked author-log-ic"></span>Mon Compte</a></li>
+                                                        <li><a href="..\Front-office\login.html"><span class="edu-icon edu-locked author-log-ic"></span>Se déconnecter</a></li>
                                                     </ul>
                                                 </li>
                                                 
@@ -518,24 +445,15 @@
                                                 <li><a href="..\Back_office\widgets.html">Widgets</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="..\Back_office\events.html">Event</a></li>
-                                        <li><a data-toggle="collapse" data-target="#demoevent" href="#">Professors <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
-                                            <ul id="demoevent" class="collapse dropdown-header-top">
-                                                <li><a href="..\Back_office\all-professors.html">All Professors</a>
-                                                </li>
-                                                <li><a href="..\Back_office\add-professor.html">Add Professor</a>
-                                                </li>
-                                                <li><a href="..\Back_office\professor-profile.html">Professor Profile</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li><a data-toggle="collapse" data-target="#demopro" href="#">Students <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                        <li><a href="..\Back_office\events.php">Event</a></li>
+                                        
+                                        <li><a data-toggle="collapse" data-target="#demopro" href="#">Utilisateurs <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
                                             <ul id="demopro" class="collapse dropdown-header-top">
-                                                <li><a href="..\Back_office\students.php">All Students</a>
+                                                <li><a href="..\Back_office\students.php">All Utilisateurs</a>
                                                 </li>
-                                                <li><a href="..\Back_office\add-student.html">Add Student</a>
+                                                <li><a href="..\Back_office\add-student.html">Add Utilisateur</a>
                                                 </li>
-                                                <li><a href="..\Back_office\student-profile.html">Student Profile</a>
+                                                <li><a href="..\Back_office\sprofile.php">Student Profile</a>
                                                 </li>
                                             </ul>
                                         </li>
@@ -686,46 +604,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Mobile Menu end -->
-            <div style="padding: 30px 30px 413px 30px;">
-                <table class="styled-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nom</th>
-                            <th>Prénom</th>
-                            <th>Date de derniere mise a jour</th>
-                            <th>Profile</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Déjoui</td>
-                            <td>Mohamed Sadek</td>
-                            <td>16/11/2024</td>
-                            <td>
-                                <button class="action-button">Afficher</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>bessaoud</td>
-                            <td>Maram</td>
-                            <td>16/11/2024</td>
-                            <td>
-                                <button class="action-button">Afficher</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-
-
-
-
-
 
 
 
@@ -756,7 +634,99 @@
 
 
         
+        <div class="single-pro-review-area mt-t-30 mg-b-15">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        
+                        <div class="profile-info-inner">
+                            <img src="" class="card-img-top" alt="Profile Picture" style="width: 350px; height: 30    0px; margin: 0 auto; display: block;">
+                        <div class="card-body">
+                            <center>
+                                <h5 class="card-title" style="font-family: 'Pacifico', cursive; font-weight: bold; margin-top: 20px; color: #ac81f2;">
+                                    <?php echo $list['prenom']." ".$list['nom']; ?>
+                                </h5>
+                            </center>
+                            <p class="card-text">Phone: <?php echo $list['tel']; ?></p>
+                            <p>Email: <?php echo $list['email']; ?></p>
+                            <p>Password: <?php echo $list['psw']; ?></p>
+                            <p>Date De Naissance: <?php echo $list['date_nai']; ?></p>
+                            <p>Date De Dernière Mise à Jour: <?php echo $list['date_mise']; ?></p>
+                        </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                        <div class="product-payment-inner-st res-mg-t-30 analysis-progrebar-ctn">
+                            <ul id="myTabedu1" class="tab-review-design">
+                                <li>
+                                    <a href="#description" style="color: #ac81f2 !important; text-decoration: none !important;">Update Details</a>
+                                </li>
+                            </ul>
+                            <div id="myTabContent" class="tab-content custom-product-edit st-prf-pro">
+                                <div class="product-tab-list tab-pane fade active in" id="description">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <form action="update2.php" method="POST" class="" onsubmit="return verif2()">
+                                                <div class="review-content-section">
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <input id="loglastname" name="loglastname" type="text" class="form-control" placeholder="Nom">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input id="logname"  name="logname" type="text" class="form-control" placeholder="Prénom">  
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input id="logtel"  name="logtel"type="tel" class="form-control" placeholder="Numéro de Téléphone">
+                                                            </div>
+                                                           
+                                                        </div>
+                                                        <div class="col-lg-6" >
+                                                            <div class="form-group">
+                                                                <input id="logpass" name="logpass" type="password" class="form-control" placeholder="Mot De Passe">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="prenom" class="form-label">Date De Naissance</label>
+                                                                <input id="logdate1" name="logdate1" type="date" class="form-control">
+                                                            </div>
+                                                            <div class="file-upload-inner ts-forms">
+                                                                <div class="input prepend-big-btn">
+                                                                    <label class="icon-right" for="prepend-big-btn" style="margin-top: 4px;">
+                                                                            <i class="fa fa-download"></i>
+                                                                    </label>
+                                                                    <div class="file-button" style="background-color: #ac81f2; border-color: #ac81f2; border: 1px solid #ac81f2;">
+                                                                        <input type="file" onchange="document.getElementById('prepend-big-btn').value = this.value;" style="background-color: #ac81f2; border-color: #ac81f2; border: 1px solid #ac81f2;">
+                                                                        Browse
+                                                                    </div>
+                                                                    <input type="text" id="prepend-big-btn" placeholder="no file selected">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="payment-adress mg-t-15">
+                                                            <input type="hidden" name="email" value="<?php echo htmlspecialchars($list['email']); ?>">
+                                                            <button type="submit" class="btn btn-primary" style="background-color: #ac81f2; border: 1px solid #ac81f2; margin: 10px;">Update</button>
 
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 
@@ -794,7 +764,105 @@
     </div>
 
     
-    <script src="script.js"></script>
+    <script>
+        function showStyledAlert2(message) {
+            const container = document.getElementById('notification-container');
+
+            // Create the alert element
+            const alertBox = document.createElement('div');
+            alertBox.style.padding = '15px 20px';
+            alertBox.style.marginBottom = '10px';
+            alertBox.style.borderRadius = '8px';
+            alertBox.style.backgroundColor = '#ac81f2';
+            alertBox.style.color = '#F6F4F9';
+            alertBox.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+            alertBox.style.fontWeight = '600';
+            alertBox.style.fontSize = '14px';
+            alertBox.style.transition = 'opacity 0.5s ease';
+            alertBox.textContent = message;
+
+            // Add the alert to the container
+            container.appendChild(alertBox);
+
+            // Auto-dismiss the alert after 3 seconds
+            setTimeout(() => {
+                alertBox.style.opacity = '0';
+                setTimeout(() => container.removeChild(alertBox), 500); // Wait for the fade-out transition
+            }, 3000);
+        }
+
+        function verif2() {
+            // Input fields
+            const nom = document.getElementById("loglastname");
+            const prenom = document.getElementById("logname");
+            const dateNaissance = document.getElementById("logdate1");
+            const tel = document.getElementById("logtel");
+            const motDePasse = document.getElementById("logpass");
+            const email = document.getElementById("logemail");
+
+            // Regular expressions
+            const nameRegex = /^([A-Z][a-z]{0,29})(\s[A-Z][a-z]{0,29})*$/; // Each word starts with uppercase, followed by lowercase, max 30 chars.
+            const telRegex = /^\d{8}$/;
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$/; // Max 30 characters.
+
+            // Arrays to store messages
+            let errors = [];
+            let updates = [];
+
+            // Validate fields
+            if (prenom.value.trim()) {
+                if (!prenom.value.match(nameRegex) || prenom.value.length > 30) {
+                    errors.push("Le prénom doit être alphabétique, non vide et avoir une longueur maximale de 30 caractères.");
+                } else {
+                    updates.push("Le prénom est valide.");
+                }
+            }
+
+            if (nom.value.trim()) {
+                if (!nom.value.match(nameRegex) || nom.value.length > 30) {
+                    errors.push("Le nom doit être alphabétique, non vide et avoir une longueur maximale de 30 caractères.");
+                } else {
+                    updates.push("Le nom est valide.");
+                }
+            }
+
+            if (tel.value.trim()) {
+                if (!tel.value.match(telRegex)) {
+                    errors.push("Le numéro de téléphone doit contenir exactement 8 chiffres.");
+                } else {
+                    updates.push("Le numéro de téléphone est valide.");
+                }
+            }
+
+            if (motDePasse.value.trim()) {
+                if (!motDePasse.value.match(passwordRegex)) {
+                    errors.push(
+                        "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un symbole."
+                    );
+                } else {
+                    updates.push("Le mot de passe est valide.");
+                }
+            }
+                
+            if (dateNaissance.value.trim()) {
+                updates.push("La Date de naissance est valide.");
+            }
+
+            // Display errors or success messages
+            if (errors.length > 0) {
+                showStyledAlert2("Erreur(s):\n" + errors.join("\n"));
+                return false;
+            }
+                
+            // Check if no fields were updated
+            if (updates.length === 0) {
+                showStyledAlert2("Aucun champ n'a été modifié.");
+                return false;
+            }
+            return true;
+        }
+
+        </script>
     <!-- jquery
 		============================================ -->
     <script src="..\Back_office\js\vendor\jquery-1.12.4.min.js"></script>
@@ -848,7 +916,6 @@
     <!-- tawk chat JS
 		============================================ -->
     <script src="..\Back_office\js\tawk-chat.js"></script>
-    
 </body>
 
 </html>

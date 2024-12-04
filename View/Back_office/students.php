@@ -266,22 +266,15 @@ $list = $utilisateur->listUsers2();  // Get the list of users from the controlle
                             </ul>
                         </li>
                         <li>
-                            <a title="Landing Page" href="..\Back_office\events.html" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Event</span></a>
+                            <a title="Landing Page" href="..\Back_office\events.php" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Event</span></a>
                         </li>
-                        <li>
-                            <a class="has-arrow" href="..\Back_office\professor.php" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Professors</span></a>
-                            <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="All Professors" href="..\Back_office\professor.php"><span class="mini-sub-pro">All Professors</span></a></li>
-                                <li><a title="Add Professor" href="..\Back_office\add-professor.html"><span class="mini-sub-pro">Add Professor</span></a></li>         
-                                <li><a title="Professor Profile" href="..\Back_office\pprofile.php"><span class="mini-sub-pro">Professor Profile</span></a></li>
-                            </ul>
-                        </li>
+                        
                         <li class="active">
-                            <a class="has-arrow" href="..\Back_office\students.php" aria-expanded="false"><span class="educate-icon educate-student icon-wrap"></span> <span class="mini-click-non">Students</span></a>
+                            <a class="has-arrow" href="..\Back_office\students.php" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Utilisateurs</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="All Students" href="..\Back_office\students.php"><span class="mini-sub-pro">All Students</span></a></li>
-                                <li><a title="Add Students" href="..\Back_office\add-student.html"><span class="mini-sub-pro">Add Student</span></a></li>
-                                <li><a title="Students Profile" href="..\Back_office\sprofile.php"><span class="mini-sub-pro">Student Profile</span></a></li>
+                                <li><a title="All Students" href="..\Back_office\students.php"><span class="mini-sub-pro">All Utilisateurs</span></a></li>
+                                <li><a title="Add Students" href="..\Back_office\add-student.html"><span class="mini-sub-pro">Add Utilisateur</span></a></li>
+                               <!-- <li><a title="Students Profile" href="..\Back_office\sprofile.php"><span class="mini-sub-pro">Utilisateur Profile</span></a></li>-->
                             </ul>
                         </li>
                         <li>
@@ -456,18 +449,18 @@ $list = $utilisateur->listUsers2();  // Get the list of users from the controlle
                                             
                                         </div>
                                     </div>
-                                    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-                                        <div class="header-right-info">
-                                            <ul class="nav navbar-nav mai-top-nav header-right-menu">
-                                                <li class="nav-item">
+                                    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12" >
+                                        <div class="header-right-info" style="margin-right: 49px;" >
+                                            <ul class="nav navbar-nav mai-top-nav header-right-menu" >
+                                                <li class="nav-item" >
                                                     <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
-                                                            <span class="admin-name">Imen Goutali</span>
+                                                            <span class="admin-name" >Admin</span>
                                                             <i class="fa fa-angle-down edu-icon edu-down-arrow"></i>
                                                         </a>
-                                                    <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">
                                                         
-                                                        <li><a href="..\Front-office\index.html"><span class="edu-icon edu-locked author-log-ic"></span>Se déconnecter</a>
-                                                        </li>
+                                                    <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn" >
+                                                        <li ><a href="admin.php"><span class="edu-icon edu-locked author-log-ic"></span>Mon Compte</a></li>
+                                                        <li><a href="..\Front-office\login.html"><span class="edu-icon edu-locked author-log-ic"></span>Se déconnecter</a></li>
                                                     </ul>
                                                 </li>
                                                 
@@ -524,25 +517,16 @@ $list = $utilisateur->listUsers2();  // Get the list of users from the controlle
                                                 <li><a href="..\Back_office\widgets.html">Widgets</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="..\Back_office\events.html">Event</a></li>
-                                        <li><a data-toggle="collapse" data-target="#demoevent" href="#">Professors <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
-                                            <ul id="demoevent" class="collapse dropdown-header-top">
-                                                <li><a href="..\Back_office\professor.php">All Professors</a>
-                                                </li>
-                                                <li><a href="..\Back_office\add-professor.html">Add Professor</a>
-                                                </li>
-                                                <li><a href="..\Back_office\pprofile.php">Professor Profile</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li><a data-toggle="collapse" data-target="#demopro" href="#">Students <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                        <li><a href="..\Back_office\events.php">Event</a></li>
+                                        
+                                        <li><a data-toggle="collapse" data-target="#demopro" href="#">Utilisateurs <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
                                             <ul id="demopro" class="collapse dropdown-header-top">
-                                                <li><a href="..\Back_office\students.php">All Students</a>
+                                                <li><a href="..\Back_office\students.php">All Utilisateurs</a>
                                                 </li>
-                                                <li><a href="..\Back_office\add-student.html">Add Student</a>
+                                                <li><a href="..\Back_office\add-student.html">Add Utilisateur</a>
                                                 </li>
-                                                <li><a href="..\Back_office\sprofile.php">Student Profile</a>
-                                                </li>
+                                                <!--<li><a href="..\Back_office\sprofile.php">Student Profile</a>
+                                                </li>-->
                                             </ul>
                                         </li>
                                         <li><a data-toggle="collapse" data-target="#democrou" href="#">Courses <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
@@ -706,6 +690,8 @@ $list = $utilisateur->listUsers2();  // Get the list of users from the controlle
                         <th>ID</th>
                         <th>Nom</th>
                         <th>Prénom</th>
+                        <th>Email</th>
+                        <th>Type</th>
                         <th>Date de derniere mise a jour</th>
                         <th>Profile</th>
                     </tr>
@@ -715,14 +701,27 @@ $list = $utilisateur->listUsers2();  // Get the list of users from the controlle
                         // Check if there are rows returned
                         if ($list->rowCount() > 0) {
                             while ($row = $list->fetch(PDO::FETCH_ASSOC)) {
-                                if ($row['tyype'] == 0) { // Check if the condition matches
+                                if ($row['tyype'] == 0 || $row['tyype'] == 1) {
+                                    $type=$row['tyype'];
+                                    if ($type == 0) {
+                                        $ch="Etudiant";
+
+                                    }else{
+                                        $ch="Professeur";
+                                    } // Check if the condition matches
                                     echo "<tr>
                                             <td>".$row['id']."</td>
                                             <td>".$row['nom']."</td>
                                             <td>".$row['prenom']."</td>
-                                            <td>".$row['date_nai']."</td>
-                                            <td>
-                                                <a href='sprofile.php'><button class='action-button'>Afficher</button></a>
+                                            <td>".$row['email']."</td>
+                                            <td>".$ch."</td>
+                                            <td>".$row['date_mise']."</td>
+                                            <td> 
+                                                <button class='action-button' onclick=\"window.location.href='sprofile.php?email=".urlencode($row['email'])."';\">Afficher</button>
+                                                <form action='delete.php' method='POST' style='display:inline;'>
+                                                    <input type='hidden' name='id' value='".htmlspecialchars($row['id'])."'>
+                                                    <button type='submit' class='action-button'>Delete</button>
+                                                </form>                                           
                                             </td>
                                         </tr>";
                                 }

@@ -1,10 +1,14 @@
 <?php
-require '../../controller/user_controller.php'; 
-$utilisateur = new utilisateur_controller(); 
-$list = $utilisateur->listUsers2();
-
-
-
+    require '../../controller/user_controller.php'; 
+    $utilisateur = new utilisateur_controller(); 
+    $email = $_GET['email'];
+    $list = $utilisateur->showUser($email);
+    if($list["tyype"]==0){
+        $ch="Etudiant";
+    }
+    if($list["tyype"]==1){
+        $ch="Professeur";
+    }
 ?>
 
 <!doctype html>
@@ -196,22 +200,15 @@ $list = $utilisateur->listUsers2();
                             </ul>
                         </li>
                         <li>
-                            <a title="Landing Page" href="..\Back_office\events.html" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Event</span></a>
+                            <a title="Landing Page" href="..\Back_office\events.php" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Event</span></a>
                         </li>
-                        <li>
-                            <a class="has-arrow" href="..\Back_office\professor.php" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Professors</span></a>
-                            <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="All Professors" href="..\Back_office\professor.php"><span class="mini-sub-pro">All Professors</span></a></li>
-                                <li><a title="Add Professor" href="..\Back_office\add-professor.html"><span class="mini-sub-pro">Add Professor</span></a></li>         
-                                <li><a title="Professor Profile" href="..\Back_office\pprofile.php"><span class="mini-sub-pro">Professor Profile</span></a></li>
-                            </ul>
-                        </li>
+                        
                         <li class="active">
-                            <a class="has-arrow" href="..\Back_office\student.php" aria-expanded="false"><span class="educate-icon educate-student icon-wrap"></span> <span class="mini-click-non">Students</span></a>
+                            <a class="has-arrow" href="..\Back_office\students.php" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Utilisateurs</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="All Students" href="..\Back_office\students.php"><span class="mini-sub-pro">All Students</span></a></li>
-                                <li><a title="Add Students" href="..\Back_office\add-student.html"><span class="mini-sub-pro">Add Student</span></a></li>
-                                <li><a title="Students Profile" href="..\Back_office\sprofile.php"><span class="mini-sub-pro">Student Profile</span></a></li>
+                                <li><a title="All Students" href="..\Back_office\students.php"><span class="mini-sub-pro">All Utilisateurs</span></a></li>
+                                <li><a title="Add Students" href="..\Back_office\add-student.html"><span class="mini-sub-pro">Add Utilisateur</span></a></li>
+                               <li><a title="Students Profile" href="..\Back_office\sprofile.php"><span class="mini-sub-pro">Utilisateur Profile</span></a></li>
                             </ul>
                         </li>
                         <li>
@@ -386,18 +383,18 @@ $list = $utilisateur->listUsers2();
                                             
                                         </div>
                                     </div>
-                                    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-                                        <div class="header-right-info">
-                                            <ul class="nav navbar-nav mai-top-nav header-right-menu">
-                                                <li class="nav-item">
+                                    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12" >
+                                        <div class="header-right-info" style="margin-right: 49px;" >
+                                            <ul class="nav navbar-nav mai-top-nav header-right-menu" >
+                                                <li class="nav-item" >
                                                     <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
-                                                            <span class="admin-name">Imen Goutali</span>
+                                                            <span class="admin-name" >Admin</span>
                                                             <i class="fa fa-angle-down edu-icon edu-down-arrow"></i>
                                                         </a>
-                                                    <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">
                                                         
-                                                        <li><a href="..\Front-office\index.html"><span class="edu-icon edu-locked author-log-ic"></span>Se déconnecter</a>
-                                                        </li>
+                                                    <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn" >
+                                                        <li ><a href="admin.php"><span class="edu-icon edu-locked author-log-ic"></span>Mon Compte</a></li>
+                                                        <li><a href="..\Front-office\login.html"><span class="edu-icon edu-locked author-log-ic"></span>Se déconnecter</a></li>
                                                     </ul>
                                                 </li>
                                                 
@@ -454,22 +451,13 @@ $list = $utilisateur->listUsers2();
                                                 <li><a href="..\Back_office\widgets.html">Widgets</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="..\Back_office\events.html">Event</a></li>
-                                        <li><a data-toggle="collapse" data-target="#demoevent" href="#">Professors <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
-                                            <ul id="demoevent" class="collapse dropdown-header-top">
-                                                <li><a href="..\Back_office\professor.php">All Professors</a>
-                                                </li>
-                                                <li><a href="..\Back_office\add-professor.html">Add Professor</a>
-                                                </li>
-                                                <li><a href="..\Back_office\pprofile.php">Professor Profile</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li><a data-toggle="collapse" data-target="#demopro" href="#">Students <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                        <li><a href="..\Back_office\events.php">Event</a></li>
+                                        
+                                        <li><a data-toggle="collapse" data-target="#demopro" href="#">Utilisateurs <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
                                             <ul id="demopro" class="collapse dropdown-header-top">
-                                                <li><a href="..\Back_office\student.php">All Students</a>
+                                                <li><a href="..\Back_office\students.php">All Utilisateurs</a>
                                                 </li>
-                                                <li><a href="..\Back_office\add-student.html">Add Student</a>
+                                                <li><a href="..\Back_office\add-student.html">Add Utilisateur</a>
                                                 </li>
                                                 <li><a href="..\Back_office\sprofile.php">Student Profile</a>
                                                 </li>
@@ -622,7 +610,6 @@ $list = $utilisateur->listUsers2();
                     </div>
                 </div>
             </div>
-            <!-- Mobile Menu end -->
 
 
 
@@ -652,88 +639,31 @@ $list = $utilisateur->listUsers2();
 
 
 
-
-
-
-
-
-
-            <div class="breadcome-area">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div class="breadcome-list single-page-breadcome">
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                        <div class="breadcome-heading">          
-                                                <span class="bread-blod">Student Profile</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!-- Single pro tab review Start-->
+        
         <div class="single-pro-review-area mt-t-30 mg-b-15">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                        <?php
-                            foreach ($list as $prof) {
-                               
-                        ?> 
+                        
                         <div class="profile-info-inner">
-                            <img src="..\Back_office\sadek.jpg" class="card-img-top" alt="Profile Picture" style="width: 350px; height: 30    0px; margin: 0 auto; display: block;">
+                            <img src="" class="card-img-top" alt="Profile Picture" style="width: 350px; height: 30    0px; margin: 0 auto; display: block;">
                         <div class="card-body">
                             <center>
                                 <h5 class="card-title" style="font-family: 'Pacifico', cursive; font-weight: bold; margin-top: 20px; color: #ac81f2;">
-                                    <?php echo $prof['prenom']." ".$prof['nom']; ?>
+                                    <?php echo $list['prenom']." ".$list['nom']; ?>
                                 </h5>
                             </center>
-                            <p class="card-text">Phone: <?php echo $prof['tel']; ?></p>
-                            <p>Email: <?php echo $prof['email']; ?></p>
-                            <p>Password: <?php echo $prof['psw']; ?></p>
-                            <p>Date De Naissance: <?php echo $prof['date_nai']; ?></p>
-                            <p>Date d'Entretien: <?php echo $prof['date_entre']; ?></p>
-                            <p>Date D'Inscription: <?php echo $prof['date_insc']; ?></p>
-                            <p>Date De Dernière Mise à Jour: <?php echo $prof['date_mise']; ?></p>
+                            <p class="card-text">Type: <?php echo $ch; ?></p>
+                            <p class="card-text">Phone: <?php echo $list['tel']; ?></p>
+                            <p>Email: <?php echo $list['email']; ?></p>
+                            <p>Password: <?php echo $list['psw']; ?></p>
+                            <p>Date De Naissance: <?php echo $list['date_nai']; ?></p>
+                            <p>Date d'Entretien: <?php echo $list['date_entre']; ?></p>
+                            <p>Date D'Inscription: <?php echo $list['date_insc']; ?></p>
+                            <p>Date De Dernière Mise à Jour: <?php echo $list['date_mise']; ?></p>
                         </div>
                         </div>
-                        <?php
-                            }
-                        ?>
+                        
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                         <div class="product-payment-inner-st res-mg-t-30 analysis-progrebar-ctn">
@@ -746,64 +676,65 @@ $list = $utilisateur->listUsers2();
                                 <div class="product-tab-list tab-pane fade active in" id="description">
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                            <div class="review-content-section">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <input id="logname" type="text" class="form-control" placeholder="Nom">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <input id="loglastname" type="text" class="form-control" placeholder="Prénom">  
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <input id="logtel" type="tel" class="form-control" placeholder="Numéro de Téléphone">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <input id="logemail" type="email" class="form-control" placeholder="Email">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <input id="logpass" type="text" class="form-control" placeholder="Mot De Passe">
-                                                        </div>
-                                            
-                                                        <div class="file-upload-inner ts-forms">
-                                                            <div class="input prepend-big-btn">
-                                                                <label class="icon-right" for="prepend-big-btn">
-																		<i class="fa fa-download"></i>
-																</label>
-                                                                <div class="file-button" style="background-color: #ac81f2; border-color: #ac81f2; border: 1px solid #ac81f2;">
-                                                                    <input type="file" onchange="document.getElementById('prepend-big-btn').value = this.value;" style="background-color: #ac81f2; border-color: #ac81f2; border: 1px solid #ac81f2;">
-                                                                    Browse
+                                            <form action="update.php" method="POST" class="" onsubmit="return verif2()">
+                                                <div class="review-content-section">
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <input id="loglastname" name="loglastname" type="text" class="form-control" placeholder="Nom">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input id="logname"  name="logname" type="text" class="form-control" placeholder="Prénom">  
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input id="logtel"  name="logtel"type="tel" class="form-control" placeholder="Numéro de Téléphone">
+                                                            </div>
+                                                           
+                                                            <div class="form-group">
+                                                                <input id="logpass" name="logpass" type="password" class="form-control" placeholder="Mot De Passe">
+                                                            </div>
+                                                
+                                                            <div class="file-upload-inner ts-forms">
+                                                                <div class="input prepend-big-btn">
+                                                                    <label class="icon-right" for="prepend-big-btn" style="margin-top: 4px;">
+                                                                            <i class="fa fa-download"></i>
+                                                                    </label>
+                                                                    <div class="file-button" style="background-color: #ac81f2; border-color: #ac81f2; border: 1px solid #ac81f2;">
+                                                                        <input type="file" onchange="document.getElementById('prepend-big-btn').value = this.value;" style="background-color: #ac81f2; border-color: #ac81f2; border: 1px solid #ac81f2;">
+                                                                        Browse
+                                                                    </div>
+                                                                    <input type="text" id="prepend-big-btn" placeholder="no file selected">
                                                                 </div>
-                                                                <input type="text" id="prepend-big-btn" placeholder="no file selected">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6" style="padding-top: 4px;">
+                                                            <div class="form-group">
+                                                                <label for="prenom" class="form-label">Date De Naissance</label>
+                                                                <input id="logdate1" name="logdate1" type="date" class="form-control">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="prenom" class="form-label">Date d'entretien</label>
+                                                                <input id="logdate2" name="logdate2" type="date" class="form-control">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="prenom" class="form-label">Date D'inscription</label>
+                                                                <input id="logdate3" name="logdate3" type="date" class="form-control" >
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="payment-adress mg-t-15">
+                                                            <input type="hidden" name="email" value="<?php echo htmlspecialchars($list['email']); ?>">
+                                                            <button type="submit" class="btn btn-primary" style="background-color: #ac81f2; border: 1px solid #ac81f2; margin: 10px;">Update</button>
+
+                                                                
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-6" style="padding-top: 30px;">
-                                                        <div class="form-group">
-                                                            <label for="prenom" class="form-label">Date De Naissance</label>
-                                                            <input id="logdaten" type="date" class="form-control">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="prenom" class="form-label">Date d'Entretien</label>
-                                                            <input id="logdatee" type="date" class="form-control">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="prenom" class="form-label">Date D'Inscription</label>
-                                                            <input id="logdatei" type="date" class="form-control" >
-                                                        </div>
-                                                        
-                                                    </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <div class="payment-adress mg-t-15">
-                                                            <button type="button" class="btn btn-primary" style="background-color: #ac81f2; border: 1px solid #ac81f2; margin: 10px;" onclick="verif2()">Update</button>
-                                                            <!--<button type="button" class="btn btn-primary waves-effect waves-light mg-b-15" style="background-color: #ac81f2; border: 1px solid #ac81f2; margin: 10px;" onclick="verif2()">Update</button>-->
-                                                            <button type="submit" class="btn btn-primary waves-effect waves-light mg-b-15" style="background-color: #ac81f2; border: 1px solid #ac81f2; margin: 10px;">Delete</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -813,7 +744,6 @@ $list = $utilisateur->listUsers2();
                 </div>
             </div>
         </div>
-
 
 
 
@@ -851,7 +781,115 @@ $list = $utilisateur->listUsers2();
     </div>
 
     
-    <script src="script.js"></script>
+    <script>
+        function showStyledAlert2(message) {
+            const container = document.getElementById('notification-container');
+
+            // Create the alert element
+            const alertBox = document.createElement('div');
+            alertBox.style.padding = '15px 20px';
+            alertBox.style.marginBottom = '10px';
+            alertBox.style.borderRadius = '8px';
+            alertBox.style.backgroundColor = '#ac81f2';
+            alertBox.style.color = '#F6F4F9';
+            alertBox.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+            alertBox.style.fontWeight = '600';
+            alertBox.style.fontSize = '14px';
+            alertBox.style.transition = 'opacity 0.5s ease';
+            alertBox.textContent = message;
+
+            // Add the alert to the container
+            container.appendChild(alertBox);
+
+            // Auto-dismiss the alert after 3 seconds
+            setTimeout(() => {
+                alertBox.style.opacity = '0';
+                setTimeout(() => container.removeChild(alertBox), 500); // Wait for the fade-out transition
+            }, 3000);
+        }
+
+        function verif2() {
+            // Input fields
+            const nom = document.getElementById("loglastname");
+            const prenom = document.getElementById("logname");
+            const dateNaissance = document.getElementById("logdate1");
+            const dateEntretien = document.getElementById("logdate2");
+            const dateInscription = document.getElementById("logdate3");
+            const tel = document.getElementById("logtel");
+            const motDePasse = document.getElementById("logpass");
+            const email = document.getElementById("logemail");
+
+            // Regular expressions
+            const nameRegex = /^([A-Z][a-z]{0,29})(\s[A-Z][a-z]{0,29})*$/; // Each word starts with uppercase, followed by lowercase, max 30 chars.
+            const telRegex = /^\d{8}$/;
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$/; // Max 30 characters.
+
+            // Arrays to store messages
+            let errors = [];
+            let updates = [];
+
+            // Validate fields
+            if (prenom.value.trim()) {
+                if (!prenom.value.match(nameRegex) || prenom.value.length > 30) {
+                    errors.push("Le prénom doit être alphabétique, non vide et avoir une longueur maximale de 30 caractères.");
+                } else {
+                    updates.push("Le prénom est valide.");
+                }
+            }
+
+            if (nom.value.trim()) {
+                if (!nom.value.match(nameRegex) || nom.value.length > 30) {
+                    errors.push("Le nom doit être alphabétique, non vide et avoir une longueur maximale de 30 caractères.");
+                } else {
+                    updates.push("Le nom est valide.");
+                }
+            }
+
+            if (tel.value.trim()) {
+                if (!tel.value.match(telRegex)) {
+                    errors.push("Le numéro de téléphone doit contenir exactement 8 chiffres.");
+                } else {
+                    updates.push("Le numéro de téléphone est valide.");
+                }
+            }
+
+            if (motDePasse.value.trim()) {
+                if (!motDePasse.value.match(passwordRegex)) {
+                    errors.push(
+                        "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un symbole."
+                    );
+                } else {
+                    updates.push("Le mot de passe est valide.");
+                }
+            }
+                
+            if (dateNaissance.value.trim()) {
+                updates.push("La Date de naissance est valide.");
+            }
+
+            if (dateEntretien.value.trim()) {
+                updates.push("La Date de naissance est valide.");
+            }
+
+            if (dateInscription.value.trim()) {
+                updates.push("La Date de naissance est valide.");
+            }
+
+            // Display errors or success messages
+            if (errors.length > 0) {
+                showStyledAlert2("Erreur(s):\n" + errors.join("\n"));
+                return false;
+            }
+                
+            // Check if no fields were updated
+            if (updates.length === 0) {
+                showStyledAlert2("Aucun champ n'a été modifié.");
+                return false;
+            }
+            return true;
+        }
+
+        </script>
     <!-- jquery
 		============================================ -->
     <script src="..\Back_office\js\vendor\jquery-1.12.4.min.js"></script>

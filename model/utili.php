@@ -118,5 +118,4 @@ class utilisateur {
         $this->date_mise = $date_mise;
     }
 }
-
 ?>

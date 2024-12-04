@@ -1,3 +1,49 @@
+<?php
+require 'config.php';
+
+try {
+    $pdo = config::getConnexion();
+
+    if (isset($_GET['id_evenement']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        $id_evenement = (int)$_GET['id_evenement'];
+        $id_user = (int)$_POST['id_user'];
+        $password = $_POST['password'];
+
+        // Validate user credentials
+        $userQuery = "SELECT * FROM utilisateurs WHERE id_user = :id_user AND mot_de_passe = :password";
+        $userStmt = $pdo->prepare($userQuery);
+        $userStmt->bindParam(':id_user', $id_user, PDO::PARAM_INT);
+        $userStmt->bindParam(':password', $password, PDO::PARAM_STR);
+        $userStmt->execute();
+        $user = $userStmt->fetch();
+
+        if (!$user) {
+            die("Invalid credentials.");
+        }
+
+        // Check if registered
+        $registrationQuery = "SELECT * FROM inscription WHERE id_evenement = :id_evenement AND id_user = :id_user";
+        $registrationStmt = $pdo->prepare($registrationQuery);
+        $registrationStmt->bindParam(':id_evenement', $id_evenement, PDO::PARAM_INT);
+        $registrationStmt->bindParam(':id_user', $id_user, PDO::PARAM_INT);
+        $registrationStmt->execute();
+        $registered = $registrationStmt->fetch();
+
+        if (!$registered) {
+            echo "You are not registered for this event.";
+        } else {
+            // Cancel registration
+            $deleteQuery = "DELETE FROM inscription WHERE id_evenement = :id_evenement AND id_user = :id_user";
+            $deleteStmt = $pdo->prepare($deleteQuery);
+            $deleteStmt->bindParam(':id_evenement', $id_evenement, PDO::PARAM_INT);
+            $deleteStmt->bindParam(':id_user', $id_user, PDO::PARAM_INT);
+            $deleteStmt->execute();
+
+            echo "Registration canceled successfully.";
+        }
+    } elseif (isset($_GET['id_evenement'])) {
+        $id_evenement = (int)$_GET['id_evenement'];
+        ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,22 +79,26 @@
 </head>
 
 <body>
-    <div id="notification-container" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; text-align: center;"></div>
     <div class="container-xxl bg-white p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
+                <span class="sr-only">Chargement</span>
             </div>
         </div>
         <!-- Spinner End -->
 
+
         <!-- Navbar & Hero Start -->
         <div class="container-xxl position-relative p-0">
             <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-                <a href="#" class="navbar-brand p-0">
-                    <img src="..\Front-office\img\logo.png" alt="Logo" class="logo-img">
-                    <h1 class="m-0">Questerra</h1>
+                <a href="" class="navbar-brand p-0">
+                    <div class="logo-container">
+                        <img src="..\Front-office\img\logo.png" alt="Logo de Questerra">
+                        <h1 class="m-0">Questerra</h1>
+                    </div>
+                    
+                    <!-- <img src="img/logo.png" alt="Logo"> -->
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="fa fa-bars"></span>
@@ -56,82 +106,63 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav mx-auto py-0">
                         <a href="..\Front-office\index.html" class="nav-item nav-link">Accueil</a>
-                        <a href="..\Front-office\blog.html" class="nav-item nav-link">Blog</a>
-                        <a href="..\Front-office\Cours.html" class="nav-item nav-link">Cours</a>
-                        <a href="..\Front-office\ecahnge.html" class="nav-item nav-link">Questions</a>
-                        <a href="..\Front-office\event.html" class="nav-item nav-link">Evénement</a>
+                        <a href="..\Front-office\blog.html" class="nav-item nav-link ">Blog</a>
+                        <a href="..\Front-office\Cours.html" class="nav-item nav-link ">Cours</a>
+                        <a href="..\Front-office\ecahnge.html" class="nav-item nav-link ">Questions</a>
+                        <a href="..\Front-office\event.php" class="nav-item nav-link active">Evénement</a>
                         <a href="..\Front-office\contact.html" class="nav-item nav-link">Complaint</a>
+                      
                     </div>
                 </div>
-                <button class="dropdown-button"><a href="..\Front-office\index.html"><p style="color: black; margin-top: 12px;">Back</p></a></button>  
                     
+                    <div class="dropdown">
+                        
+                        <button class="dropdown-button">Settings</button>
+                        <div class="dropdown-content">
+                          <a href="..\Front-office\account.php">Mon compte</a>
+                          <a href="..\Front-office\login.html">Se déconnecter</a>
+                        </div>
+                      </div>
             </nav>
-        </div>
-        <!-- Navbar End -->
 
-        <!-- Hero Section -->
-        <div class="container-xxl py-5 bg-primary hero-header">
-            <div class="container my-5 py-5 px-lg-5 text-center">
-                <h1 class="text-white animated slideInDown">Update your profile</h1>
-                <hr class="bg-white mx-auto mt-0" style="width: 90px;">
-            </div>
-        </div>
-        <!-- Hero End -->
+            <!-- ending of header -->   
 
-        <!-- Main Content -->
-        <div class="container py-5">
-            <div class="row">
-                <!-- Left Sidebar -->
-                <div class="col-lg-4">
-                    <div class="card">
-                        <img src="..\Front-office\img\sadek.jpg" class="card-img-top" alt="Profile Picture">
-                        <div class="card-body">
-                            <center><h5 class="card-title">Mohamed Sadek Dejoui</h5></center>
-                            <p>Type: Etudiant</p>
-                            <p class="card-text">Phone: 23898754</p>
-                            <p>Email: sadokdejoui@gmail.com</p>
-                            <p>Password: sadek123</p>
-                            <p>Date De Naissance: 16/11/2004</p>
+            <div class="container-xxl py-5 bg-primary hero-header">
+                <div class="container my-5 py-5 px-lg-5">
+                    <div class="row g-5 py-5">
+                        <div class="col-12 text-center">
+                            <h1 class="text-white animated slideInDown">Evénements</h1>
+                            <hr class="bg-white mx-auto mt-0" style="width: 90px;">
                         </div>
                     </div>
                 </div>
-                <!-- Main Content Area -->
-                <div class="col-lg-8">
-                    <form>
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Nom</label>
-                            <input type="text" class="form-control" id="loglastname" placeholder="Nom">
-                        </div>
-                        <div class="mb-3">
-                            <label for="prenom" class="form-label">Prénom</label>
-                            <input type="text" class="form-control" id="logname" placeholder="Prénom">
-                        </div>
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">Numéro de Téléphone</label>
-                            <input type="tel" class="form-control" id="logtel" placeholder="Numéro de Téléphone">
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="logemail" placeholder="Email">
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Mot De Passe</label>
-                            <input type="password" class="form-control" id="logpass" placeholder="Mot De Passe">
-                        </div>
-                        <div class="mb-3">
-                            <label for="birthdate" class="form-label">Date de Naissance</label>
-                            <input type="date" class="form-control" id="logdate" placeholder="Date de Naissance">
-                        </div>
-                        <div class="mb-3">
-                            <label for="pfp" class="form-label">Photo de Profil</label>
-                            <input type="file" class="form-control" id="pfp" accept="image/*">
-                        </div>
-                        <center><button type="button" class="btn btn-primary" onclick="verif2()">Update</button></center>
-                    </form>
-                </div>
             </div>
         </div>
-        <!-- Main Content End -->
+        <!-- Navbar & Hero End -->
+
+        <!-- Events Section Start -->
+        <div class="container-xxl py-5">
+            <div class="container py-5 px-lg-5">
+                <div class="wow fadeInUp" data-wow-delay="0.1s">
+                    <center><h1>Cancel Registration</h1>
+            <form id="cancel" method="POST">
+                <input type="hidden" name="id_evenement" value="<?= $id_evenement; ?>">
+                <label for="id_user">User ID:</label>
+                <input type="text" name="id_user" id="id_user"><br><br>
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password"><br><br>
+                <button type="submit" style="background-color:#9465d4; color: white;">Cancel Registration</button>
+            </form></center>
+
+                    
+
+                    
+</div>
+                
+                
+            </div>
+        </div>
+        <!-- Events Section End -->
 
         <!-- Footer Start -->
         <div class="container-fluid bg-primary text-light footer wow fadeIn" data-wow-delay="0.1s">
@@ -153,7 +184,7 @@
                         <a class="btn btn-link" href="..\Front-office\blog.html">Blog</a>
                         <a class="btn btn-link" href="..\Front-office\Cours.html">    Cours</a>
                         <a class="btn btn-link" href="..\Front-office\ecahnge.html">Questions</a>
-                        <a class="btn btn-link" href="..\Front-office\event.html">Evénement</a>
+                        <a class="btn btn-link" href="..\Front-office\event.php">Evénement</a>
                         <a class="btn btn-link" href="..\Front-office\contact.html" class="nav-item nav-link">Complaint</a>
                     </div>
                     <div class="col-md-6 col-lg-3">
@@ -197,16 +228,31 @@
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-secondary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
-        <!-- Footer End -->
-    </div>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="..\Front-office\lib\wow\wow.js"></script>
     <script src="..\Front-office\lib\easing\easing.min.js"></script>
+    <script src="..\Front-office\lib\waypoints\waypoints.min.js"></script>
+    <script src="..\Front-office\lib\counterup\counterup.min.js"></script>
+    <script src="..\Front-office\lib\owlcarousel\owl.carousel.min.js"></script>
+    <script src="..\Front-office\lib\isotope\isotope.pkgd.min.js"></script>
+    <script src="..\Front-office\lib\lightbox\js\lightbox.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="cancel.js"></script>
     <script src="..\Front-office\js\main.js"></script>
-    <script src="..\Front-office\js\script.js"></script>
+    
+
 </body>
 
 </html>
+<?php
+    } else {
+        echo "Invalid request.";
+    }
+} catch (Exception $e) {
+    die("Error: " . $e->getMessage());
+}
+?>
