@@ -137,7 +137,7 @@ header h1 {
     background-color: #fff;
 }
 
-.status {
+/*.status {
     padding: 4px 8px;
     border-radius: 4px;
     font-weight: bold;
@@ -161,7 +161,7 @@ header h1 {
 .status.rejected {
     background-color: #f44336;
     color: #fff;
-}
+}*/
 
 /* Boutons d'action */
 button {

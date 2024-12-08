@@ -2,7 +2,7 @@
 require_once '../../config.php';
 $db = config::getConnexion();
 
-$sql = "SELECT type_reclamation, COUNT(*) as count FROM formulaire GROUP BY type_reclamation";
+$sql = "SELECT type_reclamation, COUNT(*) as count FROM complaint GROUP BY type_reclamation";
 $query = $db->prepare($sql);
 $query->execute();
 $data = $query->fetchAll(PDO::FETCH_ASSOC);

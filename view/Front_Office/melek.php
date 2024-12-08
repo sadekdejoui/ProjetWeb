@@ -26,5 +26,5 @@ if (isset($_GET['id'])) {
     echo json_encode(['error' => 'No complaint ID provided.']);
 }
 
-
 ?>
+

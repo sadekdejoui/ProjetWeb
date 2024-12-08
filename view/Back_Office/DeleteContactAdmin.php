@@ -9,6 +9,6 @@ $c->deleteComplaint($id);
  // Check if 'message' is set
 //$c->reponseComplaint($id, $message);
 
-header("Location: ./REC_FORMBackOffice.php");
-exit;
+//header("Location: ./REC_FORMBackOffice.php");
+//exit;
 ?>

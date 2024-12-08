@@ -2,7 +2,18 @@
 require '../../config.php'; 
 require_once '../../model/Formulaire.php';
 include_once '../../controller/FormulaireC.php';
+include_once '../../controller/NotificationC.php';
+$sent_by=1;
+$id_user=1;
+$notif=new NotificationC();
+//$all_notifs_any=$notif->showNotifUser($id_user);
+//$all_notifs=$notif->showNotifUserUnseen();
 
+// Fetch notifications sent by the admin to the specific user
+$adminNotifications = $notif->showNotifUserByAdmin($id_user);
+
+// Fetch only unseen notifications sent by the admin
+$unseenNotifications = $notif->showNotifUserByAdmin($id_user, true);
 if (($_SERVER['REQUEST_METHOD'] === 'POST') && (isset($_POST['submit']))) {
     // Retrieve form inputs
     $nom = htmlspecialchars($_POST['nom']);
@@ -16,10 +27,45 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && (isset($_POST['submit']))) {
     $urgent = isset($_POST['urgent']) ? 1 : 0;
 
     // Handle file uploads
-    $file_names = [];
+    //$file_names = [];
+    /*if (isset($_FILES['pieces_jointes']) && $_FILES['pieces_jointes']['error'] == 0) {
+        $fileTmpPath = $_FILES['pieces_jointes']['tmp_name']; // Temporary file path
+        $fileName = $_FILES['pieces_jointes']['name']; // Original file name
+        $fileSize = $_FILES['pieces_jointes']['size']; // File size
+        $fileType = $_FILES['pieces_jointes']['type']; // File MIME type
+        $fileNameCmps = explode(".", $fileName);
+        $fileExtension = strtolower(end($fileNameCmps)); // Get file extension
+    
+        // Define allowed file extensions (e.g., jpg, png, pdf, etc.)
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf'];
+    
+        // Check if the file extension is allowed
+        if (in_array($fileExtension, $allowedExtensions)) {
+            // Define the upload directory
+            $uploadFileDir = './uploads/';
+            $uploadFileDir = $_SERVER['DOCUMENT_ROOT'] . '/ReProjet/uploads/';
+            $newFileName = md5(time() . $fileName) . '.' . $fileExtension; // Generate a unique name for the file
+            $uploadFilePath = $uploadFileDir . $newFileName;
+    
+            // Move the uploaded file to the desired directory
+            if (move_uploaded_file($fileTmpPath, $uploadFilePath)) {
+                $file = $uploadFilePath; // Store the file path in the database
+            } else {
+                echo "Error while uploading the file.";
+                return;
+            }
+        } else {
+            echo "File type not allowed. Please upload a valid file.";
+            return;
+        }
+    } else {
+        $file = null; // No file uploaded, set to null
+    }*/
     
     // Save the complaint using FormulaireC
     $formulaireC = new FormulaireC();
+    $contenu = ("New Complaint submitted by a student");
+    $notif->addNotification($contenu,$id_user,$sent_by);
     $formulaireC->addComplaint($nom, $identifiant, $email, $telephone, $type_reclamation, $prof, $service, $description, $urgent);
 
     // Redirect or display a success message
@@ -28,10 +74,10 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && (isset($_POST['submit']))) {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
     <meta charset="utf-8">
     <title>Questerra</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -59,7 +105,331 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && (isset($_POST['submit']))) {
     <link href="../Front_Office/css/recform.css" rel="stylesheet">
     <!-- Template Stylesheet -->
     <link href="../Front_Office/css/style.css" rel="stylesheet">
-    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="../Front_Office/js/notifScriptFRONT.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+    <style>
+        /*---------------22. Notification-------------------------*/
+/* Notification Icon Button */
+#notificationDropdown {
+    font-size: 16px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    margin-right: 2px;
+    color: #333; /* Neutral color */
+    background: none; /* Transparent background */
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+/* Badge on the Notification Icon */
+#notificationDropdown .badge {
+    font-size: 10px;
+    padding: 3px 6px;
+    background: #ff5722; /* Vibrant color for badge */
+    color: #fff;
+    border-radius: 12px;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    width: 220px; /* Adjusted width */
+    transform: translateX(-130px);
+    font-size: 14px;
+    padding: 10px; /* Uniform padding */
+    border-radius: 8px; /* Rounded corners */
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    overflow-y: auto; /* Enable scrolling if content overflows */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    max-height: 250px; /* Restrict height */
+}
+
+/* Custom Scrollbar Styling (Optional) */
+.dropdown-menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+    background: #ccc; /* Scrollbar color */
+    border-radius: 10px; /* Rounded scrollbar */
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background: #999; /* Hover effect for scrollbar */
+}
+
+/* Dropdown Items */
+.dropdown-menu .dropdown-item {
+    padding: 8px 10px; /* Comfortable padding */
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    color: #555; /* Neutral text color */
+    border-bottom: 1px solid #f0f0f0; /* Subtle divider */
+    transition: background 0.3s ease;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background: #f9f9f9; /* Light hover effect */
+    color: #000; /* Darker text on hover */
+}
+
+/* Notification Icon Inside Item */
+.dropdown-menu .notification-icon {
+    margin-right: 8px;
+    font-size: 16px;
+    color: #007bff; /* Icon color */
+}
+
+/* Notification Content Inside Item */
+.dropdown-menu .notification-content {
+    flex: 1; /* Flexible width */
+}
+
+.dropdown-menu .notification-content h2 {
+    font-size: 12px;
+    margin: 0;
+    font-weight: bold;
+    color: #333; /* Title color */
+}
+
+.dropdown-menu .notification-content p {
+    font-size: 11px;
+    margin: 2px 0 0;
+    color: #666; /* Subtitle color */
+}
+
+/* Dropdown Footer Link */
+.dropdown-menu .text-center {
+    font-size: 12px;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 0;
+    border-top: 1px solid #f0f0f0; /* Divider */
+}
+
+.dropdown-menu .text-center:hover {
+    text-decoration: underline;
+    color: #0056b3; /* Darker hover effect */
+}
+    </style>
+
+    <!--------------------------CSS Modal NOTIFICATIONS----------------------------->
+     <style>
+        #notificationsModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    z-index: 1000;
+    display: none; /* Initially hidden */
+}
+
+.modal-content {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+#notificationsModal.active {
+    display: block;
+}
+/* Modal Overlay */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with transparency */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #f9f9f9;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    animation: fadeIn 0.3s;
+}
+
+/* Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+    </style>
+   
+
+   <style>
+       /* Form Container Styling */
+#form-container {
+    max-width: 800px;
+    margin: 100px auto; /* Adjusted to keep the form centered but not too high */
+    padding: 30px;
+    border-radius: 12px;
+    background: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+/* General Form Styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input[type="text"],
+textarea,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    color: #333;
+}
+
+textarea {
+    resize: vertical;
+}
+
+input[type="file"] {
+    font-size: 14px;
+    background-color: #b39ddb;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+input[type="file"]:hover {
+    background-color: #ffecb3;
+    color: #333;
+}
+
+input:focus, 
+textarea:focus, 
+select:focus {
+    outline: none;
+    border-color: #a680ff;
+    box-shadow: 0 0 5px rgba(166, 128, 255, 0.5);
+}
+
+/* Submit Button Styling */
+button.submit-btn {
+    display: block;
+    margin: 20px auto 0;
+    background-color: #b39ddb;
+    color: white;
+    padding: 12px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button.submit-btn:hover {
+    background-color: #ffecb3;
+    color: #333;
+    transform: scale(1.05);
+}
+
+/* Checkbox Styling */
+.form-check-input {
+    margin-right: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #form-container {
+        padding: 20px;
+    }
+
+    button.submit-btn {
+        width: 100%;
+    }
+}
+
+.dropdowncomplaint-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.dropdowncomplaint-content a {
+    color: #333;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdowncomplaint-content a:hover {
+    background-color: #b39ddb;
+    color: white;
+}
+
+/* Show Dropdown on Hover */
+.dropdowncomplaint:hover .dropdowncomplaint-content {
+    display: block;
+}
+    </style>
 </head>
 
 <body>
@@ -74,49 +444,109 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && (isset($_POST['submit']))) {
 
 
         <!-- Navbar & Hero Start -->
-        <div class="container-xxl position-relative p-0">
-            <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-                <a href="" class="navbar-brand p-0">
-                    <div class="logo-container">
-                        <img src="../Front_Office/img/logo.png" alt="Logo de Questerra">
-                        <h1 class="m-0">Questerra</h1>
-                    </div>
-                    
-                    <!-- <img src="img/logo.png" alt="Logo"> -->
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                    <span class="fa fa-bars"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <div class="navbar-nav mx-auto py-0">
-                        <a href="../Front_Office/index.html" class="nav-item nav-link">Accueil</a>
-                        <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\imen\blog.html" class="nav-item nav-link ">Blog</a>
-                        <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\akrem\Cours.html" class="nav-item nav-link ">Cours</a>
-                        <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\firas\ecahnge.html" class="nav-item nav-link ">Questions</a>
-                        <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\nader\event.html" class="nav-item nav-link ">Evénement</a>
-                        <a href="../Front_Office/contact.php" class="nav-item nav-link active">Complaint</a>
-                      
-                    </div>
-                </div>
-                
-                    
-                    <div class="dropdown">
-                        <button class="dropdown-button">Settings</button>
-                            <div class="dropdown-content">
-                                <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\sadek\account.html">Mon compte</a>
-                                <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\sadek\index.html">Se déconnecter</a>
+<!-- Navbar & Hero Start -->
+<div class="container-xxl position-relative p-0">
+    <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+        <a href="" class="navbar-brand p-0">
+            <div class="logo-container">
+                <img src="../Front_Office/img/logo.png" alt="Logo de Questerra">
+                <h1 class="m-0">Questerra</h1>
+            </div>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="fa fa-bars"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav mx-auto py-0">
+                <a href="../Front_Office/index.php" class="nav-item nav-link">Accueil</a>
+                <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\imen\blog.html" class="nav-item nav-link ">Blog</a>
+                <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\akrem\Cours.html" class="nav-item nav-link ">Cours</a>
+                <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\firas\ecahnge.html" class="nav-item nav-link ">Questions</a>
+                <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\nader\event.html" class="nav-item nav-link ">Evénement</a>
+                <a href="../Front_Office/contact.php" class="nav-item nav-link active">Complaint</a>
+            </div>
+        </div>
+        
+
+      <!-- Notification Dropdown -->
+<ul class="navbar-nav ms-auto">
+    <li class="nav-item">
+        <a href="#" class="nav-link dropdown-toggle" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <!-- Use Font Awesome bell icon -->
+            <i class="fa fa-bell" aria-hidden="true"></i>
+            <span class="indicator-nt"></span>
+        </a>
+        <div class="dropdown-menu animated zoomIn" aria-labelledby="notificationDropdown">
+            <div class="notification-single-top">
+                <h5>Notifications</h5>
+            </div>
+            <ul class="notification-menu">
+                <?php foreach($adminNotifications as $notification){ ?>
+                    <li>
+                        <a href="seennotif.php?id=<?php echo $notification['id_notif']; ?>">
+                            <div class="notification-icon">
+                                <i class="fa fa-check-circle" aria-hidden="true"></i>
                             </div>
-                    </div>
-                    <div class="dropdowncomplaint">
-                        <button class="dropdowncomplaint-button">Complaint</button>
-                        <div class="dropdowncomplaint-content">
-                            <a href="../Front_Office/contact.html">Add Complaint</a>
-                            <a href="./history.php">View Complaints</a>
-                        </div>
-                    </div>
-            </nav>
-            
-            
+                            <div class="notification-content">
+                                <span class="notification-date">1 nov</span>
+                                <h2><?php echo $notification['id_user']; ?></h2>
+                                <p><?php echo $notification['contenu']; ?></p>
+                            </div>
+                        </a>
+                    </li>
+                <?php } ?>
+            </ul>
+            <div class="notification-view">
+                <a href="#" id="showNotifications" class="openModal" data-id="<?php echo $notification['id_notif']; ?>">Show all notifications</a>
+            </div>
+        </div>
+    </li>
+</ul>
+ <!-------- notifications modal-------------->
+                 <!-- Modal -->
+                 <div id="myModal" class="modal" style="display: none;">
+    <div class="modal-content" style="width: 80%; margin: auto; padding: 20px; border-radius: 10px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+        <span class="close" style="float: right; font-size: 20px; cursor: pointer;">&times;</span>
+        <h3 style="text-align: center;">Notifications</h3>
+
+        <!-- Notification List -->
+        <div id="complaintDetails" style="margin-top: 20px; max-height: 400px; overflow-y: auto;">
+            <!-- Notifications will be dynamically inserted here -->
+            <p>Loading notifications...</p>
+        </div>
+
+        <!-- Close Button -->
+        <div style="text-align: center; margin-top: 20px;">
+            <button id="closeModalBtn" style="background-color: #ac81f2; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+                <i class="fa fa-check" style="margin-right: 5px;"></i> Close
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-------- notifications modal-------------->
+        
+        <!-- Settings Dropdown -->
+        <div class="dropdown">
+            <button class="dropdown-button">Settings</button>
+            <div class="dropdown-content">
+                <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\sadek\account.html">Mon compte</a>
+                <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\sadek\index.html">Se déconnecter</a>
+            </div>
+        </div>
+        
+        <!-- Complaint Dropdown -->
+        <div class="dropdowncomplaint">
+            <button class="dropdowncomplaint-button">Complaint</button>
+            <div class="dropdowncomplaint-content">
+                <a href="../Front_Office/contact.php">Add Complaint</a>    
+                <a href="./ComplaintResponse.php">View Complaint Progress</a>
+            </div>
+        </div>
+    </nav>
+</div>
+<!-- ending of header -->
+
             <!-- ending of header -->   
 
             
@@ -205,7 +635,11 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && (isset($_POST['submit']))) {
         </div>
 
         <button id="submit" name="submit" class="submit-btn">Submit</button>
-    </form>
+
+
+
+
+
 </div>
 
     
@@ -325,46 +759,146 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && (isset($_POST['submit']))) {
 <!--<script src="../Front_Office/js/contactScript.js"></script>-->
 </body>
 <body>
+    <!---------------------CONTROL DE SAISIE ----------------------->
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            function validateForm(event) {
-                const nom = document.getElementById("nom");
-                const identifiant = document.getElementById("identifiant");
-                const email = document.getElementById("email");
-                const telephone = document.getElementById("telephone");
-                const description = document.getElementById("description");
-                const type_reclamation =document.getElementById("type_reclamation");
-                // Expressions régulières
-                const nameRegex = /^[A-Za-zÀ-ÿ]+ [A-Za-zÀ-ÿ]+$/;
-                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                const phoneRegex = /^[0-9]{8}$/;
+   document.addEventListener("DOMContentLoaded", function () {
+        function validateForm(event) {
+            const nom = document.getElementById("nom");
+            const identifiant = document.getElementById("identifiant");
+            const email = document.getElementById("email");
+            const telephone = document.getElementById("telephone");
+            const description = document.getElementById("description");
+            const type_reclamation = document.getElementById("type_reclamation");
 
-                // Règles de validation
-                if (!nom.value || !identifiant.value || !email.value || !telephone.value || !description.value || !type_reclamation.value) {
-                    alert("Il faut que tous les champs soient remplis.");
-                    event.preventDefault(); // Empêche la soumission
-                    return;
+            // Regular expressions
+            const nameRegex = /^[A-Za-zÀ-ÿ]+ [A-Za-zÀ-ÿ]+$/;
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            const phoneRegex = /^[0-9]{8}$/;
+
+            let isValid = true; // Tracks overall form validity
+            let firstInvalidField = null; // Tracks the first invalid field
+
+            // Helper function to set error message
+            function setErrorMessage(field, message) {
+                let errorContainer = field.nextElementSibling;
+                if (!errorContainer || !errorContainer.classList.contains("field-error")) {
+                    errorContainer = document.createElement("div");
+                    errorContainer.classList.add("field-error");
+                    errorContainer.style.color = "red";
+                    errorContainer.style.fontSize = "0.9em";
+                    errorContainer.style.marginTop = "5px";
+                    field.parentNode.insertBefore(errorContainer, field.nextSibling);
                 }
-                if (!nameRegex.test(nom.value)) {
-                    alert("Le nom complet doit être composé de deux parties (lettres uniquement) séparées par un espace.");
-                    event.preventDefault(); // Empêche la soumission
-                    return;
-                }
-                if (!emailRegex.test(email.value)) {
-                    alert("Veuillez entrer une adresse email valide (ex: nom@example.com).");
-                    event.preventDefault(); // Empêche la soumission
-                    return;
-                }
-                if (!phoneRegex.test(telephone.value)) {
-                    alert("Veuillez entrer un numéro de téléphone valide (8 chiffres).");
-                    event.preventDefault(); // Empêche la soumission
-                    return;
+                errorContainer.textContent = message;
+                if (isValid) {
+                    isValid = false;
+                    firstInvalidField = field; // Focus on the first invalid field
                 }
             }
 
-            const form = document.querySelector("form");
-            form.addEventListener("submit", validateForm);
-        });
+            // Helper function to clear error message
+            function clearErrorMessage(field) {
+                const errorContainer = field.nextElementSibling;
+                if (errorContainer && errorContainer.classList.contains("field-error")) {
+                    errorContainer.textContent = "";
+                }
+            }
+
+            // Clear all error messages before validation
+            clearErrorMessage(nom);
+            clearErrorMessage(identifiant);
+            clearErrorMessage(email);
+            clearErrorMessage(telephone);
+            clearErrorMessage(description);
+            clearErrorMessage(type_reclamation);
+
+            // Validation rules
+            if (!nom.value) setErrorMessage(nom, "Full name is required.");
+            else if (!nameRegex.test(nom.value)) setErrorMessage(nom, "The full name must consist of two parts (letters only) separated by a space.");
+
+            if (!identifiant.value) setErrorMessage(identifiant, "Identifier is required.");
+
+            if (!email.value) setErrorMessage(email, "Email address is required.");
+            else if (!emailRegex.test(email.value)) setErrorMessage(email, "Please enter a valid email address (e.g., name@example.com).");
+
+            if (!telephone.value) setErrorMessage(telephone, "Phone number is required.");
+            else if (!phoneRegex.test(telephone.value)) setErrorMessage(telephone, "Please enter a valid phone number (8 digits).");
+
+            if (!description.value) setErrorMessage(description, "Description is required.");
+
+            if (!type_reclamation.value) setErrorMessage(type_reclamation, "Type of complaint is required.");
+
+            // Prevent form submission if invalid and scroll to the first invalid field
+            if (!isValid) {
+                event.preventDefault();
+                firstInvalidField.scrollIntoView({ behavior: "smooth", block: "center" });
+                firstInvalidField.focus();
+            }
+        }
+
+        const form = document.querySelector("form");
+        form.addEventListener("submit", validateForm);
+    });
+</script>
+
+
     </script>
+    <!-----------------JS modal notif------------------>
+     <script>
+// Open Modal on Button Click
+document.querySelectorAll('.openModal').forEach(button => {
+    button.addEventListener('click', function () {
+        const modal = document.getElementById('myModal');
+        modal.style.display = 'block';
+
+        fetch('fetch_notifFRONT.php')  // Fetch notifications from the server
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);  // For debugging: log the data received
+
+            const detailsDiv = document.getElementById('complaintDetails');
+            if (data.length > 0) {
+                // Display notifications dynamically
+                detailsDiv.innerHTML = data.map(notification => `
+                    <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px;">
+                        <p><strong>Response:</strong> ${notification.contenu}</p>
+                        <button class="viewDetails" data-id="${notification.id_notif}" style="background-color: #ac81f2; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+                            View Details 
+                        </button>
+                    </div>
+                `).join('');
+            } else {
+                detailsDiv.innerHTML = '<p>No notifications available.</p>';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            const detailsDiv = document.getElementById('complaintDetails');
+            detailsDiv.innerHTML = '<p>An error occurred while fetching notifications.</p>';
+        });
+    });
+});
+
+// Close Modal Functionality
+document.querySelector('.close').addEventListener('click', () => {
+    document.getElementById('myModal').style.display = 'none';
+});
+
+document.getElementById('closeModalBtn').addEventListener('click', () => {
+    document.getElementById('myModal').style.display = 'none';
+});
+
+// Optional: Close modal when clicking outside the modal content
+window.addEventListener('click', (event) => {
+    const modal = document.getElementById('myModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});
+
+
+
+    </script>
+   
 </body>
 </html>

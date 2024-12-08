@@ -107,7 +107,7 @@ $complaints=$c->showComplaint($id);
             <div class="container my-5 py-5 px-lg-5">
                 <div class="row g-5 py-5">
                     <div class="col-12 text-center">
-                        <h1 class="text-white animated slideInDown">Your Complaint History:</h1>
+                        <h1 class="text-white animated slideInDown">Your Complaint Progress:</h1>
                        
                         <hr class="bg-white mx-auto mt-0" style="width: 60px;">
                     </div>
@@ -204,7 +204,7 @@ $complaints=$c->showComplaint($id);
                 </div>
                 <div class="col-md-6 text-center text-md-end">
                     <div class="footer-menu">
-                        <a href="../Front_Office/index.html">Accueille</a>
+                        <a href="../Front_Office/index.php">Home</a>
                     </div>
                 </div>
             </div>

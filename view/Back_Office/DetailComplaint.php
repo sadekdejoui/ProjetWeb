@@ -73,15 +73,15 @@ $complaints=$c->showComplaintbycomplaint($id) ;
     <div class="left-sidebar-pro">
         <nav id="sidebar" class="">
             <div class="sidebar-header">
-                <a href="../Back_Office/index.html"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
-                <strong><a href="../Back_Office/index.html"><img src="img/logo/logosn.png" alt="" /></a></strong>
+                <a href="../Back_Office/index.php"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
+                <strong><a href="../Back_Office/index.php"><img src="img/logo/logosn.png" alt="" /></a></strong>
             </div>
             <div class="left-custom-menu-adp-wrap comment-scrollbar">
                ```html
                 <nav class="sidebar-nav left-sidebar-menu-pro">
                     <ul class="metismenu" id="menu1">
                         <li class="active">
-                            <a class="has-arrow" href="../Back_Office/index.html">
+                            <a class="has-arrow" href="../Back_Office/index.php">
                                 <span class="educate-icon educate-home icon-wrap"></span>
                                 <span class="mini-click-non">Education</span>
                             </a>
@@ -137,7 +137,7 @@ $complaints=$c->showComplaintbycomplaint($id) ;
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="logo-pro">
-                        <a href="index.html"><img class="main-logo" src="../Back_Office/img/logo/logo.png" alt="" /></a>
+                        <a href="index.php"><img class="main-logo" src="../Back_Office/img/logo/logo.png" alt="" /></a>
                     </div>
                 </div>
             </div>

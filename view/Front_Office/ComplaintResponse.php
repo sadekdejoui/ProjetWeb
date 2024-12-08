@@ -41,7 +41,8 @@ $message=$c->showmessage($id);
     <link href="../Front_Office/css/style.css" rel="stylesheet">
     <!-- our css history link-->
     <link rel="stylesheet" href="./css/csscardshistory.css">
-    <style>
+   
+   <style>
         .response-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr); /* 4 cards per row */
@@ -79,7 +80,82 @@ $message=$c->showmessage($id);
 
 
 
+.dropdowncomplaint-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.dropdowncomplaint-content a {
+    color: #333;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdowncomplaint-content a:hover {
+    background-color: #b39ddb;
+    color: white;
+}
+
+/* Show Dropdown on Hover */
+.dropdowncomplaint:hover .dropdowncomplaint-content {
+    display: block;
+}
     </style>
+<!--cssn modal modify-->
+    <style>
+        /* Ensure all modals are centered and prevent overlap */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed position */
+    z-index: 1000; /* Higher than content */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    justify-content: center; /* Center modal content horizontally */
+    align-items: center; /* Center modal content vertically */
+    transition: all 0.3s ease-in-out;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px; /* Width of the modal */
+    text-align: center;
+}
+
+.close, .closeModifyModal {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.close:hover,
+.close:focus,
+.closeModifyModal:hover,
+.closeModifyModal:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+
+</style>
     
 </head>
 
@@ -109,11 +185,11 @@ $message=$c->showmessage($id);
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav mx-auto py-0">
-                        <a href="../Front_Office/index.php" class="nav-item nav-link">Accueil</a>
+                        <a href="../Front_Office/index.php" class="nav-item nav-link">Home</a>
                         <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\imen\blog.html" class="nav-item nav-link ">Blog</a>
-                        <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\akrem\Cours.html" class="nav-item nav-link ">Cours</a>
+                        <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\akrem\Cours.html" class="nav-item nav-link ">Courses</a>
                         <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\firas\ecahnge.html" class="nav-item nav-link ">Questions</a>
-                        <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\nader\event.html" class="nav-item nav-link ">Evénement</a>
+                        <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\nader\event.html" class="nav-item nav-link ">Events</a>
                         <a href="../Front_Office/contact.php" class="nav-item nav-link active">Complaint</a>
                       
                     </div>
@@ -132,10 +208,11 @@ $message=$c->showmessage($id);
                         <button class="dropdowncomplaint-button">Complaint</button>
                           <div class="dropdowncomplaint-content">
                             <a href="../Front_Office/contact.php">Add Complaint</a> 
-                            <a href="./history.php">View Complaints</a>
-                            <a href="./ComplaintResponse.php">View Complaint Response</a>
+                            <!--<a href="./history.php">View Complaints</a>-->
+                            <a href="./ComplaintResponse.php">Complaint Progress</a>
                           </div>
                           </div>
+                        
             </nav>
 
             <!-- ending of header -->   
@@ -158,6 +235,7 @@ $message=$c->showmessage($id);
 
    <!--response-->
         
+   
    <div class="response-container">
     <?php foreach ($message as $cc): ?>
     <div class="response-card">
@@ -167,59 +245,138 @@ $message=$c->showmessage($id);
         <div class="card-body">
             <p><strong>Status:</strong> 
                 <?php 
-                if (isset($cc['status'])) {
-                    switch ($cc['status']) {
-                        case '1':
-                            echo "Treated and Answered";
-                            break;
-                        case '0':
-                            echo "Pending";
-                            break;
-                        case '2':
-                            echo "Refused";
-                            break;
-                        default:
-                            echo "Unknown";
-                    }
+                $status = isset($cc['status']) ? $cc['status'] : 'Unknown'; // Assigning status
+                if ($status == '1') {
+                    echo "Treated and Answered";
+                } elseif ($status == '0') {
+                    echo "Pending";
+                } elseif ($status == '2') {
+                    echo "Refused";
                 } else {
-                    echo "No status available";
+                    echo "Unknown";
                 }
                 ?>
             </p>
-            <p><strong>Response Message:</strong> 
-            <?php
-            // Assuming $complaintController is the object of the controller containing showreponse
-            $rep = $c->showreponse($cc['id_form']); // Use the controller object
-            if (!empty($rep)) {
-                foreach ($rep as $repon) {
-                    echo htmlspecialchars($repon['rep']); // Safely display each response
-                }
-            } else {
-                echo "No responses available.";
-            }
-            ?>
-            </p>
         </div>
-        <div class="card-footer">
-                <button style="
-             
-    padding: 10px 20px;
-    background-color: #ac81f2;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
 
+        <!-- Show View Details Button if status is Treated and Answered or Refused -->
+        <?php if ($status == '1' || $status == '2'): ?>
+            <div class="card-footer">
+                <button style="background-color: #ac81f2; color: white; border: none; border-radius: 5px; cursor: pointer;" class="openModal" data-id="<?php echo $cc['id_form']; ?>">View Details</button>
+            </div>
+        <?php endif; ?>
 
-" class="openModal" data-id="<?php echo $cc['id_form']; ?>">View Details</button>
-  
-        </div>
+        <!-- Show Make Changes Button if status is Pending -->
+        <?php if ($status == '0'): ?>
+            <div class="card-footer">
+                <button class="openModifyModalBtn" data-id="<?php echo $cc['id_form']; ?>" style="background-color: #ac81f2; color: white; border: none; border-radius: 5px; cursor: pointer;">Make Changes</button>
+            </div>
+        <?php endif; ?>
     </div>
     <?php endforeach; ?>
+
+    <!-- Modal for Making Changes (separate modal from View Details) -->
+    <!-- <div id="makeChangesModal" class="modal">
+        <div class="modal-content">
+            <span class="closeModifyModal">&times;</span>
+            <h3>Make Some Changes</h3>
+            <div id="complaintDetailsChanges">
+                <p>Loading...</p>
+            </div>
+
+            <!-- Textarea for making changes -->
+            <!-- <div>
+                <label for="changeText">Enter your changes:</label>
+                <textarea id="changeText" rows="4" cols="50"></textarea>
+            </div>
+            
+
+            <div style="text-align: center;">
+            <button id="closeModifyModalBtn" 
+                style="background-color: #ac81f2; color: white; border: none; 
+                padding: 10px 15px; border-radius: 5px; cursor: pointer;"
+                onmouseover="this.style.backgroundColor='green';" 
+                onmouseout="this.style.backgroundColor='#ac81f2';">
+                 <i class="fa fa-check" style="margin-right: 5px;"></i> Update
+            </button>
+
+                <button id="closeModifyModalBtn"
+                 style="background-color: #ac81f2; color: white; border: none;
+                  padding: 10px 15px; border-radius: 5px; cursor: pointer;"
+                  onmouseover="this.style.backgroundColor='red';"
+                  onmouseout="this.style.backgroundColor='#ac81f2';">
+                    <i class="fa fa-check" style="margin-right: 5px;"></i> Discard 
+                </button> -->
+                 <!-- Message that will appear after clicking the update button -->
+                    <!-- <div id="successMessage" style="color: green; font-size: 16px; margin-top: 10px; display: none;">
+                        Updated Successfully.
+                     </div>
+                      <!-- Message for discard action -->
+                    <!-- <div id="discardMessage" style="color: red; font-size: 16px; margin-top: 10px; display: none;">
+                        Changes Discarded.
+                </div>
+            </div>
+        </div>
+    </div>  --> 
+        
+    <!-- View Details Modal (unchanged) -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Response Details</h3>
+            <div id="complaintDetails">
+                <p>Loading...</p>
+            </div>
+            <div style="text-align: center;">
+                <button id="closeModalBtn" style="background-color: #ac81f2; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+                    <i class="fa fa-check" style="margin-right: 5px;"></i> Return!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!--- chebekkkk modifyyy -->
+    <div id="myModalPending" class="modal">
+        <div class="modal-content">
+            <span class="closePending">&times;</span>
+            <h3>Make Some Changes</h3>
+            <div id="complaintModifyDetails">
+            
+            </div>
+            <div style="text-align: center;">
+
+            <button id="updateModifyModalBtn" 
+                style="background-color: #ac81f2; color: white; border: none; 
+                padding: 10px 15px; border-radius: 5px; cursor: pointer;"
+                onmouseover="this.style.backgroundColor='green';" 
+                onmouseout="this.style.backgroundColor='#ac81f2';">
+                 <i class="fa fa-check" style="margin-right: 5px;"></i> Update
+            </button>
+
+                <button id="closeModifyModalBtn"
+                 style="background-color: #ac81f2; color: white; border: none;
+                  padding: 10px 15px; border-radius: 5px; cursor: pointer;"
+                  onmouseover="this.style.backgroundColor='red';"
+                  onmouseout="this.style.backgroundColor='#ac81f2';">
+                    <i class="fa fa-check" style="margin-right: 5px;"></i> Discard 
+                </button> 
+                 <!-- Message that will appear after clicking the update button -->
+                    <div id="successMessage"  data-id="<?php echo $cc['id_form']; ?>" style="color: green; font-size: 16px; margin-top: 10px; display: none;">
+                        Updated Successfully.
+                     </div>
+                      <!-- Message for discard action -->
+                     <div id="discardMessage"  style="color: red; font-size: 16px; margin-top: 10px; display: none;">
+                        Changes Discarded.
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 
+
+    <!--- wfeeeee chebekkkk modifyyy -->
 
 
    
@@ -274,7 +431,7 @@ $message=$c->showmessage($id);
                 </div>
                 <div class="col-md-6 text-center text-md-end">
                     <div class="footer-menu">
-                        <a href="../Front_Office/index.html">Accueille</a>
+                        <a href="../Front_Office/index.php">Home</a>
                     </div>
                 </div>
             </div>
@@ -284,7 +441,7 @@ $message=$c->showmessage($id);
 <!-- Footer End -->
 
 
-<!-- Modal -->
+<!-- Modal aka chobek-
 <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
@@ -302,7 +459,30 @@ $message=$c->showmessage($id);
             </a>
         </div>
     </div>
-</div>
+</div>---------->
+
+
+
+<!-- Modal aka chobek
+<div id="modifyModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>Make Some Changes</h3>
+        <div id="complaintDetails">
+            <p>Loading...</p>
+        </div>
+        <div>
+        </div>
+        <div style="text-align: center;">
+            <a id="approveLink" href="#">
+                <button id="closeModalBtn" style="background-color: #ac81f2; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+                    <i class="fa fa-check" style="margin-right: 5px;"></i> Return!
+                </button>
+            
+            </a>
+        </div>
+    </div>
+</div>----------->
 
 <!--- taskiret el chebek------------>
 
@@ -337,7 +517,16 @@ $message=$c->showmessage($id);
     // Optional: You could also remove any open modal classes (depending on your modal library)
     // modal.classList.remove('is-open'); 
 });
-
+document.getElementById('closeModalBtnPending').addEventListener('click', function(event) {
+    event.preventDefault(); // Prevents default action of the button (e.g., following the link)
+    
+    // Close the modal (assuming the modal has the id 'myModal')
+    var modal = document.getElementById('myModalPending');
+    modal.style.display = 'none'; // Hide the modal
+    
+    // Optional: You could also remove any open modal classes (depending on your modal library)
+    // modal.classList.remove('is-open'); 
+});
 </script>
 <script>
     function afficherMessageMerci() {
@@ -366,6 +555,8 @@ $message=$c->showmessage($id);
     }
 </script>
 <script src="../Front_Office/js/contactScript.js"></script>
+
+<!---------------Script l chobek--------->
 <script>
     document.querySelectorAll('.openModal').forEach(button => {
     button.addEventListener('click', function () {
@@ -416,6 +607,147 @@ window.onclick = function (event) {
 
 
 </script>
+<!--------------- END Script l chobek View details --------->
+
+<!---------------Script l chobek Modify--------->
+
+<script>
+  
+  document.querySelectorAll('.openModifyModalBtn').forEach(button => {
+    button.addEventListener('click', function () {
+        const complaintId = this.getAttribute('data-id'); // Get the complaint ID
+        const detailsDiv = document.getElementById('complaintModifyDetails');
+        const modal = document.getElementById('myModalPending');
+        document.getElementById('updateModifyModalBtn').setAttribute('data-id', complaintId);
+        // Open the modal
+        modal.style.display = 'block';
+
+        // Fetch complaint details via AJAX
+        fetch(`melekfetchdesc.php?id=${complaintId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    detailsDiv.innerHTML = `<p style="color:red;">${data.error}</p>`;
+                } else {
+                    // Initialize the content variable before checking conditions
+                    let content = `
+                        <p><strong>Description:</strong></p>
+                        <label for="changeText">Make changes:</label>
+                        <textarea id="changeText" rows="4" cols="37">${data.desc}</textarea>
+                    `;
+
+                    // Check if there is a file (attachment)
+                    if (data.file) {
+                        content += `
+                            <p><strong>Attachment:</strong> <a href="${data.file}" target="_blank">View File</a></p>
+                        `;
+                    }
+
+                    // Display the content
+                    detailsDiv.innerHTML = content;
+                }
+            })
+            .catch(error => {
+                detailsDiv.innerHTML = `<p style="color:red;">Error loading details.</p>`;
+                console.error('AJAX Error:', error);
+            });
+    });
+});
+
+
+
+// Close modal logic
+document.querySelector('.closePending').addEventListener('click', () => {
+    document.getElementById('myModalPending').style.display = 'none';
+});
+
+window.addEventListener('click', (event) => {
+    const modal = document.getElementById('myModalPending');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});
+
+//updatee modify modal changes
+
+
+document.getElementById('updateModifyModalBtn').addEventListener('click', () => {
+    // Retrieve the ID dynamically from the "Update" button's attribute
+    const complaintId = document.getElementById('updateModifyModalBtn').getAttribute('data-id');
+    const newText = document.getElementById('changeText').value;
+    console.log({
+    id: complaintId,
+    description: newText
+});
+
+    // Validate input
+    if (!newText.trim()) {
+        alert('Please enter the updated text.');
+        return;
+    }
+
+    fetch('melekModify.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: complaintId, description: newText })
+})
+    .then(response => response.json())
+    .then(data => {
+        console.log(data); // Check the response in the console
+        if (data.success) {
+            alert(data.message);
+            document.getElementById('myModalPending').style.display = 'none';
+        } else {
+            alert(`Error: ${data.error}`);
+        }
+    })
+    .catch(error => console.error('Update Error:', error));
+
+});
+
+
+
+</script>
+<!---------------END Script l chobek Modify--------->
+<script>
+// Get the modal and buttons
+const updateModifyModalBtn = document.getElementById("updateModifyModalBtn");
+const closeModifyModalBtn = document.getElementById("closeModifyModalBtn");
+const makeChangesModal = document.getElementById("makeChangesModal");
+const successMessage = document.getElementById("successMessage");
+const updaterequest = document.getElementById("updateModifyModalBtn");
+const discardMessage =document.getElementById("discardMessage");
+updaterequest.addEventListener("click",function(){
+
+});
+// Event listener for the Update button
+closeModifyModalBtn.addEventListener("click", function() {
+    // Show the "Updated Successfully" message
+    discardMessage.style.display = "block";
+
+    // Wait for 10 seconds before closing the modal
+    setTimeout(function() {
+        discardMessage.style.display = "none";
+        document.getElementById('myModalPending').style.display = 'none';
+        makeChangesModal.style.display = "none"; // Close the modal
+    }, 1000); // 10000 milliseconds = 10 seconds
+});
+updateModifyModalBtn.addEventListener("click", function() {
+    // Show the "Updated Successfully" message
+    successMessage.style.display = "block";
+
+    // Wait for 10 seconds before closing the modal
+    setTimeout(function() {
+        successMessage.style.display = "none";
+        document.getElementById('myModalPending').style.display = 'none';
+        makeChangesModal.style.display = "none"; // Close the modal
+    }, 1000); // 10000 milliseconds = 10 seconds
+});
+</script>
+
+
+
+
 </body>
 
 </html>

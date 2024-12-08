@@ -4,7 +4,7 @@ class FormulaireC
     // Method to list all formulaire (optional, in case you want to display all formulaire later)
     public function listformulaire()
     {
-        $sql = "SELECT * FROM formulaire";
+        $sql = "SELECT * FROM complaint";
         $db = config::getConnexion();
         try {
             $liste = $db->query($sql);
@@ -15,7 +15,7 @@ class FormulaireC
     }
     public function listformulaireA()
     {
-        $sql = "SELECT * FROM formulaire Where status='1'";
+        $sql = "SELECT * FROM complaint Where status='1'";
         $db = config::getConnexion();
         try {
             $liste = $db->query($sql);
@@ -26,7 +26,7 @@ class FormulaireC
     }
     public function listformulaireP()
     {
-        $sql = "SELECT * FROM formulaire Where status='0'";
+        $sql = "SELECT * FROM complaint Where status='0'";
         $db = config::getConnexion();
         try {
             $liste = $db->query($sql);
@@ -37,7 +37,7 @@ class FormulaireC
     }
     public function showComplaint($id)
     {
-        $sql = "SELECT * FROM formulaire WHERE ID = $id"; // Inclusion directe de l'ID dans la requête
+        $sql = "SELECT * FROM complaint WHERE ID = $id"; // Inclusion directe de l'ID dans la requête
         $db = config::getConnexion();
         try {
             $complaint = $db->query($sql); // Exécution directe et récupération
@@ -48,7 +48,7 @@ class FormulaireC
     }
     public function showComplaintbycomplaint($id)
     {
-        $sql = "SELECT * FROM formulaire WHERE id_form = :id"; // Using a prepared statement for security
+        $sql = "SELECT * FROM complaint WHERE id_form = :id"; // Using a prepared statement for security
         $db = config::getConnexion();
         $query = $db->prepare($sql);
         
@@ -73,7 +73,7 @@ class FormulaireC
     // Method to delete a complaint (optional, for admin to delete formulaire)
     function deleteComplaint($id)
     {
-        $sql = "DELETE FROM formulaire WHERE id_form = :id";
+        $sql = "DELETE FROM complaint WHERE id_form = :id";
         $db = config::getConnexion();
         $req = $db->prepare($sql);
         $req->bindValue(':id', $id);
@@ -87,9 +87,38 @@ class FormulaireC
     }
 
     // Method to add a new complaint (main logic for form submission)
+     /*function addComplaint($nom, $identifiant, $email, $telephone, $type_reclamation, $prof, $service, $description, $urgent, $file)
+    {
+// File upload logic
+
+
+
+       $sql = "INSERT INTO complaint (nom,ID, email, telephone, type_reclamation, prof, service, description, urgent, file)
+                VALUES (:nom,:identifiant, :email, :telephone, :type_reclamation, :prof, :service, :description, :urgent, :file)";
+        
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+            $query->execute([
+                'nom' => $nom,
+                'identifiant' => $identifiant,
+                'email' => $email,
+                'telephone' => $telephone,
+                'type_reclamation' => $type_reclamation,
+                'prof' => $prof,
+                'service' => $service,
+                'description' => $description,
+                'urgent' => $urgent,
+                'file'=> $file,
+            ]);
+            echo "Complaint submitted successfully!";
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+    }*/
     function addComplaint($nom, $identifiant, $email, $telephone, $type_reclamation, $prof, $service, $description, $urgent)
     {
-        $sql = "INSERT INTO formulaire (nom, ID, email, telephone, type_reclamation, prof, service, description, urgent)
+        $sql = "INSERT INTO complaint (nom, ID, email, telephone, type_reclamation, prof, service, description, urgent)
                 VALUES (:nom, :identifiant, :email, :telephone, :type_reclamation, :prof, :service, :description, :urgent)";
         
         $db = config::getConnexion();
@@ -116,9 +145,14 @@ class FormulaireC
   
 
 
+
+    // Method to show a specific complaint (optional, in case you need to show details of a single complaint)
+  
+
+
     function updateComplaint($nom, $identifiant, $email, $telephone, $type_reclamation, $prof, $service, $description, $urgent)
 {
-    $sql = "UPDATE formulaire SET 
+    $sql = "UPDATE complaint SET 
             nom = :nom,
             email = :email,
             telephone = :telephone,
@@ -151,10 +185,28 @@ class FormulaireC
 }
 
     // Method to update a complaint (optional, in case you want to allow admins to update formulaire)
-   
+    public function addchanges($id, $description)
+    {
+        $sql = "UPDATE complaint SET 
+                description = :description
+                WHERE id_form = :id_form"; // Use consistent naming
+    
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+            $query->execute([
+                'id_form' => $id, // Consistent naming
+                'description' => $description,
+            ]);
+            echo $query->rowCount() . " record updated successfully!";
+        } catch (PDOException $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+    }
+    
     function approveComplaint($identifiant)
     {
-        $sql = "UPDATE formulaire 
+        $sql = "UPDATE complaint 
                 SET status = '1'
                 WHERE id_form = :identifiant"; // Corrected syntax
         
@@ -171,7 +223,7 @@ class FormulaireC
     
     function reponseComplaint($id_rec, $rep)
     {
-        $sql = "INSERT INTO reponse (rep, id_rec) 
+        $sql = "INSERT INTO response (rep, id_rec) 
                 VALUES (:rep, :id_rec)"; // Corrected syntax
         
         $db = config::getConnexion();
@@ -191,7 +243,7 @@ class FormulaireC
 
 public function showmessage($id)
     {
-        $sql = "SELECT * FROM formulaire WHERE ID = $id"; // Inclusion directe de l'ID dans la requête
+        $sql = "SELECT * FROM complaint WHERE ID = $id"; // Inclusion directe de l'ID dans la requête
         $db = config::getConnexion();
         try {
             $message = $db->query($sql); // Exécution directe et récupération
@@ -202,7 +254,7 @@ public function showmessage($id)
     }
     public function showreponse($id)
     {
-        $sql = "SELECT rep FROM reponse WHERE id_rec = :id"; // Use a placeholder for the ID
+        $sql = "SELECT rep FROM response WHERE id_rec = :id"; // Use a placeholder for the ID
         $db = config::getConnexion();
         try {
             $query = $db->prepare($sql); // Prepare the query
@@ -215,7 +267,7 @@ public function showmessage($id)
     public function showResponsebycomplaint($id)
     {
         // Use correct column name for the placeholder
-        $sql = "SELECT * FROM reponse WHERE id_rec = :id"; // Ensure 'id_rec' matches your database schema
+        $sql = "SELECT * FROM response WHERE id_rec = :id"; // Ensure 'id_rec' matches your database schema
         $db = config::getConnexion(); // Ensure correct connection method
         
         try {
@@ -257,5 +309,6 @@ public function showmessage($id)
     }
 
 */
+
 }
 ?>

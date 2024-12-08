@@ -1,221 +1,251 @@
+<?php
+require '../../config.php';
+require_once '../../model/Formulaire.php';
+include_once '../../Controller/FormulaireC.php';
+include_once '../../Controller/NotificationC.php';
+session_start();
+$c=new FormulaireC();
+$notif=new NotificationC();
+$all_notifs_any=$notif->showNotifAdmin();
+$all_notifs=$notif->showNotifAdminUnseen();
+?>
+
 <!doctype html>
 <html class="no-js" lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Dashboard V.3 | Kiaalap - Kiaalap Admin Template</title>
+    <title>BackOffice Questerra</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- favicon
-		============================================ -->
+    <!-- favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
-    <!-- Google Fonts
-		============================================ -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
-    <!-- Bootstrap CSS
-		============================================ -->
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <!-- Bootstrap CSS
-		============================================ -->
     <link rel="stylesheet" href="css/font-awesome.min.css">
-    <!-- owl.carousel CSS
-		============================================ -->
     <link rel="stylesheet" href="css/owl.carousel.css">
     <link rel="stylesheet" href="css/owl.theme.css">
     <link rel="stylesheet" href="css/owl.transitions.css">
-    <!-- animate CSS
-		============================================ -->
     <link rel="stylesheet" href="css/animate.css">
-    <!-- normalize CSS
-		============================================ -->
     <link rel="stylesheet" href="css/normalize.css">
-    <!-- meanmenu icon CSS
-		============================================ -->
     <link rel="stylesheet" href="css/meanmenu.min.css">
-    <!-- main CSS
-		============================================ -->
     <link rel="stylesheet" href="css/main.css">
-    <!-- educate icon CSS
-		============================================ -->
     <link rel="stylesheet" href="css/educate-custon-icon.css">
-    <!-- morrisjs CSS
-		============================================ -->
     <link rel="stylesheet" href="css/morrisjs/morris.css">
-    <!-- mCustomScrollbar CSS
-		============================================ -->
     <link rel="stylesheet" href="css/scrollbar/jquery.mCustomScrollbar.min.css">
-    <!-- metisMenu CSS
-		============================================ -->
     <link rel="stylesheet" href="css/metisMenu/metisMenu.min.css">
     <link rel="stylesheet" href="css/metisMenu/metisMenu-vertical.css">
-    <!-- calendar CSS
-		============================================ -->
     <link rel="stylesheet" href="css/calendar/fullcalendar.min.css">
     <link rel="stylesheet" href="css/calendar/fullcalendar.print.min.css">
-    <!-- style CSS
-		============================================ -->
     <link rel="stylesheet" href="style.css">
-    <!-- responsive CSS
-		============================================ -->
     <link rel="stylesheet" href="css/responsive.css">
-    <!-- modernizr JS
-		============================================ -->
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+
+    <script src="../Back_Office/js/notifScript.js"></script>
+
+    <style>
+        /* Changer la couleur de fond du header */
+        .header-top-area {
+            background-color: #ac81f2; /* Remplacez par la couleur de votre choix */
+        }
+
+        /* Changer la couleur du texte dans la navbar */
+        .header-top-wraper .nav-link {
+            color: white; /* Assurez-vous que le texte est lisible */
+        }
+
+        /* Changer la couleur au survol des liens dans la navbar */
+        .header-top-wraper .nav-link:hover {
+            color: #ffcc00; /* Couleur au survol */
+        }
+
+        /* Changer la couleur d'arrière-plan pour le bouton de menu switcher */
+        .menu-switcher-pro .btn {
+            background-color: #ac81f2; /* Remplacez par la couleur de votre choix */
+        }
+
+        /* Changer la couleur de texte des icônes de notification et de message */
+        .header-right-info .nav-link {
+            color: white; /* Assurez-vous que le texte est lisible sur le fond */
+        }
+    </style>
+    <style>
+        #notificationsModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    z-index: 1000;
+    display: none; /* Initially hidden */
+}
+
+.modal-content {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+#notificationsModal.active {
+    display: block;
+}
+/* Modal Overlay */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with transparency */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #f9f9f9;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    animation: fadeIn 0.3s;
+}
+
+/* Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+    </style>
+   
 </head>
 
 <body>
-    <!--[if lt IE 8]>
-		<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-	<![endif]-->
+   
     <!-- Start Left menu area -->
     <div class="left-sidebar-pro">
         <nav id="sidebar" class="">
             <div class="sidebar-header">
-                <a href="index.html"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
-                <strong><a href="index.html"><img src="img/logo/logosn.png" alt="" /></a></strong>
+                <a href="index.php"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
+                <strong><a href="index.php"><img src="img/logo/logosn.png" alt="" /></a></strong>
             </div>
             <div class="left-custom-menu-adp-wrap comment-scrollbar">
                 <nav class="sidebar-nav left-sidebar-menu-pro">
                     <ul class="metismenu" id="menu1">
                         <li class="active">
-                            <a class="has-arrow" href="index.html">
-								   <span class="educate-icon educate-home icon-wrap"></span>
-								   <span class="mini-click-non">Education</span>
-								</a>
+                            <a class="has-arrow" href="index.php">
+                                <span class="educate-icon educate-home icon-wrap"></span>
+                                <span class="mini-click-non">Education</span>
+                            </a>
                             <ul class="submenu-angle" aria-expanded="true">
-                                <li><a title="Dashboard v.1" href="index.html"><span class="mini-sub-pro">Dashboard v.1</span></a></li>
-                                <li><a title="Dashboard v.2" href="index-1.html"><span class="mini-sub-pro">Dashboard v.2</span></a></li>
-                                <li><a title="Dashboard v.3" href="index-2.html"><span class="mini-sub-pro">Dashboard v.3</span></a></li>
-                                <li><a title="Analytics" href="analytics.html"><span class="mini-sub-pro">Analytics</span></a></li>
-                                <li><a title="Widgets" href="widgets.html"><span class="mini-sub-pro">Widgets</span></a></li>
+                                <li><a title="Analytics" href=""><span class="mini-sub-pro">Analytic</span></a></li><!--href="analytics.html"-->
+                                <li><a title="Widgets" href=""><span class="mini-sub-pro">Widgets</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a title="Landing Page" href="events.html" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Event</span></a>
+                            <a title="Landing Page" href="events.html" aria-expanded="false">
+                                <span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> 
+                                <span class="mini-click-non">Event</span></a>
                         </li>
                         <li>
-                            <a class="has-arrow" href="all-professors.html" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Professors</span></a>
+                            <a class="has-arrow" href="all-professors.html" aria-expanded="false">
+                                <span class="educate-icon educate-professor icon-wrap">
+
+                                </span> <span class="mini-click-non">Professors</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="All Professors" href="all-professors.html"><span class="mini-sub-pro">All Professors</span></a></li>
+                                <li><a title="All Professors" href="all-professors.html"><span class="mini-sub-pro">All</span></a></li>
                                 <li><a title="Add Professor" href="add-professor.html"><span class="mini-sub-pro">Add Professor</span></a></li>
                                 <li><a title="Edit Professor" href="edit-professor.html"><span class="mini-sub-pro">Edit Professor</span></a></li>
                                 <li><a title="Professor Profile" href="professor-profile.html"><span class="mini-sub-pro">Professor Profile</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a class="has-arrow" href="all-students.html" aria-expanded="false"><span class="educate-icon educate-student icon-wrap"></span> <span class="mini-click-non">Students</span></a>
+                            <a class="has-arrow" href="all-students.html" aria-expanded="false"><span class="educate-icon educate-student icon-wrap"></span> <span class="mini-click-non">Etudiants</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
                                 <li><a title="All Students" href="all-students.html"><span class="mini-sub-pro">All Students</span></a></li>
                                 <li><a title="Add Students" href="add-student.html"><span class="mini-sub-pro">Add Student</span></a></li>
-                                <li><a title="Edit Students" href="edit-student.html"><span class="mini-sub-pro">Edit Student</span></a></li>
+                                <li><a title="Edit Students" href="edit-student.html"><span class="mini-sub-pro">Edit student </span></a></li>
                                 <li><a title="Students Profile" href="student-profile.html"><span class="mini-sub-pro">Student Profile</span></a></li>
                             </ul>
                         </li>
                         <li>
                             <a class="has-arrow" href="all-courses.html" aria-expanded="false"><span class="educate-icon educate-course icon-wrap"></span> <span class="mini-click-non">Courses</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="All Courses" href="all-courses.html"><span class="mini-sub-pro">All Courses</span></a></li>
-                                <li><a title="Add Courses" href="add-course.html"><span class="mini-sub-pro">Add Course</span></a></li>
-                                <li><a title="Edit Courses" href="edit-course.html"><span class="mini-sub-pro">Edit Course</span></a></li>
-                                <li><a title="Courses Profile" href="course-info.html"><span class="mini-sub-pro">Courses Info</span></a></li>
-                                <li><a title="course Payment" href="course-payment.html"><span class="mini-sub-pro">Courses Payment</span></a></li>
+                                <li><a title="All Courses" href="C:\Users\sadekk\Desktop\view\View\Back_Office\cour\all courses.html"><span class="mini-sub-pro">ALL Courses</span></a></li>
+                                <li><a title="Add Courses" href="C:\Users\sadekk\Desktop\view\View\BackOffice\cour\add.html"><span class="mini-sub-pro">Add Course</span></a></li>
+                                <li><a title="Edit Courses" href="C:\Users\sadekk\Desktop\view\View\BackOffice\cour\edit.html"><span class="mini-sub-pro">Edit Course</span></a></li>
+                                <li><a title="Courses Profile" href="C:\Users\sadekk\Desktop\view\View\BackOffice\cour\courses info.html"><span class="mini-sub-pro">Course Infos</span></a></li>
+                                <li><a title="Product Payment" href="C:\Users\sadekk\Desktop\view\View\BackOffice\cour\courses pay.html"><span class="mini-sub-pro">Course Paiement</span></a></li>
                             </ul>
                         </li>
+                        <!-- Réclamation section -->
                         <li>
-                            <a class="has-arrow" href="all-courses.html" aria-expanded="false"><span class="educate-icon educate-library icon-wrap"></span> <span class="mini-click-non">Library</span></a>
+                            <a title="Reclamation" href="#" aria-expanded="false"><span class="educate-icon educate-interface icon-wrap"></span> <span class="mini-click-non">Complaints</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="All Library" href="library-assets.html"><span class="mini-sub-pro">Library Assets</span></a></li>
-                                <li><a title="Add Library" href="add-library-assets.html"><span class="mini-sub-pro">Add Library Asset</span></a></li>
-                                <li><a title="Edit Library" href="edit-library-assets.html"><span class="mini-sub-pro">Edit Library Asset</span></a></li>
-                            </ul>
+                                <li><a title="All Forums" href="../Back_Office/REC_FORMBackOffice.php"><span class="mini-sub-pro">All Complaints</span></a></li>
+                                <li><a title="Create Forum" href="../Back_Office/AppComp.php"><span class="mini-sub-pro">Approved Complaints</span></a></li>
+                                <li><a title="Forum Topics" href="../Back_Office/PenComp.php"><span class="mini-sub-pro">Pending Complaints</span></a></li>
+                            </ul>                        
                         </li>
+                        <!-- Blog section -->
                         <li>
-                            <a class="has-arrow" href="all-courses.html" aria-expanded="false"><span class="educate-icon educate-department icon-wrap"></span> <span class="mini-click-non">Departments</span></a>
+                            <a title="Blog" href="gestion_blog.html" aria-expanded="false"><span class="educate-icon educate-interface icon-wrap"></span> <span class="mini-click-non">Blog</span></a>
+
+                        </li>
+                        <!-- Forum section -->
+                        <li>
+                            <a class="has-arrow" href="all-forums.html" aria-expanded="false"><span class="educate-icon educate-interface icon-wrap"></span> <span class="mini-click-non">Forum</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="Departments List" href="departments.html"><span class="mini-sub-pro">Departments List</span></a></li>
-                                <li><a title="Add Departments" href="add-department.html"><span class="mini-sub-pro">Add Departments</span></a></li>
-                                <li><a title="Edit Departments" href="edit-department.html"><span class="mini-sub-pro">Edit Departments</span></a></li>
+                                <li><a title="All Forums" href="all-forum.html"><span class="mini-sub-pro">All Forums</span></a></li>
+                                <li><a title="Create Forum" href="create-forum.html"><span class="mini-sub-pro">Create Forum</span></a></li>
+                                <li><a title="Forum Topics" href="forum-topics.html"><span class="mini-sub-pro">Forum Subjects</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><span class="educate-icon educate-message icon-wrap"></span> <span class="mini-click-non">Mailbox</span></a>
+                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><span class="educate-icon educate-message icon-wrap"></span> <span class="mini-click-non">EmailBox</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
                                 <li><a title="Inbox" href="mailbox.html"><span class="mini-sub-pro">Inbox</span></a></li>
-                                <li><a title="View Mail" href="mailbox-view.html"><span class="mini-sub-pro">View Mail</span></a></li>
-                                <li><a title="Compose Mail" href="mailbox-compose.html"><span class="mini-sub-pro">Compose Mail</span></a></li>
+                                <li><a title="View Mail" href="mailbox-view.html"><span class="mini-sub-pro">Show ALL Emails</span></a></li>
+                                <li><a title="Compose Mail" href="mailbox-compose.html"><span class="mini-sub-pro">Write An Email</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><span class="educate-icon educate-interface icon-wrap"></span> <span class="mini-click-non">Interface</span></a>
-                            <ul class="submenu-angle interface-mini-nb-dp" aria-expanded="false">
-                                <li><a title="Google Map" href="google-map.html"><span class="mini-sub-pro">Google Map</span></a></li>
-                                <li><a title="Data Maps" href="data-maps.html"><span class="mini-sub-pro">Data Maps</span></a></li>
-                                <li><a title="Pdf Viewer" href="pdf-viewer.html"><span class="mini-sub-pro">Pdf Viewer</span></a></li>
-                                <li><a title="X-Editable" href="x-editable.html"><span class="mini-sub-pro">X-Editable</span></a></li>
-                                <li><a title="Code Editor" href="code-editor.html"><span class="mini-sub-pro">Code Editor</span></a></li>
-                                <li><a title="Tree View" href="tree-view.html"><span class="mini-sub-pro">Tree View</span></a></li>
-                                <li><a title="Preloader" href="preloader.html"><span class="mini-sub-pro">Preloader</span></a></li>
-                                <li><a title="Images Cropper" href="images-cropper.html"><span class="mini-sub-pro">Images Cropper</span></a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><span class="educate-icon educate-charts icon-wrap"></span> <span class="mini-click-non">Charts</span></a>
-                            <ul class="submenu-angle chart-mini-nb-dp" aria-expanded="false">
-                                <li><a title="Bar Charts" href="bar-charts.html"><span class="mini-sub-pro">Bar Charts</span></a></li>
-                                <li><a title="Line Charts" href="line-charts.html"><span class="mini-sub-pro">Line Charts</span></a></li>
-                                <li><a title="Area Charts" href="area-charts.html"><span class="mini-sub-pro">Area Charts</span></a></li>
-                                <li><a title="Rounded Charts" href="rounded-chart.html"><span class="mini-sub-pro">Rounded Charts</span></a></li>
-                                <li><a title="C3 Charts" href="c3.html"><span class="mini-sub-pro">C3 Charts</span></a></li>
-                                <li><a title="Sparkline Charts" href="sparkline.html"><span class="mini-sub-pro">Sparkline Charts</span></a></li>
-                                <li><a title="Peity Charts" href="peity.html"><span class="mini-sub-pro">Peity Charts</span></a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><span class="educate-icon educate-data-table icon-wrap"></span> <span class="mini-click-non">Data Tables</span></a>
-                            <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="Peity Charts" href="static-table.html"><span class="mini-sub-pro">Static Table</span></a></li>
-                                <li><a title="Data Table" href="data-table.html"><span class="mini-sub-pro">Data Table</span></a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><span class="educate-icon educate-form icon-wrap"></span> <span class="mini-click-non">Forms Elements</span></a>
-                            <ul class="submenu-angle form-mini-nb-dp" aria-expanded="false">
-                                <li><a title="Basic Form Elements" href="basic-form-element.html"><span class="mini-sub-pro">Bc Form Elements</span></a></li>
-                                <li><a title="Advance Form Elements" href="advance-form-element.html"><span class="mini-sub-pro">Ad Form Elements</span></a></li>
-                                <li><a title="Password Meter" href="password-meter.html"><span class="mini-sub-pro">Password Meter</span></a></li>
-                                <li><a title="Multi Upload" href="multi-upload.html"><span class="mini-sub-pro">Multi Upload</span></a></li>
-                                <li><a title="Text Editor" href="tinymc.html"><span class="mini-sub-pro">Text Editor</span></a></li>
-                                <li><a title="Dual List Box" href="dual-list-box.html"><span class="mini-sub-pro">Dual List Box</span></a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><span class="educate-icon educate-apps icon-wrap"></span> <span class="mini-click-non">App views</span></a>
-                            <ul class="submenu-angle app-mini-nb-dp" aria-expanded="false">
-                                <li><a title="Notifications" href="notifications.html"><span class="mini-sub-pro">Notifications</span></a></li>
-                                <li><a title="Alerts" href="alerts.html"><span class="mini-sub-pro">Alerts</span></a></li>
-                                <li><a title="Modals" href="modals.html"><span class="mini-sub-pro">Modals</span></a></li>
-                                <li><a title="Buttons" href="buttons.html"><span class="mini-sub-pro">Buttons</span></a></li>
-                                <li><a title="Tabs" href="tabs.html"><span class="mini-sub-pro">Tabs</span></a></li>
-                                <li><a title="Accordion" href="accordion.html"><span class="mini-sub-pro">Accordion</span></a></li>
-                            </ul>
-                        </li>
-                        <li id="removable">
-                            <a class="has-arrow" href="#" aria-expanded="false"><span class="educate-icon educate-pages icon-wrap"></span> <span class="mini-click-non">Pages</span></a>
-                            <ul class="submenu-angle page-mini-nb-dp" aria-expanded="false">
-                                <li><a title="Login" href="login.html"><span class="mini-sub-pro">Login</span></a></li>
-                                <li><a title="Register" href="register.html"><span class="mini-sub-pro">Register</span></a></li>
-                                <li><a title="Lock" href="lock.html"><span class="mini-sub-pro">Lock</span></a></li>
-                                <li><a title="Password Recovery" href="password-recovery.html"><span class="mini-sub-pro">Password Recovery</span></a></li>
-                                <li><a title="404 Page" href="404.html"><span class="mini-sub-pro">404 Page</span></a></li>
-                                <li><a title="500 Page" href="500.html"><span class="mini-sub-pro">500 Page</span></a></li>
-                            </ul>
+                            <a title="Settings" href="settings.html" aria-expanded="false"><span class="educate-icon educate-settings icon-wrap"></span> <span class="mini-click-non">Settings</span></a>
                         </li>
                     </ul>
                 </nav>
             </div>
         </nav>
     </div>
+    
     <!-- End Left menu area -->
     <!-- Start Welcome area -->
     <div class="all-content-wrapper">
@@ -223,7 +253,7 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="logo-pro">
-                        <a href="index.html"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
+                        <a href="index.php"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
                     </div>
                 </div>
             </div>
@@ -238,26 +268,23 @@
                                     <div class="col-lg-1 col-md-0 col-sm-1 col-xs-12">
                                         <div class="menu-switcher-pro">
                                             <button type="button" id="sidebarCollapse" class="btn bar-button-pro header-drl-controller-btn btn-info navbar-btn">
-													<i class="educate-icon educate-nav"></i>
-												</button>
+                                                    <i class="educate-icon educate-nav"></i>
+                                                </button>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
                                         <div class="header-top-menu tabl-d-n">
                                             <ul class="nav navbar-nav mai-top-nav">
-                                                <li class="nav-item"><a href="#" class="nav-link">Home</a>
-                                                </li>
-                                                <li class="nav-item"><a href="#" class="nav-link">About</a>
-                                                </li>
-                                                <li class="nav-item"><a href="#" class="nav-link">Services</a>
-                                                </li>
+                                                 <li class="nav-item"><a href="index.php" class="nav-link">Home</a></li>
+                                                <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+                                                <li class="nav-item"><a href="#" class="nav-link">Services</a></li>
                                                 <li class="nav-item dropdown res-dis-nn">
                                                     <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">Project <span class="angle-down-topmenu"><i class="fa fa-angle-down"></i></span></a>
                                                     <div role="menu" class="dropdown-menu animated zoomIn">
                                                         <a href="#" class="dropdown-item">Documentation</a>
-                                                        <a href="#" class="dropdown-item">Expert Backend</a>
-                                                        <a href="#" class="dropdown-item">Expert FrontEnd</a>
-                                                        <a href="#" class="dropdown-item">Contact Support</a>
+                                                        <a href="#" class="dropdown-item">Expert en back-end</a>
+                                                        <a href="#" class="dropdown-item">Expert ent front-end</a>
+                                                        <a href="#" class="dropdown-item">Contacter le support</a>
                                                     </div>
                                                 </li>
                                                 <li class="nav-item"><a href="#" class="nav-link">Support</a>
@@ -267,140 +294,79 @@
                                     </div>
                                     <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
                                         <div class="header-right-info">
+                            <!----------------------------------------START NOTIFICATION REC-------------------------------->
                                             <ul class="nav navbar-nav mai-top-nav header-right-menu">
-                                                <li class="nav-item dropdown">
+
+                                               <!-- <li class="nav-item dropdown">
                                                     <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="educate-icon educate-message edu-chat-pro" aria-hidden="true"></i><span class="indicator-ms"></span></a>
                                                     <div role="menu" class="author-message-top dropdown-menu animated zoomIn">
                                                         <div class="message-single-top">
                                                             <h1>Message</h1>
                                                         </div>
                                                         <ul class="message-menu">
-                                                            <li>
-                                                                <a href="#">
-                                                                    <div class="message-img">
-                                                                        <img src="img/contact/1.jpg" alt="">
-                                                                    </div>
-                                                                    <div class="message-content">
-                                                                        <span class="message-date">16 Sept</span>
-                                                                        <h2>Advanda Cro</h2>
-                                                                        <p>Please done this project as soon possible.</p>
-                                                                    </div>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#">
-                                                                    <div class="message-img">
-                                                                        <img src="img/contact/4.jpg" alt="">
-                                                                    </div>
-                                                                    <div class="message-content">
-                                                                        <span class="message-date">16 Sept</span>
-                                                                        <h2>Sulaiman din</h2>
-                                                                        <p>Please done this project as soon possible.</p>
-                                                                    </div>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#">
-                                                                    <div class="message-img">
-                                                                        <img src="img/contact/3.jpg" alt="">
-                                                                    </div>
-                                                                    <div class="message-content">
-                                                                        <span class="message-date">16 Sept</span>
-                                                                        <h2>Victor Jara</h2>
-                                                                        <p>Please done this project as soon possible.</p>
-                                                                    </div>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#">
-                                                                    <div class="message-img">
-                                                                        <img src="img/contact/2.jpg" alt="">
-                                                                    </div>
-                                                                    <div class="message-content">
-                                                                        <span class="message-date">16 Sept</span>
-                                                                        <h2>Victor Jara</h2>
-                                                                        <p>Please done this project as soon possible.</p>
-                                                                    </div>
-                                                                </a>
-                                                            </li>
+                                                            
+                                                            
+                                                          
                                                         </ul>
                                                         <div class="message-view">
-                                                            <a href="#">View All Messages</a>
+                                                            <a href="#">Voir tous les messages</a>
                                                         </div>
                                                     </div>
-                                                </li>
+                                                </li>-->
+<!----------------------------------------END notif Rec------------------------------------------------->
                                                 <li class="nav-item"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="educate-icon educate-bell" aria-hidden="true"></i><span class="indicator-nt"></span></a>
                                                     <div role="menu" class="notification-author dropdown-menu animated zoomIn">
                                                         <div class="notification-single-top">
                                                             <h1>Notifications</h1>
                                                         </div>
                                                         <ul class="notification-menu">
+                                                            <?php foreach($all_notifs as $notf){ ?>
                                                             <li>
-                                                                <a href="#">
+                                                            <a href="seennotif.php?id=<?php echo $notf['id_notif']; ?>">
+                                                           
                                                                     <div class="notification-icon">
                                                                         <i class="educate-icon educate-checked edu-checked-pro admin-check-pro" aria-hidden="true"></i>
                                                                     </div>
+                                                                  
                                                                     <div class="notification-content">
-                                                                        <span class="notification-date">16 Sept</span>
-                                                                        <h2>Advanda Cro</h2>
-                                                                        <p>Please done this project as soon possible.</p>
-                                                                    </div>
-                                                                </a>
+    <span class="notification-date">
+        <?php 
+        // Check if the created_at field has a valid date, otherwise use the current date
+        $date = strtotime($notf['created_at']);
+        if ($date === false || $notf['created_at'] == '0000-00-00 00:00:00') {
+            echo date('j M'); // If invalid, display current date
+        } else {
+            echo date('j M', $date); // Format the valid date
+        }
+        ?>
+    </span>
+    <h2><?php echo $notf['id_user']; ?><span class="educate-icon educate-interface icon-wrap"></span> </h2>
+    <p><?php echo $notf['contenu']; ?></p>
+</div>
+
+                                                                    </a>
+                                                               
                                                             </li>
-                                                            <li>
-                                                                <a href="#">
-                                                                    <div class="notification-icon">
-                                                                        <i class="fa fa-cloud edu-cloud-computing-down" aria-hidden="true"></i>
-                                                                    </div>
-                                                                    <div class="notification-content">
-                                                                        <span class="notification-date">16 Sept</span>
-                                                                        <h2>Sulaiman din</h2>
-                                                                        <p>Please done this project as soon possible.</p>
-                                                                    </div>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#">
-                                                                    <div class="notification-icon">
-                                                                        <i class="fa fa-eraser edu-shield" aria-hidden="true"></i>
-                                                                    </div>
-                                                                    <div class="notification-content">
-                                                                        <span class="notification-date">16 Sept</span>
-                                                                        <h2>Victor Jara</h2>
-                                                                        <p>Please done this project as soon possible.</p>
-                                                                    </div>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#">
-                                                                    <div class="notification-icon">
-                                                                        <i class="fa fa-line-chart edu-analytics-arrow" aria-hidden="true"></i>
-                                                                    </div>
-                                                                    <div class="notification-content">
-                                                                        <span class="notification-date">16 Sept</span>
-                                                                        <h2>Victor Jara</h2>
-                                                                        <p>Please done this project as soon possible.</p>
-                                                                    </div>
-                                                                </a>
-                                                            </li>
+                                                            <?php }?>
                                                         </ul>
                                                         <div class="notification-view">
-                                                            <a href="#">View All Notification</a>
+                                                        <a href="#" id="showNotifications"class="openModal" data-id="<?php echo $notf['id_notif']; ?>">Show all notifications</a>
                                                         </div>
                                                     </div>
                                                 </li>
+
+                                                
                                                 <li class="nav-item">
                                                     <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
-															<img src="img/product/pro4.jpg" alt="" />
-															<span class="admin-name">Prof.Anderson</span>
-															<i class="fa fa-angle-down edu-icon edu-down-arrow"></i>
-														</a>
+                                                            <span class="admin-name">Admin</span>
+                                                            <i class="fa fa-angle-down edu-icon edu-down-arrow"></i>
+                                                        </a>
                                                     <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">
-                                                        <li><a href="#"><span class="edu-icon edu-home-admin author-log-ic"></span>My Account</a>
+                                                        <li><a href="#"><span class="edu-icon edu-home-admin author-log-ic"></span>My account</a>
                                                         </li>
-                                                        <li><a href="#"><span class="edu-icon edu-user-rounded author-log-ic"></span>My Profile</a>
+                                                        <li><a href="#"><span class="edu-icon edu-user-rounded author-log-ic"></span>My profile</a>
                                                         </li>
-                                                        <li><a href="#"><span class="edu-icon edu-money author-log-ic"></span>User Billing</a>
+                                                        <li><a href="#"><span class="edu-icon edu-money author-log-ic"></span>Users</a>
                                                         </li>
                                                         <li><a href="#"><span class="edu-icon edu-settings author-log-ic"></span>Settings</a>
                                                         </li>
@@ -734,9 +700,9 @@
                                                                                         <div class="onoffswitch">
                                                                                             <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example">
                                                                                             <label class="onoffswitch-label" for="example">
-																									<span class="onoffswitch-inner"></span>
-																									<span class="onoffswitch-switch"></span>
-																								</label>
+                                                                                                    <span class="onoffswitch-inner"></span>
+                                                                                                    <span class="onoffswitch-switch"></span>
+                                                                                                </label>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -750,9 +716,9 @@
                                                                                         <div class="onoffswitch">
                                                                                             <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example3">
                                                                                             <label class="onoffswitch-label" for="example3">
-																									<span class="onoffswitch-inner"></span>
-																									<span class="onoffswitch-switch"></span>
-																								</label>
+                                                                                                    <span class="onoffswitch-inner"></span>
+                                                                                                    <span class="onoffswitch-switch"></span>
+                                                                                                </label>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -766,9 +732,9 @@
                                                                                         <div class="onoffswitch">
                                                                                             <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example4">
                                                                                             <label class="onoffswitch-label" for="example4">
-																									<span class="onoffswitch-inner"></span>
-																									<span class="onoffswitch-switch"></span>
-																								</label>
+                                                                                                    <span class="onoffswitch-inner"></span>
+                                                                                                    <span class="onoffswitch-switch"></span>
+                                                                                                </label>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -780,11 +746,11 @@
                                                                                     <h2>Show charts</h2>
                                                                                     <div class="ts-custom-check">
                                                                                         <div class="onoffswitch">
-                                                                                            <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example7">
+                                                                                            <input type="checkbox" name="collapsemenu" checked="" class="onoffswitch-checkbox" id="example7">
                                                                                             <label class="onoffswitch-label" for="example7">
-																									<span class="onoffswitch-inner"></span>
-																									<span class="onoffswitch-switch"></span>
-																								</label>
+                                                                                                    <span class="onoffswitch-inner"></span>
+                                                                                                    <span class="onoffswitch-switch"></span>
+                                                                                                </label>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -798,9 +764,9 @@
                                                                                         <div class="onoffswitch">
                                                                                             <input type="checkbox" name="collapsemenu" checked="" class="onoffswitch-checkbox" id="example2">
                                                                                             <label class="onoffswitch-label" for="example2">
-																									<span class="onoffswitch-inner"></span>
-																									<span class="onoffswitch-switch"></span>
-																								</label>
+                                                                                                    <span class="onoffswitch-inner"></span>
+                                                                                                    <span class="onoffswitch-switch"></span>
+                                                                                                </label>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -814,9 +780,9 @@
                                                                                         <div class="onoffswitch">
                                                                                             <input type="checkbox" name="collapsemenu" checked="" class="onoffswitch-checkbox" id="example6">
                                                                                             <label class="onoffswitch-label" for="example6">
-																									<span class="onoffswitch-inner"></span>
-																									<span class="onoffswitch-switch"></span>
-																								</label>
+                                                                                                    <span class="onoffswitch-inner"></span>
+                                                                                                    <span class="onoffswitch-switch"></span>
+                                                                                                </label>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -830,9 +796,9 @@
                                                                                         <div class="onoffswitch">
                                                                                             <input type="checkbox" name="collapsemenu" checked="" class="onoffswitch-checkbox" id="example5">
                                                                                             <label class="onoffswitch-label" for="example5">
-																									<span class="onoffswitch-inner"></span>
-																									<span class="onoffswitch-switch"></span>
-																								</label>
+                                                                                                    <span class="onoffswitch-inner"></span>
+                                                                                                    <span class="onoffswitch-switch"></span>
+                                                                                                </label>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -854,6 +820,8 @@
                     </div>
                 </div>
             </div>
+                <!-- Welcome area End -->
+
             <!-- Mobile Menu start -->
             <div class="mobile-menu-area">
                 <div class="container">
@@ -862,11 +830,9 @@
                             <div class="mobile-menu">
                                 <nav id="dropdown">
                                     <ul class="mobile-menu-nav">
-                                        <li><a data-toggle="collapse" data-target="#Charts" href="#">Home <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                        <li><a data-toggle="collapse" data-target="#Charts" href="index.php">Home<span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
                                             <ul class="collapse dropdown-header-top">
-                                                <li><a href="index.html">Dashboard v.1</a></li>
-                                                <li><a href="index-1.html">Dashboard v.2</a></li>
-                                                <li><a href="index-3.html">Dashboard v.3</a></li>
+                                                <li><a href="index.php">Dashboard</a></li>
                                                 <li><a href="analytics.html">Analytics</a></li>
                                                 <li><a href="widgets.html">Widgets</a></li>
                                             </ul>
@@ -1056,9 +1022,9 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <ul class="breadcome-menu">
-                                            <li><a href="#">Home</a> <span class="bread-slash">/</span>
+                                            <li><a href="index.php">Home</a> <span class="bread-slash">/</span>
                                             </li>
-                                            <li><span class="bread-blod">Dashboard V.1</span>
+                                            <li><span class="bread-blod">Dashboard</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -1072,122 +1038,149 @@
         <div class="analytics-sparkle-area">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                        <div class="analytics-sparkle-line reso-mg-b-30">
-                            <div class="analytics-content">
-                                <h5>Computer Technologies</h5>
-                                <h2>$<span class="counter">5000</span> <span class="tuition-fees">Tuition Fees</span></h2>
-                                <span class="text-success">20%</span>
-                                <div class="progress m-b-0">
-                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:20%;"> <span class="sr-only">20% Complete</span> </div>
-                                </div>
-                            </div>
+                    <!-- Cours Actifs Box -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="stat-card box">
+                            <h5>Active Courses</h5>
+                            <p><strong>Total :</strong> 120</p>
+                            <p><strong>Pending :</strong> 5</p>
+                            <a href="#courses" class="btn btn-info w-100">Course Management</a>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                        <div class="analytics-sparkle-line reso-mg-b-30">
-                            <div class="analytics-content">
-                                <h5>Accounting Technologies</h5>
-                                <h2>$<span class="counter">3000</span> <span class="tuition-fees">Tuition Fees</span></h2>
-                                <span class="text-danger">30%</span>
-                                <div class="progress m-b-0">
-                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:30%;"> <span class="sr-only">230% Complete</span> </div>
-                                </div>
-                            </div>
+                    <!-- Étudiants Inscrits Box -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="stat-card box">
+                            <h5>Enrolled Students :</h5>
+                            <p><strong>Total :</strong> 350</p>
+                            <p><strong>Active :</strong> 200</p>
+                            <a href="#students" class="btn btn-info w-100">Students Management</a>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                        <div class="analytics-sparkle-line reso-mg-b-30 table-mg-t-pro dk-res-t-pro-30">
-                            <div class="analytics-content">
-                                <h5>Electrical Engineering</h5>
-                                <h2>$<span class="counter">2000</span> <span class="tuition-fees">Tuition Fees</span></h2>
-                                <span class="text-info">60%</span>
-                                <div class="progress m-b-0">
-                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:60%;"> <span class="sr-only">20% Complete</span> </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                        <div class="analytics-sparkle-line table-mg-t-pro dk-res-t-pro-30">
-                            <div class="analytics-content">
-                                <h5>Chemical Engineering</h5>
-                                <h2>$<span class="counter">3500</span> <span class="tuition-fees">Tuition Fees</span></h2>
-                                <span class="text-inverse">80%</span>
-                                <div class="progress m-b-0">
-                                    <div class="progress-bar progress-bar-inverse" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:80%;"> <span class="sr-only">230% Complete</span> </div>
-                                </div>
-                            </div>
+                    <!-- Professeurs Box -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="stat-card box">
+                            <h5>Professors</h5>
+                            <p><strong>Total :</strong> 45</p>
+                            <p><strong>Active :</strong> 30</p>
+                            <a href="#teachers" class="btn btn-info w-100">Professors Management</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
+        
+        
         <div class="product-sales-area mg-tb-30">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                        <div class="product-sales-chart">
-                            <div class="portlet-title">
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                        <div class="caption pro-sl-hd">
-                                            <span class="caption-subject"><b>University Earnings</b></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                        <div class="actions graph-rp graph-rp-dl">
-                                            <p>All Earnings are in million $</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <ul class="list-inline cus-product-sl-rp">
-                                <li>
-                                    <h5><i class="fa fa-circle" style="color: #006DF0;"></i>CSE</h5>
-                                </li>
-                                <li>
-                                    <h5><i class="fa fa-circle" style="color: #933EC5;"></i>Accounting</h5>
-                                </li>
-                                <li>
-                                    <h5><i class="fa fa-circle" style="color: #65b12d;"></i>Electrical</h5>
-                                </li>
-                            </ul>
-                            <div id="morris-bar-chart" style="height: 356px;"></div>
-                        </div>
+                        <!-------- notifications modal-------------->
+                 <!-- Modal -->
+<div id="myModal" class="modal" style="display: none;">
+    <div class="modal-content" style="width: 80%; margin: auto; padding: 20px; border-radius: 10px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+        <span class="close" style="float: right; font-size: 20px; cursor: pointer;">&times;</span>
+        <h3 style="text-align: center;">Notifications</h3>
+
+        <!-- Notification List -->
+        <div id="complaintDetails" style="margin-top: 20px; max-height: 400px; overflow-y: auto;">
+            <!-- Notifications will be dynamically inserted here -->
+            <p>Loading notifications...</p>
+        </div>
+
+        <!-- Close Button -->
+        <div style="text-align: center; margin-top: 20px;">
+            <button id="closeModalBtn" style="background-color: #ac81f2; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+                <i class="fa fa-check" style="margin-right: 5px;"></i> Close
+            </button>
+        </div>
+    </div>
+</div>
+
+                        <!-------- notifications modal-------------->
+
+<!----------------------------------Complaint Chart----------------------------->
+<h2 style="text-align: center;">Complaint Statistics</h2>
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <!-- Adjusted canvas size -->
+    <canvas id="complaintChart" width="500" height="500"></canvas> 
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('complaintChart').getContext('2d');
+
+    // Fetch data from the backend
+    fetch('getComplaintData.php') // Replace with your PHP script's path
+        .then(response => response.json())
+        .then(data => {
+            // Predefined color palette
+            const colorPalette = [
+                '#007bff', // Blue
+                '#ffc107', // Yellow
+                '#dc3545', // Red
+                '#28a745', // Green
+                '#6f42c1', // Purple
+                '#e83e8c', // Pink
+                '#fd7e14', // Orange
+                '#20c997', // Teal
+            ];
+
+            // Map the labels to colors
+            const colors = data.labels.map((_, index) => colorPalette[index % colorPalette.length]);
+
+            new Chart(ctx, {
+                type: 'doughnut', // Donut chart
+                data: {
+                    labels: data.labels, // Dynamic labels from backend
+                    datasets: [{
+                        data: data.counts, // Dynamic counts from backend
+                        backgroundColor: colors, // Dynamic colors based on complaint types
+                    }]
+                },
+                options: {
+                    responsive: true, // Makes the chart resize dynamically
+                    maintainAspectRatio: false, // Allows it to stretch to fill its container
+                    plugins: {
+                        legend: { position: 'right' } // Legend position
+                    },
+                    cutout: '0%' // Adjust donut hole size
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching data:', error));
+</script>
+
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                        <div class="white-box analytics-info-cs mg-b-10 res-mg-t-30 table-mg-t-pro-n res-mg-b-30 tb-sm-res-d-n dk-res-t-d-n">
-                            <h3 class="box-title">Total Visit</h3>
+                        <div class="white-box analytics-info-cs mg-b-10 res-mg-b-30 res-mg-t-30 table-mg-t-pro-n tb-sm-res-d-n dk-res-t-d-n">
+                            <h3 class="box-title">Total Visits :</h3>
                             <ul class="list-inline two-part-sp">
                                 <li>
                                     <div id="sparklinedash"></div>
                                 </li>
-                                <li class="text-right sp-cn-r"><i class="fa fa-level-up" aria-hidden="true"></i> <span class="counter text-success"><span class="counter">1500</span></span>
-                                </li>
+                                <li class="text-right sp-cn-r"><i class="fa fa-level-up" aria-hidden="true"></i> <span class="counter text-success">1500</span></li>
                             </ul>
                         </div>
                         <div class="white-box analytics-info-cs mg-b-10 res-mg-b-30 tb-sm-res-d-n dk-res-t-d-n">
-                            <h3 class="box-title">Page Views</h3>
+                            <h3 class="box-title">Pages View</h3>
                             <ul class="list-inline two-part-sp">
                                 <li>
                                     <div id="sparklinedash2"></div>
                                 </li>
-                                <li class="text-right graph-two-ctn"><i class="fa fa-level-up" aria-hidden="true"></i> <span class="counter text-purple"><span class="counter">3000</span></span>
-                                </li>
+                                <li class="text-right graph-two-ctn"><i class="fa fa-level-up" aria-hidden="true"></i> <span class="counter text-purple">3000</span></li>
                             </ul>
                         </div>
                         <div class="white-box analytics-info-cs mg-b-10 res-mg-b-30 tb-sm-res-d-n dk-res-t-d-n">
-                            <h3 class="box-title">Unique Visitor</h3>
+                            <h3 class="box-title">Unique Visitors</h3>
                             <ul class="list-inline two-part-sp">
                                 <li>
                                     <div id="sparklinedash3"></div>
                                 </li>
-                                <li class="text-right graph-three-ctn"><i class="fa fa-level-up" aria-hidden="true"></i> <span class="counter text-info"><span class="counter">5000</span></span>
-                                </li>
+                                <li class="text-right graph-three-ctn"><i class="fa fa-level-up" aria-hidden="true"></i> <span class="counter text-info">5000</span></li>
                             </ul>
                         </div>
-                        <div class="white-box analytics-info-cs tb-sm-res-d-n dk-res-t-d-n">
+                        <div class="white-box analytics-info-cs table-dis-n-pro tb-sm-res-d-n dk-res-t-d-n">
                             <h3 class="box-title">Bounce Rate</h3>
                             <ul class="list-inline two-part-sp">
                                 <li>
@@ -1208,8 +1201,7 @@
                         <div class="social-media-edu">
                             <i class="fa fa-facebook"></i>
                             <div class="social-edu-ctn">
-                                <h3>50k Likes</h3>
-                                <p>You main list growing</p>
+                                <h3><br>20K Like Mentions</h3>
                             </div>
                         </div>
                     </div>
@@ -1217,8 +1209,7 @@
                         <div class="social-media-edu twitter-cl res-mg-t-30 table-mg-t-pro-n">
                             <i class="fa fa-twitter"></i>
                             <div class="social-edu-ctn">
-                                <h3>30k followers</h3>
-                                <p>You main list growing</p>
+                                <h3><br>10k Followers</h3>
                             </div>
                         </div>
                     </div>
@@ -1226,8 +1217,7 @@
                         <div class="social-media-edu linkedin-cl res-mg-t-30 res-tablet-mg-t-30 dk-res-t-pro-30">
                             <i class="fa fa-linkedin"></i>
                             <div class="social-edu-ctn">
-                                <h3>7k Connections</h3>
-                                <p>You main list growing</p>
+                                <h3><br>7k Relations</h3>
                             </div>
                         </div>
                     </div>
@@ -1235,8 +1225,7 @@
                         <div class="social-media-edu youtube-cl res-mg-t-30 res-tablet-mg-t-30 dk-res-t-pro-30">
                             <i class="fa fa-youtube"></i>
                             <div class="social-edu-ctn">
-                                <h3>50k Subscribers</h3>
-                                <p>You main list growing</p>
+                                <h3><br>50k Followers</h3>
                             </div>
                         </div>
                     </div>
@@ -1252,11 +1241,10 @@
                                 <a href="#"><img src="img/product/profile-bg.jpg" alt=""></a>
                             </div>
                             <div class="single-product-text">
-                                <img src="img/product/pro4.jpg" alt="">
-                                <h4><a class="cards-hd-dn" href="#">Angela Dominic</a></h4>
-                                <h5>Web Designer & Developer</h5>
-                                <p class="ctn-cards">Lorem ipsum dolor sit amet, this is a consectetur adipisicing elit</p>
-                                <a class="follow-cards" href="#">Follow</a>
+                                <img src="img/imen2.jfif" alt="">
+                                <h4><a class="cards-hd-dn" href="#">Imen Goutali</a></h4>
+                                <h5>Concepteur et développeur Web</h5>
+                                <a class="follow-cards" href="#">Suivre</a>
                                 <div class="row">
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                                         <div class="cards-dtn">
@@ -1273,7 +1261,7 @@
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                                         <div class="cards-dtn">
                                             <h3><span class="counter">399</span></h3>
-                                            <p>Comment</p>
+                                            <p>Comments</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1283,13 +1271,13 @@
                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <div class="single-review-st-item res-mg-t-30 table-mg-t-pro-n">
                             <div class="single-review-st-hd">
-                                <h2>Reviews</h2>
+                                <h2>Review</h2>
                             </div>
                             <div class="single-review-st-text">
-                                <img src="img/notification/1.jpg" alt="">
+                                <img src="img/imen2.jfif" alt="">
                                 <div class="review-ctn-hf">
-                                    <h3>Sarah Graves</h3>
-                                    <p>Highly recommend</p>
+                                    <h3>Imen Goutali</h3>
+                                    <p>Je recommande vivement</p>
                                 </div>
                                 <div class="review-item-rating">
                                     <i class="educate-icon educate-star"></i>
@@ -1300,10 +1288,10 @@
                                 </div>
                             </div>
                             <div class="single-review-st-text">
-                                <img src="img/notification/2.jpg" alt="">
+                                <img src="img/sadek.jpg" alt="">
                                 <div class="review-ctn-hf">
-                                    <h3>Garbease sha</h3>
-                                    <p>Awesome Pro</p>
+                                    <h3>Mohamed Sadek Déjoui</h3>
+                                    <p>Super pro</p>
                                 </div>
                                 <div class="review-item-rating">
                                     <i class="educate-icon educate-star"></i>
@@ -1314,10 +1302,10 @@
                                 </div>
                             </div>
                             <div class="single-review-st-text">
-                                <img src="img/notification/3.jpg" alt="">
+                                <img src="img/malek.jpg" alt="">
                                 <div class="review-ctn-hf">
-                                    <h3>Gobetro pro</h3>
-                                    <p>Great Website</p>
+                                    <h3>Malek Ben Rejab</h3>
+                                    <p>Excellent site Web</p>
                                 </div>
                                 <div class="review-item-rating">
                                     <i class="educate-icon educate-star"></i>
@@ -1328,38 +1316,10 @@
                                 </div>
                             </div>
                             <div class="single-review-st-text">
-                                <img src="img/notification/4.jpg" alt="">
+                                <img src="img/chahed.jpg" alt="">
                                 <div class="review-ctn-hf">
-                                    <h3>Siam Graves</h3>
-                                    <p>That's Good</p>
-                                </div>
-                                <div class="review-item-rating">
-                                    <i class="educate-icon educate-star"></i>
-                                    <i class="educate-icon educate-star"></i>
-                                    <i class="educate-icon educate-star"></i>
-                                    <i class="educate-icon educate-star"></i>
-                                    <i class="educate-icon educate-star-half"></i>
-                                </div>
-                            </div>
-                            <div class="single-review-st-text">
-                                <img src="img/notification/5.jpg" alt="">
-                                <div class="review-ctn-hf">
-                                    <h3>Sarah Graves</h3>
-                                    <p>Highly recommend</p>
-                                </div>
-                                <div class="review-item-rating">
-                                    <i class="educate-icon educate-star"></i>
-                                    <i class="educate-icon educate-star"></i>
-                                    <i class="educate-icon educate-star"></i>
-                                    <i class="educate-icon educate-star"></i>
-                                    <i class="educate-icon educate-star-half"></i>
-                                </div>
-                            </div>
-                            <div class="single-review-st-text">
-                                <img src="img/notification/6.jpg" alt="">
-                                <div class="review-ctn-hf">
-                                    <h3>Julsha Grav</h3>
-                                    <p>Sei Hoise bro</p>
+                                    <h3>Chahd Bekir</h3>
+                                    <p>C'est bien</p>
                                 </div>
                                 <div class="review-item-rating">
                                     <i class="educate-icon educate-star"></i>
@@ -1371,32 +1331,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                        <div class="single-product-item res-mg-t-30 table-mg-t-pro-n tb-sm-res-d-n dk-res-t-d-n">
-                            <div class="single-product-image">
-                                <a href="#"><img src="img/product/book-4.jpg" alt=""></a>
-                            </div>
-                            <div class="single-product-text edu-pro-tx">
-                                <h4><a href="#">Title Demo Here</a></h4>
-                                <h5>Lorem ipsum dolor sit amet, this is a consec tetur adipisicing elit</h5>
-                                <div class="product-price">
-                                    <h3>$ 45</h3>
-                                    <div class="single-item-rating">
-                                        <i class="educate-icon educate-star"></i>
-                                        <i class="educate-icon educate-star"></i>
-                                        <i class="educate-icon educate-star"></i>
-                                        <i class="educate-icon educate-star"></i>
-                                        <i class="educate-icon educate-star-half"></i>
-                                    </div>
-                                </div>
-                                <div class="product-buttons">
-                                    <button type="button" class="button-default cart-btn">Read More</button>
-                                    <button type="button" class="button-default"><i class="fa fa-heart"></i></button>
-                                    <button type="button" class="button-default"><i class="fa fa-share"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -1409,17 +1344,17 @@
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <div class="caption pro-sl-hd">
-                                            <span class="caption-subject"><b>Adminsion Statistic</b></span>
+                                            <span class="caption-subject"><b>Admission Statistics</b></span>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <div class="actions graph-rp actions-graph-rp">
                                             <a href="#" class="btn btn-dark btn-circle active tip-top" data-toggle="tooltip" title="Refresh">
-													<i class="fa fa-reply" aria-hidden="true"></i>
-												</a>
+                                                    <i class="fa fa-reply" aria-hidden="true"></i>
+                                                </a>
                                             <a href="#" class="btn btn-blue-grey btn-circle active tip-top" data-toggle="tooltip" title="Delete">
-													<i class="fa fa-trash-o" aria-hidden="true"></i>
-												</a>
+                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                </a>
                                         </div>
                                     </div>
                                 </div>
@@ -1439,19 +1374,19 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                        <div class="analysis-progrebar res-mg-t-30 mg-ub-10 table-mg-t-pro-n res-mg-b-30 tb-sm-res-d-n dk-res-t-d-n">
+                        <div class="analysis-progrebar res-mg-t-30 mg-ub-10 res-mg-b-30 table-mg-t-pro-n tb-sm-res-d-n dk-res-t-d-n">
                             <div class="analysis-progrebar-content">
-                                <h5>Usage</h5>
+                                <h5>Use</h5>
                                 <h2 class="storage-right"><span class="counter">90</span>%</h2>
                                 <div class="progress progress-mini ug-1">
                                     <div style="width: 68%;" class="progress-bar"></div>
                                 </div>
                                 <div class="m-t-sm small">
-                                    <p>Server down since 1:32 pm.</p>
+                                    <p>Server is DOWN.</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="analysis-progrebar reso-mg-b-30 mg-ub-10 res-mg-b-30 tb-sm-res-d-n dk-res-t-d-n">
+                        <div class="analysis-progrebar reso-mg-b-30 res-mg-b-30 mg-ub-10 tb-sm-res-d-n dk-res-t-d-n">
                             <div class="analysis-progrebar-content">
                                 <h5>Memory</h5>
                                 <h2 class="storage-right"><span class="counter">70</span>%</h2>
@@ -1459,11 +1394,11 @@
                                     <div style="width: 78%;" class="progress-bar"></div>
                                 </div>
                                 <div class="m-t-sm small">
-                                    <p>Server down since 12:32 pm.</p>
+                                    <p>Server is DOWN since 12:24 pm.</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="analysis-progrebar reso-mg-b-30 res-mg-t-30 mg-ub-10 res-mg-b-30 tb-sm-res-d-n dk-res-t-d-n">
+                        <div class="analysis-progrebar reso-mg-b-30 res-mg-b-30 res-mg-t-30 mg-ub-10 tb-sm-res-d-n dk-res-t-d-n">
                             <div class="analysis-progrebar-content">
                                 <h5>Data</h5>
                                 <h2 class="storage-right"><span class="counter">50</span>%</h2>
@@ -1471,7 +1406,7 @@
                                     <div style="width: 38%;" class="progress-bar progress-bar-danger"></div>
                                 </div>
                                 <div class="m-t-sm small">
-                                    <p>Server down since 8:32 pm.</p>
+                                    <p>Server is DOWN since 10:32 pm.</p>
                                 </div>
                             </div>
                         </div>
@@ -1483,7 +1418,7 @@
                                     <div style="width: 28%;" class="progress-bar progress-bar-danger"></div>
                                 </div>
                                 <div class="m-t-sm small">
-                                    <p>Server down since 5:32 pm.</p>
+                                    <p>Server is DOWN since 5:32pm.</p>
                                 </div>
                             </div>
                         </div>
@@ -1510,38 +1445,38 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <div class="white-box res-mg-t-30 table-mg-t-pro-n">
-                            <h3 class="box-title">Visits from countries</h3>
+                            <h3 class="box-title">Governorate Visits</h3>
                             <ul class="country-state">
                                 <li>
-                                    <h2><span class="counter">1250</span></h2> <small>From Australia</small>
+                                    <h2><span class="counter">1250</span></h2> <small>Tunis</small>
                                     <div class="pull-right">75% <i class="fa fa-level-up text-danger ctn-ic-1"></i></div>
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-danger ctn-vs-1" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:75%;"> <span class="sr-only">75% Complete</span></div>
                                     </div>
                                 </li>
                                 <li>
-                                    <h2><span class="counter">1050</span></h2> <small>From USA</small>
+                                    <h2><span class="counter">1050</span></h2> <small>Ben Arous</small>
                                     <div class="pull-right">48% <i class="fa fa-level-up text-success ctn-ic-2"></i></div>
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-info ctn-vs-2" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:48%;"> <span class="sr-only">48% Complete</span></div>
                                     </div>
                                 </li>
                                 <li>
-                                    <h2><span class="counter">6350</span></h2> <small>From Canada</small>
+                                    <h2><span class="counter">6350</span></h2> <small>Sousse</small>
                                     <div class="pull-right">55% <i class="fa fa-level-up text-success ctn-ic-3"></i></div>
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-success ctn-vs-3" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:55%;"> <span class="sr-only">55% Complete</span></div>
                                     </div>
                                 </li>
                                 <li>
-                                    <h2><span class="counter">950</span></h2> <small>From India</small>
+                                    <h2><span class="counter">950</span></h2> <small>Ariana</small>
                                     <div class="pull-right">33% <i class="fa fa-level-down text-success ctn-ic-4"></i></div>
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-success ctn-vs-4" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:33%;"> <span class="sr-only">33% Complete</span></div>
                                     </div>
                                 </li>
                                 <li>
-                                    <h2><span class="counter">3250</span></h2> <small>From Bangladesh</small>
+                                    <h2><span class="counter">3250</span></h2> <small>Sfax</small>
                                     <div class="pull-right">60% <i class="fa fa-level-up text-success ctn-ic-5"></i></div>
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-inverse ctn-vs-5" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:60%;"> <span class="sr-only">60% Complete</span></div>
@@ -1554,20 +1489,20 @@
                         <div class="courses-inner res-mg-t-30 table-mg-t-pro-n tb-sm-res-d-n dk-res-t-d-n">
                             <div class="courses-title">
                                 <a href="#"><img src="img/courses/1.jpg" alt="" /></a>
-                                <h2>Apps Development</h2>
+                                <h2>App Development</h2>
                             </div>
                             <div class="courses-alaltic">
                                 <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-clock"></i></span> 1 Year</span>
                                 <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-heart"></i></span> 50</span>
-                                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-dollar"></i></span> 500</span>
+                                <span class="cr-ic-r"><span class="course-icon"></span><strong>TND</strong> 500 </span>
                             </div>
                             <div class="course-des">
-                                <p><span><i class="fa fa-clock"></i></span> <b>Duration:</b> 6 Months</p>
-                                <p><span><i class="fa fa-clock"></i></span> <b>Professor:</b> Jane Doe</p>
-                                <p><span><i class="fa fa-clock"></i></span> <b>Students:</b> 100+</p>
+                                <p><span><i class="fa fa-clock"></i></span> <b>Period :</b> 6 Mois</p>
+                                <p><span><i class="fa fa-clock"></i></span> <b>Professor :</b> Akrem Jouini</p>
+                                <p><span><i class="fa fa-clock"></i></span> <b>Student :</b> 100+</p>
                             </div>
                             <div class="product-buttons">
-                                <button type="button" class="button-default cart-btn">Read More</button>
+                                <button type="button" class="button-default cart-btn">More</button>
                             </div>
                         </div>
                     </div>
@@ -1578,15 +1513,12 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="footer-copy-right">
-                            <p>Copyright © 2018. All rights reserved. Template by <a href="https://colorlib.com/wp/templates/">Colorlib</a></p>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- jquery
 		============================================ -->
     <script src="js/vendor/jquery-1.12.4.min.js"></script>
@@ -1628,7 +1560,7 @@
 		============================================ -->
     <script src="js/morrisjs/raphael-min.js"></script>
     <script src="js/morrisjs/morris.js"></script>
-    <script src="js/morrisjs/home3-active.js"></script>
+    <script src="js/morrisjs/morris-active.js"></script>
     <!-- morrisjs JS
 		============================================ -->
     <script src="js/sparkline/jquery.sparkline.min.js"></script>
@@ -1648,6 +1580,68 @@
     <!-- tawk chat JS
 		============================================ -->
     <script src="js/tawk-chat.js"></script>
+
+    <!-------------scipt el modal taa notif----------->
+     
+    <script>
+   // Open Modal on Button Click
+// Open Modal on Button Click
+document.querySelectorAll('.openNotificationPopup').forEach(button => { 
+    button.addEventListener('click', function () {
+        const modal = document.getElementById('notificationModal');
+        modal.style.display = 'block'; // Show the modal
+
+        // Fetch notifications and populate the modal
+        fetch('fetch_notifFRONT.php')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                const detailsDiv = document.getElementById('notificationDetails');
+                if (data.length > 0) {
+                    detailsDiv.innerHTML = data.map(notification => `
+                        <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px;">
+                            <p><strong>Complaint:</strong> ${notification.contenu}</p>
+                            
+                            <a href="ComplaintResponse.php?id=${notification.id_notif}" style="text-decoration: none;">
+                                <button style="background-color: #ac81f2; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+                                    View Details
+                                </button>
+                            </a>
+                        </div>
+                    `).join('');
+                } else {
+                    detailsDiv.innerHTML = '<p>No notifications available.</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('notificationDetails').innerHTML = '<p>Error fetching notifications.</p>';
+            });
+    });
+});
+
+
+// Close Modal Functionality
+document.querySelector('.close').addEventListener('click', () => {
+    document.getElementById('myModal').style.display = 'none';
+});
+
+document.getElementById('closeModalBtn').addEventListener('click', () => {
+    document.getElementById('myModal').style.display = 'none';
+});
+
+// Optional: Close modal when clicking outside the modal content
+window.addEventListener('click', (event) => {
+    const modal = document.getElementById('myModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});
+
+
+
+    </script>
+    
 </body>
 
 </html>
