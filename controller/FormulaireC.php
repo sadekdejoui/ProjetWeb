@@ -87,14 +87,40 @@ class FormulaireC
     }
 
     // Method to add a new complaint (main logic for form submission)
-     /*function addComplaint($nom, $identifiant, $email, $telephone, $type_reclamation, $prof, $service, $description, $urgent, $file)
+    function addComplaint($nom, $identifiant, $email, $telephone, $type_reclamation, $prof, $service, $description, $urgent)
     {
-// File upload logic
-
-
-
-       $sql = "INSERT INTO complaint (nom,ID, email, telephone, type_reclamation, prof, service, description, urgent, file)
-                VALUES (:nom,:identifiant, :email, :telephone, :type_reclamation, :prof, :service, :description, :urgent, :file)";
+        $fileContent = null; // Variable to store combined file content
+    
+        // Check if files are uploaded
+        if (isset($_FILES['file']) && !empty($_FILES['file']['name'][0])) {
+            $files = [];
+    
+            // Loop through each uploaded file
+            foreach ($_FILES['file']['tmp_name'] as $index => $tmpName) {
+                if (is_uploaded_file($tmpName)) {
+    
+                    // File type validation
+                    $fileInfo = pathinfo($_FILES['file']['name'][$index]);
+                    $allowedTypes = ['jpg', 'jpeg', 'png', 'pdf'];  // Example allowed types
+    
+                    // If file type is not allowed, return an error message
+                    if (!in_array($fileInfo['extension'], $allowedTypes)) {
+                        echo "Invalid file type. Only JPG, JPEG, PNG, and PDF files are allowed.";
+                        return; // Stop further processing
+                    }
+    
+                    // If file is valid, get the content
+                    $files[] = file_get_contents($tmpName); // Get binary content of each file
+                }
+            }
+    
+            // Combine all files into a single blob (or base64 string if needed)
+            $fileContent = implode('::FILE_SEPARATOR::', $files); // Separate each file with a marker
+        }
+    
+        // SQL to insert complaint with the files
+        $sql = "INSERT INTO complaint (nom, ID, email, telephone, type_reclamation, prof, service, description, urgent, file)
+                VALUES (:nom, :identifiant, :email, :telephone, :type_reclamation, :prof, :service, :description, :urgent, :file)";
         
         $db = config::getConnexion();
         try {
@@ -109,14 +135,17 @@ class FormulaireC
                 'service' => $service,
                 'description' => $description,
                 'urgent' => $urgent,
-                'file'=> $file,
+                'file' => $fileContent, // Store the combined file content
             ]);
             echo "Complaint submitted successfully!";
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
         }
-    }*/
-    function addComplaint($nom, $identifiant, $email, $telephone, $type_reclamation, $prof, $service, $description, $urgent)
+    }
+    
+    
+    
+    /*function addComplaint($nom, $identifiant, $email, $telephone, $type_reclamation, $prof, $service, $description, $urgent)
     {
         $sql = "INSERT INTO complaint (nom, ID, email, telephone, type_reclamation, prof, service, description, urgent)
                 VALUES (:nom, :identifiant, :email, :telephone, :type_reclamation, :prof, :service, :description, :urgent)";
@@ -139,7 +168,7 @@ class FormulaireC
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
         }
-    }
+    }*/
 
     // Method to show a specific complaint (optional, in case you need to show details of a single complaint)
   
@@ -309,6 +338,12 @@ public function showmessage($id)
     }
 
 */
-
+function mime_content_type_from_binary($binaryData) {
+    // Optionally, use finfo to determine MIME type
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mimeType = finfo_buffer($finfo, $binaryData);
+    finfo_close($finfo);
+    return $mimeType;
+}
 }
 ?>

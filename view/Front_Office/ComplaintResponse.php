@@ -152,11 +152,34 @@ $message=$c->showmessage($id);
     text-decoration: none;
     cursor: pointer;
 }
-
-
-
 </style>
-    
+ <!-------------css button file ------------->   
+ <style>
+    /* Style the custom label to act as a button */
+.custom-file-upload {
+    background-color: #ac81f2; /* Purple background */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Hide the default file input */
+input[type="file"] {
+    display: none;
+}
+
+/* Style the button on hover */
+.custom-file-upload:hover {
+    background-color: #ffd891; /* Yellow when hovered */
+    color: black;
+}
+
+ </style>
 </head>
 
 <body>
@@ -345,6 +368,9 @@ $message=$c->showmessage($id);
             </div>
             <div style="text-align: center;">
 
+                <label for="file" class="custom-file-upload"> Upload Files </label>
+                <input type="file" id="file" name="file[]" multiple>
+            
             <button id="updateModifyModalBtn" 
                 style="background-color: #ac81f2; color: white; border: none; 
                 padding: 10px 15px; border-radius: 5px; cursor: pointer;"
@@ -360,6 +386,9 @@ $message=$c->showmessage($id);
                   onmouseout="this.style.backgroundColor='#ac81f2';">
                     <i class="fa fa-check" style="margin-right: 5px;"></i> Discard 
                 </button> 
+               
+    
+
                  <!-- Message that will appear after clicking the update button -->
                     <div id="successMessage"  data-id="<?php echo $cc['id_form']; ?>" style="color: green; font-size: 16px; margin-top: 10px; display: none;">
                         Updated Successfully.
@@ -624,7 +653,12 @@ window.onclick = function (event) {
 
         // Fetch complaint details via AJAX
         fetch(`melekfetchdesc.php?id=${complaintId}`)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();  // Parse JSON response
+            })
             .then(data => {
                 if (data.error) {
                     detailsDiv.innerHTML = `<p style="color:red;">${data.error}</p>`;
@@ -638,10 +672,32 @@ window.onclick = function (event) {
 
                     // Check if there is a file (attachment)
                     if (data.file) {
-                        content += `
-                            <p><strong>Attachment:</strong> <a href="${data.file}" target="_blank">View File</a></p>
-                        `;
-                    }
+    // Assuming the file is an image (e.g., jpg, png, gif)
+    if (data.file.startsWith('iVBOR') || data.file.startsWith('R0lG')) {
+        // Base64 encoded image (PNG/JPG)
+        content += `
+            <p><strong>Attachment:</strong> <a href="data:image/png;base64,${data.file}" target="_blank">View Image</a></p>
+        `;
+    }
+    // If the file is a PDF
+    else if (data.file.startsWith('/9j/')) {
+        content += `
+            <p><strong>Attachment:</strong> <a href="data:application/pdf;base64,${data.file}" target="_blank">View PDF</a></p>
+        `;
+    }
+    // If the file is a text file
+    else if (data.file.startsWith('UEsDB')) {
+        content += `
+            <p><strong>Attachment:</strong> <pre>${atob(data.file)}</pre></p>
+        `;
+    }
+    // If the file is a document (e.g., .docx, .xlsx) - using Google Docs Viewer
+    else {
+        content += `
+            <p><strong>Attachment:</strong> <a href="https://docs.google.com/gview?url=data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,${data.file}&embedded=true" target="_blank">View Document</a></p>
+        `;
+    }
+}
 
                     // Display the content
                     detailsDiv.innerHTML = content;
@@ -653,6 +709,29 @@ window.onclick = function (event) {
             });
     });
 });
+
+// Close Modal Button
+document.getElementById('closeModifyModalBtn')?.addEventListener('click', function() {
+    document.getElementById('myModalPending').style.display = 'none';
+});
+
+// Update Button (handle update logic)
+document.getElementById('updateModifyModalBtn')?.addEventListener('click', function() {
+    const complaintId = this.getAttribute('data-id');
+    const updatedText = document.getElementById('changeText').value;
+    const successMessage = document.getElementById('successMessage');
+    
+    // You can implement AJAX to update the complaint here
+    // For example:
+    // fetch(`updateComplaint.php?id=${complaintId}&desc=${encodeURIComponent(updatedText)}`)
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         if (data.success) {
+    //             successMessage.style.display = 'block';
+    //         }
+    //     });
+});
+
 
 
 

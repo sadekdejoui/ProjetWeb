@@ -2,19 +2,13 @@
 require '../../config.php';
 require_once '../../model/Formulaire.php';
 include_once '../../Controller/FormulaireC.php';
-include_once '../../Controller/NotificationC.php';
+
 session_start();
 $c=new FormulaireC();
-
-
-//$complaints=$c->listformulaire();
+$complaints=$c->listformulaire();
 //$complaintsA=$c->listformulaireA();
-$complaintsD=$c->listformulaireP();
-$notif=new NotificationC();
-$all_notifs_any=$notif->showNotifAdmin();
-$all_notifs=$notif->showNotifAdminUnseen();
+//$complaintsD=$c->listformulaireP();
 
-   
 
 
 ?>
@@ -23,7 +17,7 @@ $all_notifs=$notif->showNotifAdminUnseen();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pending Complaints</title>
+    <title>Complaint Management</title>
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
     <link rel="stylesheet" href="../Back_Office/css/styleComp.css">
     <link rel="stylesheet" href="../Back_Office/css/bootstrap.min.css">
@@ -78,8 +72,16 @@ $all_notifs=$notif->showNotifAdminUnseen();
             display: none;
         }
     </style>
-     <!------------------CSS tableau------------------>
      <style>
+        #error-message {
+            display: none;
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+    </style>
+    <!------------------CSS tableau------------------>
+    <style>
         /* Styling the reclamations table */
 .reclamations-table {
     display: flex;
@@ -135,66 +137,9 @@ $all_notifs=$notif->showNotifAdminUnseen();
 }
     </style>
 
-<style>
-    /* Modal Overlay */
-    .notification-modal {
-        display: none; /* Hidden by default */
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.5); /* Black background with transparency */
-    }
 
-    /* Modal Content */
-    .notification-modal-content {
-        background-color: #f9f9f9;
-        margin: 25% auto; /* Adjusted the top margin for a smaller position */
-        padding: 15px; /* Reduced padding */
-        border: 1px solid #888;
-        width: 40%; /* Reduced width */
-        max-width: 400px; /* Added max-width to control the size on larger screens */
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
-        animation: fadeIn 0.3s;
-    }
 
-    /* Close Button */
-    .closeNotificationModal {
-        color: #aaa;
-        float: right;
-        font-size: 24px; /* Reduced font size */
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .closeNotificationModal:hover,
-    .closeNotificationModal:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-
-    /* Animations */
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
-
-    /* Notification Modal Active */
-    .notification-modal.active {
-        display: block;
-    }
-</style>
-
- 
+   
 </head>
 <body>
     <!-- Start Left menu area -->
@@ -231,7 +176,7 @@ $all_notifs=$notif->showNotifAdminUnseen();
                             <ul class="submenu-angle" aria-expanded="false">
                                 <li><a title="All Forums" href="../Back_Office/REC_FORMBackOffice.php"><span class="mini-sub-pro">All Complaints</span></a></li>
                                 <li><a title="Create Forum" href="../Back_Office/AppComp.php"><span class="mini-sub-pro">Approved Complaints</span></a></li>
-                                <li><a title="Forum Topics" href="#"><span class="mini-sub-pro">Pending Complaints</span></a></li>
+                                <li><a title="Forum Topics" href="../Back_Office/PenComp.php"><span class="mini-sub-pro">Pending Complaints</span></a></li>
                             </ul>                        
                         </li>
                         <li>
@@ -270,7 +215,7 @@ $all_notifs=$notif->showNotifAdminUnseen();
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="logo-pro">
-                        <a href="../Back_Office/index.php"><img class="main-logo" src="../Back_Office/img/logo/logo.png" alt="" /></a>
+                        <a href="index.php"><img class="main-logo" src="../Back_Office/img/logo/logo.png" alt="" /></a>
                     </div>
                 </div>
             </div>
@@ -292,7 +237,7 @@ $all_notifs=$notif->showNotifAdminUnseen();
                                     <div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
                                         <div class="header-top-menu tabl-d-n">
                                             <ul class="nav navbar-nav mai-top-nav">
-                                                <li class="nav-item"><a href="../Back_Office/index.php" class="nav-link">Home</a></li>
+                                                <li class="nav-item"><a href="index.php" class="nav-link">Home</a></li>
                                                 <li class="nav-item"><a href="#" class="nav-link">About</a></li>
                                                 <li class="nav-item"><a href="#" class="nav-link">Services</a></li>
                                                 <li class="nav-item dropdown res-dis-nn">
@@ -311,52 +256,29 @@ $all_notifs=$notif->showNotifAdminUnseen();
                                     <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
                                         <div class="header-right-info">
                             <!----------------------------------------START NOTIFICATION REC-------------------------------->
-<ul class="nav navbar-nav mai-top-nav header-right-menu">
-    <li class="nav-item">
-    <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
-        <i class="educate-icon educate-bell" aria-hidden="true"></i>
-        <span class="indicator-nt"></span>
-    </a>
-    <div role="menu" class="notification-author dropdown-menu animated zoomIn">
-        <div class="notification-single-top">
-            <h1>Notifications</h1>
-        </div>
-        <ul class="notification-menu">
-            <?php foreach($all_notifs as $notf) { ?>
-                <li>
-                    <a href="seennotif.php?id=<?php echo $notf['id_notif']; ?>">
-                        <div class="notification-icon">
-                            <i class="educate-icon educate-checked edu-checked-pro admin-check-pro" aria-hidden="true"></i>
-                        </div>
-                        <div class="notification-content">
-                            <span class="notification-date">
-                                <?php 
-                                // Check if the created_at field has a valid date, otherwise use the current date
-                                $date = strtotime($notf['created_at']);
-                                if ($date === false || $notf['created_at'] == '0000-00-00 00:00:00') {
-                                    echo date('j M'); // If invalid, display current date
-                                } else {
-                                    echo date('j M', $date); // Format the valid date
-                                }
-                                ?>
-                            </span>
-                            <h2><?php echo $notf['id_user']; ?><span class="educate-icon educate-interface icon-wrap"></span> </h2>
-                            <p><?php echo $notf['contenu']; ?></p>
-                        </div>
-                    </a>
-                </li>
-            <?php } ?>
-        </ul>
-        <div class="notification-view">
-            <a href="#" id="showNotifications" class="openNotificationPopup" data-id="<?php echo $notf['id_notif']; ?>">Show all notifications</a>
-        </div>
-    </div>
-</li>
-        <!----------------------------------------END notif Rec------------------------------------------------->
+                                            <ul class="nav navbar-nav mai-top-nav header-right-menu">
+
+                                               <!-- <li class="nav-item dropdown">
+                                                    <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="educate-icon educate-message edu-chat-pro" aria-hidden="true"></i><span class="indicator-ms"></span></a>
+                                                    <div role="menu" class="author-message-top dropdown-menu animated zoomIn">
+                                                        <div class="message-single-top">
+                                                            <h1>Message</h1>
+                                                        </div>
+                                                        <ul class="message-menu">
+                                                            
+                                                            
+                                                          
+                                                        </ul>
+                                                        <div class="message-view">
+                                                            <a href="#">Voir tous les messages</a>
+                                                        </div>
+                                                    </div>
+                                                </li>-->
+
 
                                                 <li class="nav-item">
                                                     <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
-                                                        <span class="admin-name">Admin</span>
+ <span class="admin-name">Admin</span>
                                                         <i class="fa fa-angle-down edu-icon edu-down-arrow"></i>
                                                     </a>
                                                     <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">
@@ -379,107 +301,154 @@ $all_notifs=$notif->showNotifAdminUnseen();
         </div>
     </div>
     <!-- Welcome area End -->
-     <!-- Modal -->
-<div id="notificationModal" class="notification-modal" style="display: none;">
-    <div class="notification-modal-content" style="width: 80%; margin: auto; padding: 20px; border-radius: 10px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-        <span class="closeNotificationModal" style="float: right; font-size: 20px; cursor: pointer;">&times;</span>
-        <h3 style="text-align: center;">Notifications</h3>
+       <!-------- notifications modal-------------->
+                 
 
-        <!-- Notification List -->
-        <div id="notificationDetails" style="margin-top: 20px; max-height: 400px; overflow-y: auto;">
-            <!-- Notifications will be dynamically inserted here -->
-            <p>Loading notifications...</p>
-        </div>
-
-        <!-- Close Button -->
-        <div style="text-align: center; margin-top: 20px;">
-            <button id="closeNotificationModalBtn" style="background-color: #ac81f2; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
-                <i class="fa fa-check" style="margin-right: 5px;"></i> Close
-            </button>
-        </div>
-    </div>
-</div>
 
     <!-- Page 1: Gestion des Réclamations -->
     <div id="page1" class="page active">
         <header>
             <h1>Complaint Management</h1>
-           <!-- <p id="total-reclamations">Total Complaints: 0</p>-->
+            <p id="total-reclamations">Total Complaints: 0</p>
         </header>
         <main>
             <section class="stats">
 
                
 
-
-            
+            <section class="filters">
+    <h2>Filtres</h2>
+    <select id="type-filter">
+        <option value="all">All</option>
+        <option value="cours">Course</option>
+        <option value="professeur">Professors</option>
+        <option value="site_web">Technical Issues</option>
+        <option value="Others">Others</option>
+    </select>
+    <button id="urgent-filter">Urgents</button>
+</section>
 
 <section class="reclamations-table">
-    
-               <!------- tableau theleth --------------->
-               <h2>Pending Complaints</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Email</th>
-                            
-                            
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!---- contenuuuuuuuuuuuuuuu--->
-                          
-                            <?php foreach ($complaintsD as $cc): ?>
-                                <tr>
-                                <td>
-                                        <?php echo htmlspecialchars($cc['nom'] ); ?>
-                                    </td>  
-                                      <td>
-                                        <?php echo htmlspecialchars($cc['email'] ); ?>
-                                    </td>  
-                                     
-                                    <td>
-                                         <button class="openModal" data-id="<?php echo $cc['id_form']; ?>">Review Complaint</button>
-                                    </td>
-                                 
-                                </tr>
-                                <?php endforeach; ?>
+    <h2>All Complaints</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Email</th>
+                
+              
+               <!-- <th>Description</th>-->
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="complaints-table-body">
+            <!-- Complaints will be dynamically loaded here -->
+            <?php foreach ($complaints as $cc): ?>
+                <tr class="complaint-row" data-type="<?php echo htmlspecialchars($cc['type_reclamation']); ?>">
+                    <td><?php echo htmlspecialchars($cc['nom']); ?></td>
+                    <td><?php echo htmlspecialchars($cc['email']); ?></td>
+                    
+ 
+                    <?php if($cc['status'] == '0'): ?>
+                        <td><button class="openModal" data-id="<?php echo $cc['id_form']; ?>">Review Complaint</button></td>
+                    <?php endif; ?>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+            <!----------------Dynamic Filter-------------------->
+            <script>
+   // Function to filter complaints based on selected type when the dropdown value changes
+document.getElementById('type-filter').addEventListener('change', function () {
+    const filterValue = this.value; // Get selected filter value from dropdown
+    const rows = document.querySelectorAll('#complaints-table-body .complaint-row'); // Select all rows in the table
+
+    rows.forEach(row => {
+        const type = row.getAttribute('data-type'); // Get the type of the current row
+        console.log(type); // Debugging line to log the type
+
+        if (filterValue === 'all' || type === filterValue) {
+            row.style.display = ''; // Show row
+        } else {
+            row.style.display = 'none'; // Hide row
+        }
+    });
+});
 
 
+    // Optional: To add functionality for urgent filter (if you need to filter based on 'urgent' status)
+    document.getElementById('urgent-filter').addEventListener('click', function () {
+        const rows = document.querySelectorAll('#complaints-table-body .complaint-row'); // Select all rows in the table
 
+        rows.forEach(row => {
+            const isUrgent = row.querySelector('td:nth-child(6)'); // Check if the row has the 'urgent' status (you can adjust this based on how 'urgent' is represented)
 
+            if (isUrgent && isUrgent.textContent.toLowerCase().includes('urgent')) {
+                row.style.display = ''; // Show urgent rows
+            } else {
+                row.style.display = 'none'; // Hide non-urgent rows
+            }
+        });
+    });
+</script>
+ <!---------------- ENDDynamic Filter-------------------->
+               
 
-                        <!---- contenuuuuuuuuuuuuuuu--->
-                    </tbody>
-                </table>
-                <!----- wfe el tableauu el theleth-------->
-            </section>
+    <!-- Page 2: Voir Réclamation -->
+    <div id="page2" class="page">
+        <header>
+            <h1>Complaint Details</h1>
+        </header>
+        <main>
+            <div id="reclamation-details">
+                <!-- Détails de la réclamation -->
+            </div>
+            <button id="back-to-page1">Back</button>
         </main>
     </div>
 
-   <!--- code modal (chebek)-->
+    <!-- Page 3: Résoudre Réclamation -->
+    <div id="page3" class="page">
+        <header>
+            <h1>Complaint Resolution</h1>
+        </header>
+        <main>
+            <div id="resolution-details">
+                <!-- Détails pour la résolution -->
+            </div>
+          
+        </main>
+    </div>
 
+    <!-- Refusal Modal -->
+    <div id="refusal-message" class="hidden">
+        <div class="refusal-content">
+            <p>The complaint has been rejected.</p>
+            <button id="close-refusal">close</button>
+        </div>
+    </div>
+
+    <script src="../Back_Office/js/scriptComp.js"></script>
    
-    <!--- code modal (chebek)-->
-
-    <!-- End JS -->
+    <script>
+        $(document).ready(function() {
+            $('#sidebarCollapse').on('click', function() {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+    </script>
+    
      <!-- start of the window -->
     
 
 <!-- Modal -->
-<!-- Modal -->
-<div id="myModal" class="modal">
+<div id="complaintModal" class="modal">
     <div class="modal-content">
-        <span class="close">&times;</span>
+        <span class="close" style="float: right; font-size: 20px; cursor: pointer;">&times;</span>
         <h3>Complaint Details</h3>
         <div id="complaintDetails">
             <p>Loading...</p>
         </div>
-
-        <!-- Response Section -->
-        <h4>Solution:</h4>
         <textarea id="remarque" style="
             width: 50%;
             padding: 12px;
@@ -491,168 +460,151 @@ $all_notifs=$notif->showNotifAdminUnseen();
             box-sizing: border-box;
             transition: border-color 0.3s ease, background-color 0.3s ease;
         "></textarea>
-        <!-- Add a hidden input field to store the complaint ID -->
-        <input type="hidden" id="complaint_id" value="">
-        
-        <div id="responseDetails">
-            <!-- Responses will be inserted here -->
-        </div>
-
+        <p id="error-message" style="color: red; display: none;">Please review this complaint. The solution can't be empty.</p>
         <div>
-            <p id="error-message" style="color: red; display: none;">Please review this complaint. The solution can't be empty.</p>
-            <div>
+            <a id="approveLink" href="#">
                 <button id="verified-button" style="background-color: #28a745; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
                     <i class="fa fa-check" style="margin-right: 5px;"></i> Verified
                 </button>
-                <a id="deleteLink" href="#">
+            </a>
+            <a id="deleteLink" href="#">
                 <button style="background-color: #dc3545; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
                     <i class="fa fa-trash" style="margin-right: 5px;"></i> Delete
                 </button>
             </a>
-
-
- 
-            </div>
         </div>
     </div>
 </div>
 
 <script>
-  document.querySelectorAll('.openModal').forEach(button => {
+   document.querySelectorAll('.openModal').forEach(button => {
     button.addEventListener('click', function () {
-        const complaintId = this.getAttribute('data-id'); // Get the complaint ID
+        const complaintId = this.getAttribute('data-id');  // Get the complaint ID
 
-        // Show the modal
-        const modal = document.getElementById('myModal');
+        // Show the complaint details modal
+        const modal = document.getElementById('complaintModal');
         modal.style.display = 'block';
 
-        // Show loading message
+        // Show loading message while fetching the complaint details
         const detailsDiv = document.getElementById('complaintDetails');
         detailsDiv.innerHTML = '<p>Loading...</p>';
 
-        // Fetch complaint details via AJAX
+        // Fetch complaint details via AJAX (from your server-side PHP script)
         fetch(`melek.php?id=${complaintId}`)
-            .then(response => response.json())
+            .then(response => {
+                // Check if the response is valid
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
+                // Log the data for debugging
+                console.log('Complaint Data:', data);
+
                 if (data.error) {
                     detailsDiv.innerHTML = `<p style="color:red;">${data.error}</p>`;
                 } else {
-                    // Populate the modal with data
-                    let content = `
+                    // Populate the modal with complaint details
+                    detailsDiv.innerHTML = `
                         <p><strong>Name:</strong> ${data.nom}</p>
                         <p><strong>Email:</strong> ${data.email}</p>
                         <p><strong>Phone:</strong> ${data.telephone}</p>
                         <p><strong>Type:</strong> ${data.type_reclamation}</p>
                         <p><strong>Description:</strong> ${data.description}</p>
                     `;
-
-                    // Check if there's a file
-                    if (data.fileContent) {
-                        // Display the file with appropriate handling
-                        const fileType = data.fileType || 'application/octet-stream';
-                        content += `
-                            <p><strong>Attachment:</strong> <a href="data:${fileType};base64,${data.fileContent}" target="_blank">View File</a></p>
-                        `;
-                    } else {
-                        content += `
-                            <p><strong>Attachment:</strong> No attachment provided.</p>
-                        `;
-                    }
-
-                    // Update modal content
-                    detailsDiv.innerHTML = content;
-
-                    // Set the complaint ID for the hidden input
-                    document.getElementById("complaint_id").value = complaintId;
                 }
             })
             .catch(error => {
-                detailsDiv.innerHTML = `<p style="color:red;">Error loading details.</p>`;
+                detailsDiv.innerHTML = `<p style="color:red;">Error loading details. ${error.message}</p>`;
                 console.error('AJAX Error:', error);
             });
     });
 });
 
+// Close the complaint details modal when clicking the close button
+document.querySelector('.close').onclick = function () {
+    document.getElementById('complaintModal').style.display = 'none';
+};
 
-    // Close modal when clicking the close button
-    document.querySelector('.close').onclick = function () {
-        document.getElementById('myModal').style.display = 'none';
-    };
-
-    // Close modal when clicking outside the modal content
-    window.onclick = function (event) {
-        const modal = document.getElementById('myModal');
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    };
-
-    document.getElementById("verified-button").addEventListener("click", function () {
-    const response = document.getElementById("remarque").value.trim();
-    const complaintId = document.getElementById("complaint_id").value;
-
-    // Check if the response is empty
-    if (response === "") {
-        document.getElementById("error-message").style.display = "block"; 
-        return;
-    } else {
-        document.getElementById("error-message").style.display = "none"; 
+// Close the complaint details modal when clicking outside the modal content
+window.onclick = function (event) {
+    const modal = document.getElementById('complaintModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
     }
-
-    const formData = new FormData();
-    formData.append("response", response);
-    formData.append("complaint_id", complaintId);
-
-    fetch("approveContact.php", {
-        method: "POST",
-        body: formData
-    })
-    .then(response => response.json())  // Make sure the response is parsed as JSON
-    .then(data => {
-        // Check the response from the server
-        if (data.success) {
-            alert("Response submitted successfully!");
-            document.getElementById("myModal").style.display = "none"; 
-        } else {
-            // Show the error message from the server
-            alert("Error: " + data.message);
-        }
-    })
-    .catch(error => {
-        // Handle fetch or JSON parsing errors
-        alert("There was an error processing the request.");
-        console.error("Error details:", error);
-    });
-});
+};
 </script>
 
 
 
 
-     <!-- end  of the window -->
-
 <!-----------------------Control de saisie reponse ------------------------->
 <script>
+   document.addEventListener("DOMContentLoaded", function() {
     const textarea = document.getElementById("remarque");
     const errorMessage = document.getElementById("error-message");
     const verifiedButton = document.getElementById("verified-button");
 
-    verifiedButton.addEventListener("click", function (event) {
-        const value = textarea.value.trim();
+    if (verifiedButton) { // Check if the button exists
+        verifiedButton.addEventListener("click", function (event) {
+            const value = textarea.value.trim();
 
-        // Validate input
-        if (value === "") {
-            event.preventDefault(); // Prevent button's default behavior
-            errorMessage.style.display = "block"; // Show error message
-        } else {
-            errorMessage.style.display = "none"; // Hide error message
-            alert("Complaint verified successfully!");
-        }
+            event.preventDefault(); // Prevent default behavior
+
+            // Validate input
+            if (value === "") {
+                errorMessage.style.display = "block"; // Show error message
+
+                // Keep the error message visible for 3 seconds
+                setTimeout(() => {
+                    errorMessage.style.display = "none"; // Hide error message after 3 seconds
+                }, 3000);
+            } else {
+                errorMessage.style.display = "none"; // Hide error message
+
+                // Proceed with success logic after a delay of 3 seconds
+                setTimeout(() => {
+                    alert("Complaint verified successfully!");
+                    // Close modal or take further actions here
+                }, 3000);
+            }
+        });
+    } else {
+        console.error("Verified button not found!");
+    }
+});
+
+
+
+    </script>
+
+
+<!--- code modal detail complaint(chebek)-->
+
+
+    <!--- code modal (chebek)-->
+
+    <!-- End JS -->
+<script>
+    document.getElementById('approveLink').addEventListener('click', function (e) {
+        e.preventDefault();
+        const id = <?php echo json_encode($cc['id_form']); ?>;
+        const message = document.getElementById('remarque').value;
+        window.location.href = `approveContact.php?id=${id}&message=${encodeURIComponent(message)}`;
+    });
+
+    document.getElementById('deleteLink').addEventListener('click', function (e) {
+        e.preventDefault();
+        const id = <?php echo json_encode($cc['id_form']); ?>;
+        const message = document.getElementById('remarque').value;
+        window.location.href = `DeleteContactAdmin.php?id=${id}&message=${encodeURIComponent(message)}`;
     });
 </script>
-<!-----------------------Control de saisie reponse ------------------------->
 
 
+
+     <!-- end  of the window -->
      <!-- jquery
 		============================================ -->
     <script src="js/vendor/jquery-1.12.4.min.js"></script>
@@ -714,25 +666,5 @@ $all_notifs=$notif->showNotifAdminUnseen();
     <!-- tawk chat JS
 		============================================ -->
     <script src="js/tawk-chat.js"></script>
-    <!---------------------Delete complaint--------------------------->
-<script>
-    
-    document.addEventListener('DOMContentLoaded', function () {
-        const deleteLink = document.getElementById('deleteLink');
-        if (deleteLink) {
-            deleteLink.addEventListener('click', function (e) {
-                e.preventDefault();
-                const id = <?php echo json_encode($cc['id_form']); ?>;
-                const message = document.getElementById('remarque').value;
-                window.location.href = `DeleteContactAdmin.php?id=${id}&message=${encodeURIComponent(message)}`;
-            });
-        } else {
-            console.error("Delete link element not found!");
-        }
-    });
-
-
-    
-</script>
 </body>
 </html>

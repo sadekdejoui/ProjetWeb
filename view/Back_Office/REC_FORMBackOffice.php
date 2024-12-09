@@ -416,8 +416,8 @@ $all_notifs=$notif->showNotifAdminUnseen();
     </div>
     <!-- Welcome area End -->
        <!-------- notifications modal-------------->
-                 <!-- Modal -->
-<div id="myModal" class="modal" style="display: none;">
+                 
+<div id="myModal" class="modal" style="display: none;"><!--<div id="NotifModal" class="modal" style="display: none;"></div>-->
     <div class="modal-content" style="width: 80%; margin: auto; padding: 20px; border-radius: 10px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
         <span class="close" style="float: right; font-size: 20px; cursor: pointer;">&times;</span>
         <h3 style="text-align: center;">Notifications</h3>
@@ -652,7 +652,7 @@ document.getElementById('type-filter').addEventListener('change', function () {
     </script>
 
 
-<!--- code modal (chebek)-->
+<!--- code modal detail complaint(chebek)-->
 
 <script>
     document.querySelectorAll('.openModal').forEach(button => {
@@ -725,6 +725,9 @@ window.onclick = function (event) {
     });
 </script>
 
+
+
+<!--------------------notif Modal-------------------->
 <script>
    // Open Modal on Button Click
 document.querySelectorAll('.NotifModal').forEach(button => {
@@ -741,7 +744,7 @@ document.querySelectorAll('.NotifModal').forEach(button => {
                 detailsDiv.innerHTML = data.map(notification => `
                     <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px;">
                         <p><strong>Complaint:</strong> ${notification.contenu}</p>
-                      <a href="REC_FORMBackOffice.php?id=${notification.id_notif}" style="text-decoration: none;">
+                      <a href="PenComp.php?id=${notification.id_notif}" style="text-decoration: none;">
     <button style="background-color: #ac81f2; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
         View Details
     </button>

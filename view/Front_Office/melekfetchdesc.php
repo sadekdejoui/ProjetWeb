@@ -5,27 +5,32 @@ include_once '../../Controller/FormulaireC.php';
 
 session_start();
 
-$c = new FormulaireC();
-$id = intval($_GET['id']);
-if (isset($id)) {
-     // Sanitize ID input
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-    // Query to fetch the complaint response
+$c = new FormulaireC();
+$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+header('Content-Type: application/json');  // Ensure content is returned as JSON
+
+if ($id > 0) {
     $complaint = $c->showComplaintbycomplaint($id);
 
     if ($complaint) {
-        // Check if the complaint has an attachment (file)
-        $fileUrl = isset($complaint['file']) ? 'http://localhost/ReProjet/uploads/' . $complaint['file'] : null;
+        // Check if a file exists and base64 encode if needed
+        $fileData = !empty($complaint['file']) ? base64_encode($complaint['file']) : null;
 
+        $response = [
+            'desc' => $complaint['description'] ?? 'No description available',
+            'file' => $fileData  // Sending the file data as base64 encoded string
+        ];
 
-        echo json_encode([
-            'desc' => $complaint['description'] ?? 'No description available', // Use 'description' instead of 'rep'
-            'file' => $fileUrl  // Return file if available
-        ]);
+        echo json_encode($response);  // Send the response as JSON
     } else {
         echo json_encode(['error' => 'Complaint not found or no response available.']);
     }
 } else {
-    echo json_encode(['error' => 'No complaint ID provided.']);
+    echo json_encode(['error' => 'Invalid or missing complaint ID.']);
 }
 ?>

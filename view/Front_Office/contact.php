@@ -26,42 +26,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') && (isset($_POST['submit']))) {
     $description = htmlspecialchars($_POST['description']);
     $urgent = isset($_POST['urgent']) ? 1 : 0;
 
-    // Handle file uploads
-    //$file_names = [];
-    /*if (isset($_FILES['pieces_jointes']) && $_FILES['pieces_jointes']['error'] == 0) {
-        $fileTmpPath = $_FILES['pieces_jointes']['tmp_name']; // Temporary file path
-        $fileName = $_FILES['pieces_jointes']['name']; // Original file name
-        $fileSize = $_FILES['pieces_jointes']['size']; // File size
-        $fileType = $_FILES['pieces_jointes']['type']; // File MIME type
-        $fileNameCmps = explode(".", $fileName);
-        $fileExtension = strtolower(end($fileNameCmps)); // Get file extension
-    
-        // Define allowed file extensions (e.g., jpg, png, pdf, etc.)
-        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf'];
-    
-        // Check if the file extension is allowed
-        if (in_array($fileExtension, $allowedExtensions)) {
-            // Define the upload directory
-            $uploadFileDir = './uploads/';
-            $uploadFileDir = $_SERVER['DOCUMENT_ROOT'] . '/ReProjet/uploads/';
-            $newFileName = md5(time() . $fileName) . '.' . $fileExtension; // Generate a unique name for the file
-            $uploadFilePath = $uploadFileDir . $newFileName;
-    
-            // Move the uploaded file to the desired directory
-            if (move_uploaded_file($fileTmpPath, $uploadFilePath)) {
-                $file = $uploadFilePath; // Store the file path in the database
-            } else {
-                echo "Error while uploading the file.";
-                return;
-            }
-        } else {
-            echo "File type not allowed. Please upload a valid file.";
-            return;
-        }
-    } else {
-        $file = null; // No file uploaded, set to null
-    }*/
-    
+   
     // Save the complaint using FormulaireC
     $formulaireC = new FormulaireC();
     $contenu = ("New Complaint submitted by a student");
@@ -626,7 +591,7 @@ button.submit-btn:hover {
 
         <div class="form-group">
             <label for="pieces_jointes">Download Files:</label>
-            <input type="file" id="pieces_jointes" name="pieces_jointes" multiple>
+            <input type="file" id="file" name="file[]" multiple>
         </div>
 
         <div class="mb-3 form-check">
