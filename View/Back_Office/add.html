@@ -150,6 +150,36 @@ form select {
 }
 
     </style>
+    <style>
+        .moduledropdown {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+    
+        .moduledropdown:focus {
+            outline: none;
+            border-color: #6c63ff;
+            background-color: #fff;
+            box-shadow: 0 0 4px #6c63ff;
+        }
+    
+        .moduledropdown option {
+            background-color: #fff;
+            color: #333;
+            padding: 10px;
+        }
+    
+        .moduledropdown:hover {
+            background-color: #ececec;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <!-- Start Left menu area -->
@@ -344,35 +374,44 @@ form select {
     <form method="POST" action="http://localhost/akrem%20web/View/back_office/add.php">
         <!-- Titre du Cours -->
         <label for="title">Titre du Cours :</label>
-        <input type="text" id="title" name="title" >
+        <input type="text" id="title" name="title" required>
+
+        <!-- Module -->
+        <label for="module">Module :</label>
+        <input type="text" id="module" name="module" required>
 
         <!-- Description du Cours -->
         <label for="description">Description :</label>
-        <textarea id="description" name="description" rows="4" ></textarea>
+        <textarea id="description" name="description" rows="4" required></textarea>
 
         <!-- Prix du Cours -->
         <label for="price">Prix (€) :</label>
-        <input type="number" id="price" name="price" >
+        <input type="number" id="price" name="price" required>
 
         <!-- Catégorie du Cours -->
         <label for="category">Catégorie :</label>
-        <select id="category" name="category" >
+        <select id="category" name="category" required>
             <option value="Anglais">Anglais</option>
-            <option value="francais">Français</option>
+            <option value="Français">Français</option>
             <option value="Informatique">Informatique</option>
-            <option value="marketing">Marketing</option>
+            <option value="Marketing">Marketing</option>
             <option value="Sciences">Sciences</option>
             <option value="Architecture">Architecture</option>
-            <!-- Des catégories supplémentaires peuvent être ajoutées ici -->
         </select>
 
         <!-- Durée du Cours -->
         <label for="duration">Durée (en heures) :</label>
-        <input type="number" id="duration" name="duration" >
-        <label for="id_module">Module ID:</label>
-    <input type="number" name="id_module" id="id_module" required>
-    <br><br>
+        <input type="number" id="duration" name="duration" required>
 
+        <!-- Sélection du Module -->
+        <label for="moduleSelect">Sélectionner le Module :</label>
+        <select id="moduleSelect" name="moduleSelect" class="moduledropdown" required>
+            <option value="1">Module 1</option>
+            <option value="2">Module 2</option>
+            <option value="3">Module 3</option>
+            <option value="4">Module 4</option>
+            <option value="5">Module 5</option>
+        </select>
 
         <!-- Bouton Ajouter le Cours -->
         <div class="button-container">
@@ -380,6 +419,7 @@ form select {
         </div>
     </form>
 </div>
+
 <div class="container">
     <a href="afficher.php">Retour à la liste des cours</a>
 </div>

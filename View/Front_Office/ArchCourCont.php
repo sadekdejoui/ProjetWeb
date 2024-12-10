@@ -1,3 +1,29 @@
+<?php
+require "C:\\xampp\\htdocs\\akrem web\\Model\\courses.php";
+require_once "C:\\xampp\\htdocs\\akrem web\\config.php";
+require "C:\\xampp\\htdocs\\akrem web\\Controller\\coursesC.php";
+
+try {
+    $db = config::getConnexion();
+
+    // Fetch courses for the fr category
+    $category = "Architecture"; // The category you want to filter
+    $query = $db->prepare("SELECT * FROM courses WHERE category = :category");
+    $query->execute(['category' => $category]);
+    $courses = $query->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
+    exit;
+    $selectedModule = isset($_GET['id_module']) ? $_GET['id_module'] : 'all';
+}
+// Get the selected module from the URL query string
+$selectedModule = isset($_GET['id_module']) ? $_GET['id_module'] : null;
+
+// Fetch filtered courses based on selected module
+$courseC = new courseC();
+$courses = $courseC->filterCourses($selectedModule);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -141,6 +167,95 @@
         background-color: #f9f9f9; /* Light gray background when clicked */
     }
     </style>
+     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #444;
+        }
+        .course-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .course-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 280px;
+            text-align: center;
+        }
+        .course-card h2 {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .course-card p {
+            color: #666;
+            font-size: 0.9em;
+            margin: 5px 0;
+        }
+        .course-card span {
+            font-weight: bold;
+            color: #6c63ff;
+        }
+    </style>
+     <style>
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .filter-buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #6c63ff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .filter-buttons button:hover {
+            background-color: #ffd891;
+            color: #333;
+        }
+        .course-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .course-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            width: calc(33.33% - 20px);
+            box-sizing: border-box;
+        }
+        .course-card h2 {
+            margin: 0 0 10px;
+            font-size: 22px;
+            color: #333;
+        }
+        .course-card p {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #555;
+        }
+        .course-card p span {
+            font-weight: bold;
+            color: #6c63ff;
+        }
+    </style>
 </head>
 
 <body>
@@ -193,52 +308,55 @@
                 <div class="container my-5 py-5 px-lg-5">
                     <div class="row g-5 py-5">
                         <div class="col-12 text-center">
-                            <h1 class="text-white animated slideInDown">Software Development</h1>
+                            <h1 class="text-white animated slideInDown">Architecture Courses</h1>
                             <hr class="bg-white mx-auto mt-0" style="width: 90px;">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Course Details Start -->
-        <div class="container">
-            <h2>Software Development Course Modules</h2>
-            
-            <!-- Module 1 -->
-            <div class="module-container" onclick="window.location.href='module1-details.html'">
-                <a href="module1-details.html" class="module-title">Module 1: Introduction to Software Development</a>
-                <p class="module-description">This module introduces the basics of software development, including programming languages, development environments, and software life cycles.</p>
+        <div class="filter-buttons">
+        <button onclick="filterCourses('all')">All</button>
+        <button onclick="filterCourses('1')">Module 1</button>
+        <button onclick="filterCourses('2')">Module 2</button>
+        <button onclick="filterCourses('3')">Module 3</button>
+        <button onclick="filterCourses('4')">Module 4</button>
+        <button onclick="filterCourses('5')">Module 5</button>
+    </div>
+       
+         <!-- Course Details Start -->
+         <div class="container">
+            <h1>Architecture Category Courses</h1>
+            <div class="course-list">
+        <?php foreach ($courses as $course): ?>
+            <div class="course-card">
+                <h2><?php echo htmlspecialchars($course['title']); ?></h2>
+                <p><span>Category:</span> <?php echo htmlspecialchars($course['category']); ?></p>
+                <p><span>Price:</span> $<?php echo htmlspecialchars($course['price']); ?></p>
+                <p><span>Duration:</span> <?php echo htmlspecialchars($course['duration']); ?></p>
+                <p><span>Description:</span> <?php echo htmlspecialchars($course['description']); ?></p>
+                <p><span>Module:</span> <?php echo htmlspecialchars($course['id_module']); ?></p>
             </div>
-        
-            <!-- Module 2 -->
-            <div class="module-container" onclick="window.location.href='module2-details.html'">
-                <a href="module2-details.html" class="module-title">Module 2: Web Development Fundamentals</a>
-                <p class="module-description">Learn the basics of web development, including HTML, CSS, and JavaScript, to create interactive websites.</p>
-            </div>
-        
-            <!-- Module 3 -->
-            <div class="module-container" onclick="window.location.href='module3-details.html'">
-                <a href="module3-details.html" class="module-title">Module 3: Object-Oriented Programming</a>
-                <p class="module-description">Understand the principles of object-oriented programming (OOP), including classes, objects, inheritance, and polymorphism.</p>
-            </div>
-        
-            <!-- Module 4 -->
-            <div class="module-container" onclick="window.location.href='module4-details.html'">
-                <a href="module4-details.html" class="module-title">Module 4: Software Development Practices</a>
-                <p class="module-description">Focus on best practices in software development, including version control, testing, and debugging techniques.</p>
-            </div>
-        
-            <!-- Module 5 -->
-            <div class="module-container" onclick="window.location.href='module5-details.html'">
-                <a href="module5-details.html" class="module-title">Module 5: Full-Stack Development</a>
-                <p class="module-description">Learn how to build complete web applications with both front-end (HTML, CSS, JavaScript) and back-end technologies (Node.js, databases).</p>
-            </div>
+        <?php endforeach; ?>
+    </div>
         </div>
-        
+        <script>
+    function filterCourses(id_module) {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // Set or update the id_module parameter in the URL
+    if (id_module === 'all') {
+        urlParams.delete('id_module'); // Remove id_module if 'All' is selected
+    } else {
+        urlParams.set('id_module', id_module); // Set id_module for filtering
+    }
+    
+    window.location.search = urlParams.toString(); // Reload the page with the updated URL
+}
+
+</script>
         
         <!-- Course Details End -->
-
        <!-- Footer Start -->
 <div class="container-fluid bg-primary text-light footer wow fadeIn" data-wow-delay="0.1s">
     <div class="container py-5 px-lg-5">

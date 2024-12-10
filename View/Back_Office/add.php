@@ -102,7 +102,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background-color: #ffd891;
             color: #333;
         }
+
+
+        .dropdown {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px 5px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .dropdown select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            color: #444;
+            background-color: #fafafa;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            cursor: pointer;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+
+        .dropdown select:focus {
+            border-color: #6c63ff;
+            background-color: #f3f3f3;
+            outline: none;
+        }
+
+        .dropdown option {
+            padding: 12px;
+            font-size: 16px;
+        }
+
+        .dropdown select:hover {
+            border-color: #6c63ff;
+        }
+
+        .dropdown button {
+            padding: 12px 25px;
+            font-size: 18px;
+            color: white;
+            background-color: #6c63ff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .dropdown button:hover {
+            background-color: #ffd891;
+            color: #333;
+        }
     </style>
+
 </head>
 <body>
     <div class="form-container">
@@ -111,8 +182,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="title">Title:</label>
             <input type="text" id="title" name="title" required>
 
-            <label for="category">Category:</label>
-            <input type="text" id="category" name="category" required>
+             <!-- Catégorie du Cours -->
+            <div class="dropdown">
+                <label for="category">Catégorie :</label>
+                <select id="category" name="category" >
+            <option value="English">English</option>
+            <option value="French">French</option>
+            <option value="DevWeb">Web Development</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Science">Sciences</option>
+            <option value="Architecture">Architecture</option>
+            <!-- Des catégories supplémentaires peuvent être ajoutées ici -->
+        </select>
+        </div>
 
             <label for="price">Price:</label>
             <input type="number" id="price" name="price" step="0.01" required>
@@ -128,6 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <button type="submit">Add Course</button>
         </form>
+        
     </div>
 </body>
 </html>

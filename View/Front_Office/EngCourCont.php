@@ -1,3 +1,22 @@
+<?php
+require "C:\\xampp\\htdocs\\akrem web\\Model\\courses.php";
+require_once "C:\\xampp\\htdocs\\akrem web\\config.php";
+require "C:\\xampp\\htdocs\\akrem web\\Controller\\coursesC.php";
+
+try {
+    $db = config::getConnexion();
+
+    // Fetch courses for the English category
+    $category = "English"; // The category you want to filter
+    $query = $db->prepare("SELECT * FROM courses WHERE category = :category");
+    $query->execute(['category' => $category]);
+    $courses = $query->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -141,6 +160,47 @@
         background-color: #f9f9f9; /* Light gray background when clicked */
     }
     </style>
+     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #444;
+        }
+        .course-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .course-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 280px;
+            text-align: center;
+        }
+        .course-card h2 {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .course-card p {
+            color: #666;
+            font-size: 0.9em;
+            margin: 5px 0;
+        }
+        .course-card span {
+            font-weight: bold;
+            color: #6c63ff;
+        }
+    </style>
 </head>
 
 <body>
@@ -203,37 +263,23 @@
 
         <!-- Course Details Start -->
         <div class="container">
-            <h2>English Course Modules</h2>
-            
-            
-            <!-- Module 1 -->
-            <div class="module-container" onclick="window.location.href='module1-details.html'">
-                <a href="module1-details.html" class="module-title">Module 1: Introduction to English</a>
-                <p class="module-description">This module introduces the basics of English, including grammar, vocabulary, and sentence structure.</p>
-            </div>
-        
-            <!-- Module 2 -->
-            <div class="module-container" onclick="window.location.href='module2-details.html'">
-                <a href="module2-details.html" class="module-title">Module 2: English for Communication</a>
-                <p class="module-description">Learn conversational English to enhance your ability to speak in various situations such as travel, business, and social settings.</p>
-            </div>
-        
-            <!-- Module 3 -->
-            <div class="module-container" onclick="window.location.href='module3-details.html'">
-                <a href="module3-details.html" class="module-title">Module 3: Advanced English Grammar</a>
-                <p class="module-description">This module covers complex grammar topics such as tenses, clauses, and modifiers to strengthen your writing and speaking skills.</p>
-            </div>
-        
-            <!-- Module 4 -->
-            <div class="module-container" onclick="window.location.href='module4-details.html'">
-                <a href="module4-details.html" class="module-title">Module 4: English for Professional Settings</a>
-                <p class="module-description">Focus on vocabulary and communication strategies tailored for workplace interactions, meetings, and presentations.</p>
-            </div>
-        
-            <!-- Module 5 -->
-            <div class="module-container" onclick="window.location.href='module5-details.html'">
-                <a href="module5-details.html" class="module-title">Module 5: English for Academic Purposes</a>
-                <p class="module-description">Learn how to write academic papers, understand lectures, and participate in discussions in an academic environment.</p>
+            <h1>English Category Courses</h1>
+            <div class="course-list">
+                <?php if (!empty($courses)) { ?>
+                    <?php foreach ($courses as $course) { ?>
+                        <div class="course-card">
+                            <h2>Title :<?php echo htmlspecialchars($course['title']); ?></h2>
+                            <p><span>Category:</span> <?php echo htmlspecialchars($course['category']); ?></p>
+                            <p><span>Price:</span> $<?php echo htmlspecialchars($course['price']); ?></p>
+                            <p><span>Duration:</span> <?php echo htmlspecialchars($course['duration']); ?></p>
+                            <p><span>Description:</span> <?php echo htmlspecialchars($course['description']); ?></p>
+                            <p><span>Module:</span> <?php echo htmlspecialchars($course['id_module']); ?></p>
+
+                        </div>
+                    <?php } ?>
+                <?php } else { ?>
+                    <p>No courses available for the English category.</p>
+                <?php } ?>
             </div>
         </div>
         

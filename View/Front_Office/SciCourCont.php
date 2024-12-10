@@ -1,3 +1,21 @@
+<?php
+require "C:\\xampp\\htdocs\\akrem web\\Model\\courses.php";
+require_once "C:\\xampp\\htdocs\\akrem web\\config.php";
+require "C:\\xampp\\htdocs\\akrem web\\Controller\\coursesC.php";
+
+try {
+    $db = config::getConnexion();
+
+    // Fetch courses for the fr category
+    $category = "science"; // The category you want to filter
+    $query = $db->prepare("SELECT * FROM courses WHERE category = :category");
+    $query->execute(['category' => $category]);
+    $courses = $query->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -141,6 +159,47 @@
         background-color: #f9f9f9; /* Light gray background when clicked */
     }
     </style>
+     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #444;
+        }
+        .course-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .course-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 280px;
+            text-align: center;
+        }
+        .course-card h2 {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .course-card p {
+            color: #666;
+            font-size: 0.9em;
+            margin: 5px 0;
+        }
+        .course-card span {
+            font-weight: bold;
+            color: #6c63ff;
+        }
+    </style>
 </head>
 
 <body>
@@ -193,7 +252,7 @@
                 <div class="container my-5 py-5 px-lg-5">
                     <div class="row g-5 py-5">
                         <div class="col-12 text-center">
-                            <h1 class="text-white animated slideInDown">Architecture Courses</h1>
+                            <h1 class="text-white animated slideInDown">Science Courses</h1>
                             <hr class="bg-white mx-auto mt-0" style="width: 90px;">
                         </div>
                     </div>
@@ -203,41 +262,26 @@
 
         <!-- Course Details Start -->
         <div class="container">
-            <h2>Architecture Course Modules</h2>
-            
-            <!-- Module 1 -->
-            <div class="module-container" onclick="window.location.href='module1-details.html'">
-                <a href="module1-details.html" class="module-title">Module 1: Introduction to Architecture</a>
-                <p class="module-description">This module covers the fundamentals of architecture, including its history, basic concepts, and the role of an architect in society.</p>
-            </div>
-        
-            <!-- Module 2 -->
-            <div class="module-container" onclick="window.location.href='module2-details.html'">
-                <a href="module2-details.html" class="module-title">Module 2: Architectural Design Principles</a>
-                <p class="module-description">Learn the key principles of architectural design, including space planning, aesthetics, sustainability, and functionality in building design.</p>
-            </div>
-        
-            <!-- Module 3 -->
-            <div class="module-container" onclick="window.location.href='module3-details.html'">
-                <a href="module3-details.html" class="module-title">Module 3: Structural Systems in Architecture</a>
-                <p class="module-description">This module explores the essential structural systems used in architecture, including beams, columns, foundations, and load-bearing structures.</p>
-            </div>
-        
-            <!-- Module 4 -->
-            <div class="module-container" onclick="window.location.href='module4-details.html'">
-                <a href="module4-details.html" class="module-title">Module 4: Architectural Software and Tools</a>
-                <p class="module-description">Focus on the tools and software used in modern architecture, including AutoCAD, SketchUp, and BIM, to design and visualize architectural projects.</p>
-            </div>
-        
-            <!-- Module 5 -->
-            <div class="module-container" onclick="window.location.href='module5-details.html'">
-                <a href="module5-details.html" class="module-title">Module 5: Sustainable Architecture</a>
-                <p class="module-description">Learn the principles of sustainable architecture, including energy-efficient design, materials selection, and environmental impact reduction.</p>
+            <h1>Science Category Courses</h1>
+            <div class="course-list">
+                <?php if (!empty($courses)) { ?>
+                    <?php foreach ($courses as $course) { ?>
+                        <div class="course-card">
+                            <h2><?php echo htmlspecialchars($course['title']); ?></h2>
+                            <p><span>Category:</span> <?php echo htmlspecialchars($course['category']); ?></p>
+                            <p><span>Price:</span> $<?php echo htmlspecialchars($course['price']); ?></p>
+                            <p><span>Duration:</span> <?php echo htmlspecialchars($course['duration']); ?></p>
+                            <p><span>Description:</span> <?php echo htmlspecialchars($course['description']); ?></p>
+                            <p><span>Module:</span> <?php echo htmlspecialchars($course['id_module']); ?></p>
+                        </div>
+                    <?php } ?>
+                <?php } else { ?>
+                    <p>No courses available for the Science category.</p>
+                <?php } ?>
             </div>
         </div>
         
-        
-        <!-- Course Details End -->
+        <!-- Course Details End -->>
 
        <!-- Footer Start -->
 <div class="container-fluid bg-primary text-light footer wow fadeIn" data-wow-delay="0.1s">

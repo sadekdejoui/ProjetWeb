@@ -96,5 +96,31 @@ class CourseC
     }
 }
 
+public function filterCourses($id_module = null) {
+    $db = config::getConnexion();
+    
+    // Base query for fetching courses
+    $sql = "SELECT * FROM courses";
+    
+    // If id_module is provided, filter the courses by the specified module
+    if ($id_module !== null && $id_module !== 'all') {
+        $sql .= " WHERE id_module = :id_module";
+    }
+
+    // Prepare and execute the query
+    $query = $db->prepare($sql);
+    
+    if ($id_module !== null && $id_module !== 'all') {
+        $query->bindParam(':id_module', $id_module, PDO::PARAM_INT);
+    }
+
+    $query->execute();
+    
+    // Return the filtered courses
+    return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+
 }
 ?>
