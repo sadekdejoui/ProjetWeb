@@ -23,8 +23,8 @@ if ($id && $message) {
     try {
         // Approve the complaint and insert response
         $c->approveComplaint($id);
-        $c->reponseComplaint($id, $message);
-
+        $lastId=$c->reponseComplaint($id, $message);
+        $lastId=$notif->addNotification($contenu,$id_user,$sent_by,$id,$lastId);
         // Send a notification (optional)
         //$notif->sendNotification($id_user, $sent_by, $contenu);
 

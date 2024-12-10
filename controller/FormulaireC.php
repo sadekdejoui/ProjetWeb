@@ -1,3 +1,4 @@
+
 <?php
 class FormulaireC
 {
@@ -88,40 +89,40 @@ class FormulaireC
 
     // Method to add a new complaint (main logic for form submission)
     function addComplaint($nom, $identifiant, $email, $telephone, $type_reclamation, $prof, $service, $description, $urgent)
-    {
-        $fileContent = null; // Variable to store combined file content
+{
+    $fileContent = null; // Variable to store combined file content
+
+    // Check if files are uploaded
+    if (isset($_FILES['file']) && !empty($_FILES['file']['name'][0])) {
+        $files = [];
     
-        // Check if files are uploaded
-        if (isset($_FILES['file']) && !empty($_FILES['file']['name'][0])) {
-            $files = [];
+        // Loop through each uploaded file
+        foreach ($_FILES['file']['tmp_name'] as $index => $tmpName) {
+            if (is_uploaded_file($tmpName)) {
     
-            // Loop through each uploaded file
-            foreach ($_FILES['file']['tmp_name'] as $index => $tmpName) {
-                if (is_uploaded_file($tmpName)) {
+                // File type validation
+                $fileInfo = pathinfo($_FILES['file']['name'][$index]);
+                $allowedTypes = ['jpg', 'jpeg', 'png', 'pdf'];  // Example allowed types
     
-                    // File type validation
-                    $fileInfo = pathinfo($_FILES['file']['name'][$index]);
-                    $allowedTypes = ['jpg', 'jpeg', 'png', 'pdf'];  // Example allowed types
-    
-                    // If file type is not allowed, return an error message
-                    if (!in_array($fileInfo['extension'], $allowedTypes)) {
-                        echo "Invalid file type. Only JPG, JPEG, PNG, and PDF files are allowed.";
-                        return; // Stop further processing
-                    }
-    
-                    // If file is valid, get the content
-                    $files[] = file_get_contents($tmpName); // Get binary content of each file
+                // If file type is not allowed, return an error message
+                if (!in_array($fileInfo['extension'], $allowedTypes)) {
+                    echo "Invalid file type. Only JPG, JPEG, PNG, and PDF files are allowed.";
+                    return; // Stop further processing
                 }
+    
+                // If file is valid, get the content and encode it to base64
+                $fileData = file_get_contents($tmpName);  // Read file content as binary
+                $base64File = base64_encode($fileData); // Encode the file as base64
+                $files[] = $base64File;  // Store the base64 file content
             }
-    
-            // Combine all files into a single blob (or base64 string if needed)
-            $fileContent = implode('::FILE_SEPARATOR::', $files); // Separate each file with a marker
         }
-    
-        // SQL to insert complaint with the files
+
+        // Combine all files into a single base64 string (you can choose to store them separately if needed)
+        $fileContent = implode('::FILE_SEPARATOR::', $files);
+
+        // Insert into database with file content
         $sql = "INSERT INTO complaint (nom, ID, email, telephone, type_reclamation, prof, service, description, urgent, file)
-                VALUES (:nom, :identifiant, :email, :telephone, :type_reclamation, :prof, :service, :description, :urgent, :file)";
-        
+            VALUES (:nom, :identifiant, :email, :telephone, :type_reclamation, :prof, :service, :description, :urgent, :file)";
         $db = config::getConnexion();
         try {
             $query = $db->prepare($sql);
@@ -135,14 +136,41 @@ class FormulaireC
                 'service' => $service,
                 'description' => $description,
                 'urgent' => $urgent,
-                'file' => $fileContent, // Store the combined file content
+                'file' => $fileContent, // Store the combined base64 file content
             ]);
             echo "Complaint submitted successfully!";
+            return $db->lastInsertId();
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
+            return null;
+        }
+    } else {
+        // No files uploaded, proceed with regular insertion
+        $sql = "INSERT INTO complaint (nom, ID, email, telephone, type_reclamation, prof, service, description, urgent)
+            VALUES (:nom, :identifiant, :email, :telephone, :type_reclamation, :prof, :service, :description, :urgent)";
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+            $query->execute([
+                'nom' => $nom,
+                'identifiant' => $identifiant,
+                'email' => $email,
+                'telephone' => $telephone,
+                'type_reclamation' => $type_reclamation,
+                'prof' => $prof,
+                'service' => $service,
+                'description' => $description,
+                'urgent' => $urgent,
+            ]);
+            echo "Complaint submitted successfully!";
+            return $db->lastInsertId();
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+            return null;
         }
     }
-    
+}
+
     
     
     /*function addComplaint($nom, $identifiant, $email, $telephone, $type_reclamation, $prof, $service, $description, $urgent)
@@ -263,8 +291,9 @@ class FormulaireC
                 'id_rec' => $id_rec,
             ]);
             echo $query->rowCount() . " record inserted successfully!";
-        } catch (PDOException $e) {
-            echo 'Error: ' . $e->getMessage();
+            return $db->lastInsertId();
+        } catch (Exception $e) {
+            return null;
         }
     }
 
@@ -281,6 +310,24 @@ public function showmessage($id)
             die('Error: ' . $e->getMessage());
         }
     }
+
+    public function showcompbyres($id)
+    {
+        $sql = "SELECT * FROM complaint WHERE id_form = :id"; // Use placeholder for security
+        $db = config::getConnexion();
+        try {
+            // Prepare the query and bind the parameters
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+    
+            // Fetch the result as an associative array
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            die('Error: ' . $e->getMessage());
+        }
+    }
+    
     public function showreponse($id)
     {
         $sql = "SELECT rep FROM response WHERE id_rec = :id"; // Use a placeholder for the ID

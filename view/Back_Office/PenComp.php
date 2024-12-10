@@ -315,7 +315,11 @@ $all_notifs=$notif->showNotifAdminUnseen();
     <li class="nav-item">
     <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
         <i class="educate-icon educate-bell" aria-hidden="true"></i>
-        <span class="indicator-nt"></span>
+        <span style="font-size: 10px;"><?php 
+        $melek=$notif->countnotifadmin();
+        echo $melek['notif_count'];
+        ?></span>
+
     </a>
     <div role="menu" class="notification-author dropdown-menu animated zoomIn">
         <div class="notification-single-top">
@@ -324,7 +328,7 @@ $all_notifs=$notif->showNotifAdminUnseen();
         <ul class="notification-menu">
             <?php foreach($all_notifs as $notf) { ?>
                 <li>
-                    <a href="seennotif.php?id=<?php echo $notf['id_notif']; ?>">
+                    <a href="seennotif.php?id=<?php echo $notf['id_notif']; ?>&id_comp=<?php echo $notf['id_comp']; ?>">
                         <div class="notification-icon">
                             <i class="educate-icon educate-checked edu-checked-pro admin-check-pro" aria-hidden="true"></i>
                         </div>
@@ -594,6 +598,7 @@ $all_notifs=$notif->showNotifAdminUnseen();
     // Check if the response is empty
     if (response === "") {
         document.getElementById("error-message").style.display = "block"; 
+    
         return;
     } else {
         document.getElementById("error-message").style.display = "none"; 
@@ -604,25 +609,18 @@ $all_notifs=$notif->showNotifAdminUnseen();
     formData.append("complaint_id", complaintId);
 
     fetch("approveContact.php", {
-        method: "POST",
-        body: formData
-    })
-    .then(response => response.json())  // Make sure the response is parsed as JSON
-    .then(data => {
-        // Check the response from the server
-        if (data.success) {
-            alert("Response submitted successfully!");
-            document.getElementById("myModal").style.display = "none"; 
-        } else {
-            // Show the error message from the server
-            alert("Error: " + data.message);
+    method: "POST",
+    body: formData
+})
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
+        return response.json(); // Ensure we parse JSON only after validating the response
     })
-    .catch(error => {
-        // Handle fetch or JSON parsing errors
-        alert("There was an error processing the request.");
-        console.error("Error details:", error);
-    });
+   
+   
+
 });
 </script>
 
@@ -643,10 +641,13 @@ $all_notifs=$notif->showNotifAdminUnseen();
         // Validate input
         if (value === "") {
             event.preventDefault(); // Prevent button's default behavior
-            errorMessage.style.display = "block"; // Show error message
+            errorMessage.style.display = "block"; 
+            // Show error message
         } else {
             errorMessage.style.display = "none"; // Hide error message
             alert("Complaint verified successfully!");
+            window.location.href = `PenComp.php`;
+            
         }
     });
 </script>

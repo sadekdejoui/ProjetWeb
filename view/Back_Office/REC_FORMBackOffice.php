@@ -441,7 +441,7 @@ $all_notifs=$notif->showNotifAdminUnseen();
     <div id="page1" class="page active">
         <header>
             <h1>Complaint Management</h1>
-            <p id="total-reclamations">Total Complaints: 0</p>
+            
         </header>
         <main>
             <section class="stats">
@@ -782,7 +782,60 @@ window.addEventListener('click', (event) => {
 
 
     </script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const notificationId = urlParams.get('id_form'); // Get the 'id' parameter from the URL
+        console.log(notificationId);
+    if (notificationId) {
+        // Automatically open the modal
+        const modal = document.getElementById('myModal');
+        modal.style.display = 'block';
+        const detailsDiv = document.getElementById('complaintDetails');
 
+        // Fetch notification details based on the ID
+        fetch(`melek.php?id=${notificationId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    detailsDiv.innerHTML = `<p style="color:red;">${data.error}</p>`;
+                } else {
+                    // Populate the modal with data
+                    detailsDiv.innerHTML = `
+                        <p><strong>Name:</strong> ${data.nom}</p>
+                        <p><strong>Email:</strong> ${data.email}</p>
+                        <p><strong>Phone:</strong> ${data.telephone}</p>
+                        <p><strong>Type:</strong> ${data.type_reclamation}</p>
+                        <p><strong>Description:</strong> ${data.description}</p>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const detailsDiv = document.getElementById('complaintDetails');
+                detailsDiv.innerHTML = '<p>Error loading notification details.</p>';
+            });
+    }
+
+    // Close Modal Functionality
+    document.querySelector('.close').addEventListener('click', () => {
+        document.getElementById('myModal').style.display = 'none';
+    });
+
+    document.getElementById('closeModalBtn').addEventListener('click', () => {
+        document.getElementById('myModal').style.display = 'none';
+    });
+
+    // Optional: Close modal when clicking outside the modal content
+    window.addEventListener('click', (event) => {
+        const modal = document.getElementById('myModal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+
+</script>
 
      <!-- end  of the window -->
      <!-- jquery

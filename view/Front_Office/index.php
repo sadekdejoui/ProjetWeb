@@ -5,7 +5,7 @@ session_start();
 $_SESSION['id']='1';
 $notif=new NotificationC();
 $all_notifs_any=$notif->showNotifAdmin();
-$all_notifs=$notif->showNotifAdminUnseen();
+$all_notifs=$notif->showNotifUserUnseen();
 
 ?>
 
@@ -44,6 +44,7 @@ $all_notifs=$notif->showNotifAdminUnseen();
 
     <!-- Template Stylesheet -->
     <link href="../Front_Office/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 
     <style>
@@ -394,7 +395,7 @@ button.submit-btn:hover {
         <ul class="notification-menu">
             <?php foreach($all_notifs as $notf) { ?>
                 <li>
-                    <a href="seennotif.php?id=<?php echo $notf['id_notif']; ?>">
+                    <a href="seennotifFRONT.php?id=<?php echo $notf['id_notif']; ?>&id_res=<?php echo $notf['id_comp']; ?>">
                         <div class="notification-icon">
                             <i class="educate-icon educate-checked edu-checked-pro admin-check-pro" aria-hidden="true"></i>
                         </div>
@@ -426,15 +427,12 @@ button.submit-btn:hover {
         <!----------------------------------------END notif Rec------------------------------------------------->
                    
                     <div class="dropdown">
-                        
                         <button class="dropdown-button">Settings</button>
                         <div class="dropdown-content">
                           <a href="../Front_Office/les taches/sadek/account.html">Mon compte</a>
                           <a href="../Front_Office/les taches/sadek/index.php">Se déconnecter</a>
                         </div>
-                      
-                        
-                      </div>
+                    </div>
                     <div class="dropdowncomplaint">
 
                       <button class="dropdowncomplaint-button">Complaint</button>

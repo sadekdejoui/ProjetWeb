@@ -15,9 +15,17 @@ if (isset($_GET['id'])) {
     $complaint = $c->showResponsebycomplaint($id);
 
     if ($complaint) {
-        // Ensure 'rep' field is included in the result
+        // Query to fetch related description (assuming this function works as expected)
+        $descc = $c->showcompbyres($complaint['id_rec']); 
+
+        // Check if the file exists and base64 encode it if it does
+        $fileContent = isset($descc['file']) && !empty($descc['file']) ? base64_encode($descc['file']) : null;
+
+        // Prepare the response in JSON format
         echo json_encode([
-            'rep' => $complaint['rep'] ?? 'No response available' // Check if 'rep' exists
+            'description' => $descc['description'] ?? 'No response available',  // Description
+            'file' => $fileContent ? 'data:image/jpeg;base64,' . $fileContent : null, // Image (base64 encoded)
+            'rep' => $complaint['rep'] ?? 'No response available', // Response
         ]);
     } else {
         echo json_encode(['error' => 'Complaint not found or no response available.']);
@@ -27,4 +35,3 @@ if (isset($_GET['id'])) {
 }
 
 ?>
-
