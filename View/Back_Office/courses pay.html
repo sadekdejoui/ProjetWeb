@@ -379,7 +379,7 @@
         </div>
 
         <!-- Formulaire de Paiement -->
-        <form action="/process_payment" method="post" class="payment-section">
+        <form action="process_payment.php" method="post" class="payment-section">
             <label for="nom">Nom :</label>
             <input type="text" id="nom" name="nom" placeholder="Entrez votre nom" required>
 
@@ -416,103 +416,31 @@
             </div>
         </form>
 
-        <!-- Bouton pour Télécharger la Facture -->
-        <div class="button-container">
-            <button id="download-btn" class="download-btn">Télécharger la Facture</button>
-        </div>
-    </div>
+       <!-- Bouton pour Télécharger et Envoyer la Facture -->
+<div class="button-container">
+    <button id="download-and-send-btn">Télécharger et Envoyer la Facture</button>
+</div>
+
 <!----------------------------END pAY Course------------------------------>
 
 
 <script>
-     document.addEventListener("DOMContentLoaded", () => {
-            // Charger les informations du cours
-            const courseInfo = {
-                title: "Développement Web",
-                category: "Informatique",
-                duration: "20 heures",
-                price: "99€"
-            };
-
-            // Injecter dynamiquement les informations du cours
-            document.querySelector(".course-info").innerHTML = `
-                <p><strong>Titre du Cours :</strong> ${courseInfo.title}</p>
-                <p><strong>Catégorie :</strong> ${courseInfo.category}</p>
-                <p><strong>Durée :</strong> ${courseInfo.duration}</p>
-                <p><strong>Prix :</strong> ${courseInfo.price}</p>
-            `;
-
-            // Validation du formulaire de paiement
-            const form = document.querySelector("form");
-            form.addEventListener("submit", (event) => {
-                event.preventDefault();
-
-                // Récupérer les valeurs des champs
-                const nom = document.getElementById("nom").value.trim();
-                const email = document.getElementById("email").value.trim();
-                const date = document.getElementById("date").value;
-                const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
-
-                // Vérifications simples
-                if (!nom || !email || !date || !paymentMethod) {
-                    alert("Veuillez remplir tous les champs !");
-                    return;
-                }
-
-                if (!validateEmail(email)) {
-                    alert("Veuillez entrer une adresse e-mail valide !");
-                    return;
-                }
-
-                // Confirmation avant soumission
-                const confirmation = confirm(
-                    `Confirmez-vous votre paiement pour le cours "${courseInfo.title}" ?\n\n` +
-                    `Nom : ${nom}\n` +
-                    `E-mail : ${email}\n` +
-                    `Date d'achat : ${date}\n` +
-                    `Mode de Paiement : ${paymentMethod.nextElementSibling.textContent}\n` +
-                    `Montant : ${courseInfo.price}`
-                );
-
-                if (confirmation) {
-                    // Simuler l'envoi au serveur
-                    console.log("Paiement effectué avec succès !", {
-                        nom,
-                        email,
-                        date,
-                        paymentMethod: paymentMethod.value,
-                        course: courseInfo
-                    });
-
-                    alert("Votre paiement a été effectué avec succès !");
-                    form.reset();
-                }
-            });
-
-            // Fonction pour valider une adresse e-mail
-            function validateEmail(email) {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return emailRegex.test(email);
-            }
-        });
-
-    document.getElementById('download-btn').addEventListener('click', function() {
+    document.getElementById('download-and-send-btn').addEventListener('click', async function () {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
 
-        // Récupérer les informations de paiement et de cours
+        // Informations de la facture
+        const courseTitle = "Développement Web";
+        const studentName = document.getElementById('nom').value || 'Non renseigné';
+        const studentEmail = document.getElementById('email').value || 'Non renseigné';
         const paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value || 'Non sélectionné';
         const totalAmount = '99€';
         const date = new Date().toLocaleDateString();
-        const courseTitle = 'Développement Web';
-        const studentName = document.getElementById('nom').value || 'Non renseigné';
-        const studentEmail = document.getElementById('email').value || 'Non renseigné';
 
-        // Détails du PDF
+        // Générer le contenu du PDF
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(28);
         doc.text("Facture", 105, 40, null, null, 'center');
-
         doc.setFontSize(18);
         doc.text("Cours : " + courseTitle, 105, 60, null, null, 'center');
         doc.text("Nom de l'étudiant : " + studentName, 105, 80, null, null, 'center');
@@ -520,16 +448,39 @@
         doc.text("Méthode de Paiement : " + paymentMethod, 105, 120, null, null, 'center');
         doc.text("Total à Payer : " + totalAmount, 105, 140, null, null, 'center');
         doc.text("Date : " + date, 105, 160, null, null, 'center');
-
-        // Ajouter un message de remerciement
         doc.setFontSize(14);
         doc.text("Merci pour votre paiement !", 105, 180, null, null, 'center');
 
-        // Télécharger la facture sous forme de PDF
+        // Convertir le PDF en base64
+        const pdfBase64 = doc.output('datauristring');
+
+        // Envoi des données au serveur
+        try {
+            const response = await fetch('View/Back_Office/process_payment.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: studentEmail,
+                    pdf: pdfBase64,
+                    courseTitle: courseTitle,
+                    studentName: studentName
+                })
+            });
+            const result = await response.json();
+            if (result.success) {
+                alert('Facture envoyée par email avec succès.');
+            } else {
+                alert('Erreur lors de l\'envoi de la facture.');
+            }
+        } catch (error) {
+            alert('Une erreur s\'est produite lors de la communication avec le serveur.');
+            console.error(error);
+        }
+
+        // Télécharger la facture localement
         doc.save('facture.pdf');
     });
 </script>
-
 
 
 

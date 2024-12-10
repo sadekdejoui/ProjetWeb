@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $price = $_POST['price'];
     $duration = $_POST['duration'];
     $description = $_POST['description'];
+    $id_module = $_POST['id_module'];
 
     $sql = "UPDATE courses SET title = ?, category = ?, price = ?, duration = ?, description = ? WHERE id = ?";
     $stmt = $pdo->prepare($sql);
@@ -130,6 +131,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         <label for="description">Description :</label>
         <textarea id="description" name="description" required><?php echo htmlspecialchars($course['description']); ?></textarea>
+        <label for="id_module">id_module :</label>
+        <textarea id="id_module" name="description" required><?php echo htmlspecialchars($course['id_module']); ?></textarea>
         
         <button type="submit">Modifier</button>
     </form>

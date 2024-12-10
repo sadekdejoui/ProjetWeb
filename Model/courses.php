@@ -7,8 +7,9 @@ class Course
     private  $price;
     private  $duration ;
     private  $description;
+    private $id_module;
 
-    public function __construct($id, $title, $category, $price, $duration,$description)
+    public function __construct($id, $title, $category, $price, $duration,$description,$id_module)
     {
         $this->idCourse = $id;
         $this->title = $title;
@@ -16,6 +17,7 @@ class Course
         $this->price = $price;
         $this->duration = $duration;
         $this->description = $description;
+        $this->id_module = $id_module;
     }
 
     public function getIdCourse()
@@ -75,6 +77,15 @@ class Course
     {
         $this->description = $description;
         return $this;
+    }
+    public function getIdModule()
+    {
+        return $this->id_module;
+    }
+
+    public function setIdModule($id_module)
+    {
+        $this->id_module = $id_module;
     }
 }
 ?>

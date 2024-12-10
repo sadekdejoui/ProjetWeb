@@ -129,6 +129,7 @@
         }
     </style>
 
+
     
    
 
@@ -377,44 +378,101 @@
         <!-- Add a button to download -->
         <button id="download-btn" class="download-btn">Download Certificate</button>
     </div>
+    <div class="email-section">
+        <input type="email" id="email" placeholder="Enter your email" required>
+        <button id="send-email-btn" class="send-email-btn">Send Certificate via Email</button>
+    </div>
+</div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script>
-        document.getElementById('download-btn').addEventListener('click', function() {
+        // Download Certificate as PDF
+        document.getElementById('download-btn').addEventListener('click', function () {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            
-            // Certificat details
-            const recipientName = "[Recipient's Name]";
-            const courseTitle = "[Course Title]";
-            const certificateDate = "[Certificate Date]";
-            const instructorName = "[Instructor Name]";
+
+            // Certificate details
+            const recipientName = "John Doe"; // Replace with actual data
+            const courseTitle = "Web Development";
+            const certificateDate = "December 2024";
+            const instructorName = "Jane Smith";
 
             // Set the font and text
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(28);
             doc.text("Certificate of Completion", 105, 40, null, null, 'center');
-            
             doc.setFontSize(22);
             doc.text("This Certifies That", 105, 60, null, null, 'center');
-            
             doc.setFontSize(24);
             doc.text(recipientName, 105, 80, null, null, 'center');
-            
             doc.setFontSize(16);
             doc.text("has successfully completed the course", 105, 100, null, null, 'center');
             doc.text(courseTitle, 105, 120, null, null, 'center');
             doc.text("on " + certificateDate, 105, 140, null, null, 'center');
-            
-            doc.setFontSize(14);
-            doc.text('This certificate is awarded in recognition of the successful completion of all requirements for the above-mentioned course.', 105, 160, null, null, 'center');
-            
             doc.text("Instructor's Signature", 105, 180, null, null, 'center');
             doc.text(instructorName, 105, 190, null, null, 'center');
-            
             doc.text("Date: " + certificateDate, 105, 210, null, null, 'center');
 
-            // Download the certificate as PDF
+            // Save PDF
             doc.save('certificate.pdf');
+        });
+
+        // Send Certificate via Email
+        document.getElementById('send-email-btn').addEventListener('click', async function () {
+            const email = document.getElementById('email').value;
+            if (!email) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Certificate details
+            const recipientName = "John Doe"; // Replace with actual data
+            const courseTitle = "Web Development";
+            const certificateDate = "December 2024";
+            const instructorName = "Jane Smith";
+
+            // Generate the PDF
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(28);
+            doc.text("Certificate of Completion", 105, 40, null, null, 'center');
+            doc.setFontSize(22);
+            doc.text("This Certifies That", 105, 60, null, null, 'center');
+            doc.setFontSize(24);
+            doc.text(recipientName, 105, 80, null, null, 'center');
+            doc.setFontSize(16);
+            doc.text("has successfully completed the course", 105, 100, null, null, 'center');
+            doc.text(courseTitle, 105, 120, null, null, 'center');
+            doc.text("on " + certificateDate, 105, 140, null, null, 'center');
+            doc.text("Instructor's Signature", 105, 180, null, null, 'center');
+            doc.text(instructorName, 105, 190, null, null, 'center');
+            doc.text("Date: " + certificateDate, 105, 210, null, null, 'center');
+
+            // Convert PDF to Base64
+            const pdfData = doc.output('datauristring');
+
+            // Send email request to backend
+            try {
+                const response = await fetch('C:\xampp\htdocs\akrem web\View\Back_Office\certification.html', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, pdfData }),
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Certificate sent successfully to ' + email);
+                } else {
+                    alert('Failed to send certificate. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error sending certificate:', error);
+                alert('An error occurred. Please try again.');
+            }
         });
     </script>
     

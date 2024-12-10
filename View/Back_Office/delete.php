@@ -1,5 +1,6 @@
 <?php
-require "C:\xampp\htdocs\akrem web\Controller\coursesC.php";
+require_once('C:\xampp\htdocs\akrem web\Controller\coursesC.php');
+
 
 $id = $_GET['id'];
 $pdo = Config::getConnexion();

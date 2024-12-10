@@ -134,6 +134,8 @@ $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <p><strong>Catégorie :</strong> <?php echo htmlspecialchars($course['category']); ?></p>
                     <p><strong>Prix :</strong> <?php echo htmlspecialchars($course['price']); ?> €</p>
                     <p><strong>Durée :</strong> <?php echo htmlspecialchars($course['duration']); ?> heures</p>
+                    <p><strong>Description :</strong> <?php echo htmlspecialchars($course['description']); ?></p>
+                    <p><strong>id_module :</strong> <?php echo htmlspecialchars($course['id_module']); ?> </p>
                     <div class="course-actions">
                         <a href="edit_courses.php?id=<?php echo $course['id']; ?>">Modifier</a>
                         <a href="delete.php?id=<?php echo $course['id']; ?>" class="delete">Supprimer</a>
