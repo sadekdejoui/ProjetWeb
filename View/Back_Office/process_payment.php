@@ -1,71 +1,74 @@
 <?php
-ini_set('memory_limit', '1G'); // Vous pouvez augmenter encore la limite si nécessaire
-
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-require_once 'C:\xampp\htdocs\akrem web\View\Back_Office\process_payment.php';
-require '../vendor/autoload.php';
 
-header('Content-Type: application/json');
+require 'phpmailer/src/Exception.php';
+require 'phpmailer/src/PHPMailer.php';
+require 'phpmailer/src/SMTP.php';
 
-// Récupérer les données JSON envoyées par le client
-$data = json_decode(file_get_contents('php://input'), true);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Retrieve form data
+    $studentName = htmlspecialchars($_POST['nom'] ?? 'Non renseigné');
+    $studentEmail = htmlspecialchars($_POST['email'] ?? 'Non renseigné');
+    $paymentMethod = htmlspecialchars($_POST['payment_method'] ?? 'Non sélectionné');
+    $courseTitle = 'Développement Web';
+    $totalAmount = '99€';
+    $date = htmlspecialchars($_POST['date'] ?? date('Y-m-d'));
 
-// Vérification des données d'entrée
-$email = $data['email'] ?? null;
-$pdfBase64 = $data['pdf'] ?? null;
-$courseTitle = $data['courseTitle'] ?? 'Cours';
-$studentName = $data['studentName'] ?? 'Étudiant';
+    // Generate PDF invoice
+    $pdfContent = "Facture\n\n";
+    $pdfContent .= "Cours: $courseTitle\n";
+    $pdfContent .= "Nom: $studentName\n";
+    $pdfContent .= "Email: $studentEmail\n";
+    $pdfContent .= "Méthode de paiement: $paymentMethod\n";
+    $pdfContent .= "Montant total: $totalAmount\n";
+    $pdfContent .= "Date: $date\n\n";
+    $pdfContent .= "Merci pour votre paiement !";
 
-if (!$email || !$pdfBase64) {
-    echo json_encode(['success' => false, 'message' => 'Données manquantes']);
-    exit;
-}
+    $pdfFilePath = __DIR__ . "/invoice_$studentName.pdf";
+    file_put_contents($pdfFilePath, $pdfContent);
 
-try {
-    // Utiliser un fichier temporaire pour le PDF
-    $tempFile = tempnam(sys_get_temp_dir(), 'facture_');
-    
-    // Décoder le fichier PDF et sauvegarder directement dans le fichier temporaire
-    $pdfContent = base64_decode(preg_replace('#^data:application/pdf;base64,#', '', $pdfBase64));
-    file_put_contents($tempFile, $pdfContent);
+    try {
+        // Initialize PHPMailer
+        $mail = new PHPMailer(true);
+        $mail->SMTPDebug = 0; // Set to 2 or 3 for detailed debugging
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'akremjouini524@gmaill.com'; // Replace with your email
+        $mail->Password = 'abcd efgh ijkl mnop.';   // Replace with your app password
+        $mail->SMTPSecure = 'tls';              // Use TLS encryption
+        $mail->Port = 587;                      // Port for TLS
 
-    // Vérifiez la taille du fichier pour éviter les dépassements
-    if (filesize($tempFile) > 10 * 1024 * 1024) { // Limite à 10 MB
-        unlink($tempFile);  // Supprimer le fichier temporaire si trop volumineux
-        echo json_encode(['success' => false, 'message' => 'La taille du fichier PDF dépasse la limite autorisée.']);
-        exit;
+        // Email settings
+        $mail->setFrom('akremjouini524@gmail.com', 'Course Payment'); // Replace with your sender's email
+        $mail->addAddress($studentEmail);                        // Recipient's email
+        $mail->isHTML(true);
+        $mail->Subject = 'Confirmation de paiement pour le cours';
+        $mail->Body = "
+            Bonjour $studentName,<br><br>
+            Merci pour votre paiement pour le cours \"$courseTitle\".<br>
+            Montant payé : $totalAmount<br>
+            Méthode de paiement : $paymentMethod<br>
+            Date : $date<br><br>
+            Veuillez trouver votre facture ci-jointe.<br><br>
+            Cordialement,<br>
+            L'équipe des cours en ligne
+        ";
+
+        // Attach invoice PDF
+        $mail->addAttachment($pdfFilePath);
+
+        // Send email
+        $mail->send();
+        echo "<script>alert('Paiement effectué avec succès ! La facture a été envoyée par email.'); window.location.href = 'courses pay.html';</script>";
+    } catch (Exception $e) {
+        echo "<script>alert('Erreur lors de l\\'envoi de l\\'email: {$mail->ErrorInfo}');</script>";
     }
 
-    // Configurer PHPMailer
-    $mail = new PHPMailer(true);
-    $mail->isSMTP();
-    $mail->Host = 'smtp.gmail.com';
-    $mail->SMTPAuth = true;
-    $mail->Username = 'votre-email@gmail.com'; // Remplacez par votre email
-    $mail->Password = 'votre-mot-de-passe';    // Remplacez par votre mot de passe ou un mot de passe d'application
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = 587;
-
-    // Configurer l'email
-    $mail->setFrom('votre-email@gmail.com', 'Questerra');
-    $mail->addAddress($email, $studentName);
-    $mail->Subject = "Facture pour le cours $courseTitle";
-    $mail->Body = "Bonjour $studentName,\n\nVoici la facture pour votre inscription au cours \"$courseTitle\". Merci de votre confiance.\n\nCordialement,\nL'équipe Questerra";
-
-    // Ajouter le fichier PDF en pièce jointe
-    $mail->addAttachment($tempFile);
-
-    // Envoyer l'email
-    $mail->send();
-
-    // Supprimer le fichier temporaire après l'envoi
-    unlink($tempFile);
-
-    // Réponse réussie
-    echo json_encode(['success' => true, 'message' => 'Facture envoyée avec succès']);
-} catch (Exception $e) {
-    // Réponse en cas d'erreur
-    echo json_encode(['success' => false, 'message' => $mail->ErrorInfo]);
+    // Cleanup: Remove temporary PDF file
+    if (file_exists($pdfFilePath)) {
+        unlink($pdfFilePath);
+    }
 }
 ?>

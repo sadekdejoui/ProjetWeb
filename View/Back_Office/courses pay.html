@@ -369,7 +369,7 @@
     <div class="container">
         <h1>Gestion du Paiement du Cours</h1>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-        
+    
         <!-- Informations du Cours -->
         <div class="course-info">
             <p><strong>Titre du Cours :</strong> Développement Web</p>
@@ -377,110 +377,109 @@
             <p><strong>Durée :</strong> 20 heures</p>
             <p><strong>Prix :</strong> 99€</p>
         </div>
-
+    
         <!-- Formulaire de Paiement -->
         <form action="process_payment.php" method="post" class="payment-section">
             <label for="nom">Nom :</label>
             <input type="text" id="nom" name="nom" placeholder="Entrez votre nom" required>
-
+    
             <label for="email">E-mail :</label>
             <input type="email" id="email" name="email" placeholder="Entrez votre e-mail" required>
-
+    
             <label for="date">Date d'achat :</label>
             <input type="date" id="date" name="date" required>
-
+    
             <div class="payment-method">
                 <!-- Carte de Crédit -->
                 <label for="credit_card">
                     <input type="radio" id="credit_card" name="payment_method" value="credit_card" required>
-                    <img src="téléchargement (1).png" alt="Carte de Crédit">
+                    <img src="téléchargement.png" alt="Carte de Crédit">
                     Carte de Crédit
                 </label>
-
+    
                 <!-- PayPal -->
                 <label for="paypal">
                     <input type="radio" id="paypal" name="payment_method" value="paypal" required>
-                    <img src="téléchargement.png" alt="PayPal">
+                    <img src="téléchargement (1).png" alt="PayPal">
                     PayPal
                 </label>
             </div>
-
+    
             <!-- Résumé du Paiement -->
             <div class="payment-summary">
                 <p><strong>Total à Payer :</strong> <span class="total">99€</span></p>
             </div>
-
+    
             <!-- Bouton de Paiement -->
             <div class="button-container">
                 <button type="submit">Effectuer le Paiement</button>
             </div>
         </form>
-
-       <!-- Bouton pour Télécharger et Envoyer la Facture -->
-<div class="button-container">
-    <button id="download-and-send-btn">Télécharger et Envoyer la Facture</button>
-</div>
-
-<!----------------------------END pAY Course------------------------------>
-
-
-<script>
-    document.getElementById('download-and-send-btn').addEventListener('click', async function () {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-
-        // Informations de la facture
-        const courseTitle = "Développement Web";
-        const studentName = document.getElementById('nom').value || 'Non renseigné';
-        const studentEmail = document.getElementById('email').value || 'Non renseigné';
-        const paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value || 'Non sélectionné';
-        const totalAmount = '99€';
-        const date = new Date().toLocaleDateString();
-
-        // Générer le contenu du PDF
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(28);
-        doc.text("Facture", 105, 40, null, null, 'center');
-        doc.setFontSize(18);
-        doc.text("Cours : " + courseTitle, 105, 60, null, null, 'center');
-        doc.text("Nom de l'étudiant : " + studentName, 105, 80, null, null, 'center');
-        doc.text("E-mail : " + studentEmail, 105, 100, null, null, 'center');
-        doc.text("Méthode de Paiement : " + paymentMethod, 105, 120, null, null, 'center');
-        doc.text("Total à Payer : " + totalAmount, 105, 140, null, null, 'center');
-        doc.text("Date : " + date, 105, 160, null, null, 'center');
-        doc.setFontSize(14);
-        doc.text("Merci pour votre paiement !", 105, 180, null, null, 'center');
-
-        // Convertir le PDF en base64
-        const pdfBase64 = doc.output('datauristring');
-
-        // Envoi des données au serveur
-        try {
-            const response = await fetch('View/Back_Office/process_payment.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email: studentEmail,
-                    pdf: pdfBase64,
-                    courseTitle: courseTitle,
-                    studentName: studentName
-                })
-            });
-            const result = await response.json();
-            if (result.success) {
-                alert('Facture envoyée par email avec succès.');
-            } else {
-                alert('Erreur lors de l\'envoi de la facture.');
+    
+        <!-- Bouton pour Télécharger et Envoyer la Facture -->
+        <div class="button-container">
+            <button id="download-and-send-btn" type="button">Télécharger et Envoyer la Facture</button>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('download-and-send-btn').addEventListener('click', async function () {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+    
+            // Informations de la facture
+            const courseTitle = "Développement Web";
+            const studentName = document.getElementById('nom').value || 'Non renseigné';
+            const studentEmail = document.getElementById('email').value || 'Non renseigné';
+            const paymentMethod = document.querySelector('input[name=\"payment_method\"]:checked')?.value || 'Non sélectionné';
+            const totalAmount = '99€';
+            const date = document.getElementById('date').value || new Date().toLocaleDateString();
+    
+            // Générer le contenu du PDF
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(28);
+            doc.text("Facture", 105, 40, null, null, 'center');
+            doc.setFontSize(18);
+            doc.text("Cours : " + courseTitle, 105, 60, null, null, 'center');
+            doc.text("Nom de l'étudiant : " + studentName, 105, 80, null, null, 'center');
+            doc.text("E-mail : " + studentEmail, 105, 100, null, null, 'center');
+            doc.text("Méthode de Paiement : " + paymentMethod, 105, 120, null, null, 'center');
+            doc.text("Total à Payer : " + totalAmount, 105, 140, null, null, 'center');
+            doc.text("Date : " + date, 105, 160, null, null, 'center');
+            doc.setFontSize(14);
+            doc.text("Merci pour votre paiement !", 105, 180, null, null, 'center');
+    
+            // Convertir le PDF en base64
+            const pdfBase64 = doc.output('datauristring');
+    
+            // Envoi des données au serveur
+            try {
+                const response = await fetch('process_payment.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: studentEmail,
+                        pdf: pdfBase64,
+                        courseTitle: courseTitle,
+                        studentName: studentName
+                    })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    alert('Facture envoyée par email avec succès.');
+                } else {
+                    alert('Erreur lors de l\'envoi de la facture.');
+                }
+            } catch (error) {
+                alert('Une erreur s\'est produite lors de la communication avec le serveur.');
+                console.error(error);
             }
-        } catch (error) {
-            alert('Une erreur s\'est produite lors de la communication avec le serveur.');
-            console.error(error);
-        }
-
-        // Télécharger la facture localement
-        doc.save('facture.pdf');
-    });
-</script>
+    
+            // Télécharger la facture localement
+            doc.save('facture.pdf');
+        });
+    </script>
+    
 
 
 

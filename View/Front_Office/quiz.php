@@ -1,3 +1,96 @@
+<?php
+// Inclure la bibliothèque FPDF
+require('C:\xampp\htdocs\akrem web\View\Front_Office\fpdf.php\fpdf186\fpdf.php');
+
+// Connexion à la base de données MySQL
+$servername = "localhost";
+$username = "root";  // Remplacez par votre utilisateur MySQL
+$password = "";      // Remplacez par votre mot de passe MySQL
+$dbname = "base de données 1";  // Nom de votre base de données
+
+// Création de la connexion
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Vérification de la connexion
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Traitement du formulaire après soumission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Récupérer les informations de l'utilisateur
+    $name = htmlspecialchars($_POST['name']);
+    $phone = htmlspecialchars($_POST['phone']);
+    $email = htmlspecialchars($_POST['email']);
+    
+    // Insertion des informations de l'utilisateur dans la table 'users'
+    $stmt = $conn->prepare("INSERT INTO users (name, phone, email) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $name, $phone, $email);
+    $stmt->execute();
+    $userId = $stmt->insert_id;  // Récupérer l'ID de l'utilisateur
+
+    // Récupérer les réponses du quiz depuis le formulaire
+    $answers = $_POST;
+
+    // Récupérer les questions depuis la base de données
+    $questionsQuery = "SELECT id, correct_answer FROM questions";
+    $result = $conn->query($questionsQuery);
+
+    $score = 0;
+    $totalQuestions = $result->num_rows;
+
+    // Calculer le score
+    while ($row = $result->fetch_assoc()) {
+        $questionId = $row['id'];
+        $correctAnswer = $row['correct_answer'];
+        if (isset($answers["q$questionId"]) && $answers["q$questionId"] === $correctAnswer) {
+            $score++;
+        }
+    }
+
+    $percentageScore = ($score / $totalQuestions) * 100;
+    $passed = $percentageScore >= 80;
+
+    // Générer le certificat PDF si l'utilisateur a réussi
+    if ($passed) {
+        // Créer un certificat en PDF
+        $pdf = new FPDF();
+        $pdf->AddPage();
+        $pdf->SetFont('Arial', 'B', 16);
+        $pdf->Cell(200, 10, "Certificate of Completion", 0, 1, 'C');
+        $pdf->Ln(10);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(200, 10, "This is to certify that", 0, 1, 'C');
+        $pdf->Ln(5);
+        $pdf->SetFont('Arial', 'I', 14);
+        $pdf->Cell(200, 10, $name, 0, 1, 'C');
+        $pdf->Ln(10);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(200, 10, "has successfully completed the English Quiz", 0, 1, 'C');
+        $pdf->Cell(200, 10, "with a score of $percentageScore%.", 0, 1, 'C');
+        
+        // Enregistrer le fichier PDF
+        $certificatePath = "certificates/Certificate_" . urlencode($name) . ".pdf";
+        $pdf->Output('F', $certificatePath);
+
+        // Ajouter le chemin du certificat à la base de données
+        $certificateLink = $certificatePath;
+    } else {
+        $certificateLink = NULL;
+    }
+
+    // Enregistrer les résultats dans la table 'quiz_results'
+    $stmt = $conn->prepare("INSERT INTO quiz_results (user_id, score, passed, certificate_link) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("diss", $userId, $percentageScore, $passed, $certificateLink);
+    $stmt->execute();
+
+    // Message de résultat
+    $resultMessage = $passed
+        ? "Congratulations, $name! You passed with a score of $percentageScore%. <br>Your certificate is available <a href='$certificateLink' target='_blank'>here</a>."
+        : "Sorry, $name. You scored $percentageScore% and did not pass.";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,169 +124,46 @@
     <!-- Template Stylesheet -->
     <link href="..\Front_Office\css\style.css" rel="stylesheet">
 
-
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Quiz</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f6f8;
+            text-align: center;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 {
             color: #333;
         }
-
-        h2 {
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .course-details-container {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+        form {
+            background-color: #f9f9f9;
             padding: 20px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .course-title {
-            font-size: 1.5em;
-            color: #34495e;
-            margin-bottom: 15px;
-        }
-
-        .course-description {
-            font-size: 1.1em;
-            color: #555;
-            margin-bottom: 20px;
-        }
-
-        .course-progress {
-            margin-bottom: 15px;
-        }
-
-        .progress-bar {
-            background-color: #ddd;
+            border: 1px solid #ddd;
             border-radius: 5px;
-            overflow: hidden;
-            height: 10px;
+        }
+        input, button {
             width: 100%;
-        }
-
-        .progress {
-            background-color: #ae278e;
-            height: 100%;
-            width: 50%; /* Adjust dynamically based on the actual progress */
-        }
-
-        .back-button {
-            background-color: #b929aa;
-            color: white;
-            border: none;
-            padding: 10px 15px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
             border-radius: 5px;
+        }
+        button {
+            background-color: #007BFF;
+            color: #fff;
             cursor: pointer;
-            text-decoration: none;
-            font-size: 0.9em;
         }
-
-        .back-button:hover {
-            background-color: #3498db;
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
-
-
-
-
-<!-------------MODAL ---------->
-<style>
-    /* Modal styling */
-    .modal {
-        display: none; /* Hidden by default */
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        justify-content: center;
-        align-items: center;
-    }
-    
-    .modal-content {
-        background-color: white;
-        padding: 30px;
-        border-radius: 15px;
-        width: 400px;
-        text-align: center;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        position: relative;
-    }
-    
-    /* Close button */
-    .close {
-        color: #aaa;
-        font-size: 28px;
-        font-weight: bold;
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-    }
-    
-    .close:hover {
-        color: black;
-    }
-    
-    /* Textarea styling */
-    #studentId, #password {
-        width: calc(100% - 20px); /* Full width with padding considered */
-        padding: 10px;
-        margin: 10px 0; /* Gap between fields */
-        border: 1px solid #ccc;
-        border-radius: 10px; /* Rounded corners */
-        font-size: 14px;
-        box-sizing: border-box;
-    }
-    
-    /* Button styling */
-    .modal-button {
-        background-color: #b929aa; /* Purple */
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 14px;
-        margin-top: 10px;
-    }
-    
-    .modal-button:hover {
-        background-color: #4CAF50; /* Green on hover */
-    }
-    
-    /* Link styling */
-    .join-link {
-        color: #3498db;
-        text-decoration: none;
-        font-weight: bold;
-    }
-    
-    .join-link:hover {
-        text-decoration: underline;
-    }
-    </style>
-    
-    
 </head>
-
 <body>
-    
-    
-    <div class="container-xxl bg-white p-0">
+<div class="container-xxl bg-white p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -256,70 +226,44 @@
             </div>
         </div>
         <!-- Navbar & Hero End -->
+    <div class="container">
+        <h1>English Quiz</h1>
 
-    <div class="course-details-container">
-        <div class="course-title">Course Title 1: English</div>
-        <div class="course-description">
-            This course provides a structured approach to mastering English. The content includes:
-            <ul>
-                <li><strong>Grammar Basics:</strong> Sentence structure, tenses, parts of speech, punctuation, subject-verb agreement, and common grammatical errors.</li>
-                <li><strong>Vocabulary Development:</strong> Thematic vocabulary building (e.g., travel, business), word usage, synonyms, antonyms, and idiomatic expressions.</li>
-                <li><strong>Speaking and Listening Skills:</strong> Practicing pronunciation, accent reduction, real-life conversations, and role-playing scenarios.</li>
-                <li><strong>Reading and Writing Skills:</strong> Understanding articles, letters, and essays while practicing coherent, clear writing techniques.</li>
-                <li><strong>Cultural Awareness:</strong> Exploring English-speaking cultures to understand language context and nuances.</li>
-            </ul>
-            By the end of this course, you will confidently use English in personal, academic, and professional settings.
-        </div>
-        
-
-        <div class="course-progress">
-            <strong>Progress: 75%</strong>
-            <div class="progress-bar">
-                <div class="progress" style="width: 75%;"></div>
+        <?php if ($_SERVER['REQUEST_METHOD'] === 'POST'): ?>
+            <div id="resultMessage">
+                <h2>Congratulations!</h2>
+                <p><?= $resultMessage ?></p>
             </div>
-        </div>
+        <?php else: ?>
+            <form method="POST" action="">
+                <label for="name">Name:</label><br>
+                <input type="text" id="name" name="name" required><br>
 
-        <div style="display: flex; gap: 10px;">
-            <a href="Cours.html" class="back-button">Back to Other Courses</a>
-            <!--<a href="Start_Course.html" class="back-button">Start Now</a>-->
-            <!-- Start Button -->
-<a href="#" class="back-button" id="startCourseBtn">Start Now</a>
+                <label for="phone">Phone:</label><br>
+                <input type="text" id="phone" name="phone" required><br>
 
-<!-- Modal -->
-<div id="membershipModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Join Questerra</h2>
-        <div>
-            <p>If you are already a student, enter your ID and password below:</p>
-            <form id="loginForm">
-                <label for="studentId">Student ID:</label>
-                <input type="text" id="studentId" name="studentId" required>
-                <br>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                <br>
-                <a href="EngCourCont.php">
-                    <button type="button" class="modal-button">Log In</button>
-                  </a>
-                  <a href="quiz.php">
-                    <button type="button" class="modal-button">Log In</button>
-                  </a>
+                <label for="email">Email:</label><br>
+                <input type="email" id="email" name="email" required><br>
+
+                <?php
+                // Récupérer les questions depuis la base de données
+                $questionsQuery = "SELECT id, question_text FROM questions";
+                $result = $conn->query($questionsQuery);
+
+                while ($row = $result->fetch_assoc()): ?>
+                    <div class="question">
+                        <label><?= $row['question_text'] ?></label><br>
+                        <input type="radio" name="q<?= $row['id'] ?>" value="a" required> Option A<br>
+                        <input type="radio" name="q<?= $row['id'] ?>" value="b"> Option B<br>
+                        <input type="radio" name="q<?= $row['id'] ?>" value="c"> Option C<br>
+                    </div>
+                <?php endwhile; ?>
+
+                <button type="submit">Submit Quiz</button>
             </form>
-        </div>
-        <hr>
-        <div>
-            <p>Not a member yet? <a href="membership.html" class="join-link">Start your membership in Questerra NOW!</a></p>
-        </div>
+        <?php endif; ?>
     </div>
-</div>
-
-        </div>
-    </div>
-
-
-    <!-- Footer Start -->
-<div class="container-fluid bg-primary text-light footer wow fadeIn" data-wow-delay="0.1s">
+    <div class="container-fluid bg-primary text-light footer wow fadeIn" data-wow-delay="0.1s">
     <div class="container py-5 px-lg-5">
         <div class="row g-5">
             <div class="col-md-6 col-lg-3">
@@ -377,9 +321,7 @@
     </div>
 </div>
 <!-- Footer End -->
-
-
-<!-- Back to Top -->
+!-- Back to Top -->
 <a href="#" class="btn btn-lg btn-secondary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 </div>
 
@@ -396,35 +338,6 @@
 
 <!-- Template Javascript -->
 <script src="../Front_Office/js/main.js"></script>
-
-
-
-<!----------------MODAL------------->
-<script>
-    // Get modal and elements
-    const modal = document.getElementById("membershipModal");
-    const startBtn = document.getElementById("startCourseBtn");
-    const closeBtn = document.querySelector(".close");
-    
-    // Show modal on button click
-    startBtn.addEventListener("click", function (event) {
-        event.preventDefault();
-        modal.style.display = "flex";
-    });
-    
-    // Close modal on close button click
-    closeBtn.addEventListener("click", function () {
-        modal.style.display = "none";
-    });
-    
-    // Close modal when clicking outside modal content
-    window.addEventListener("click", function (event) {
-        if (event.target === modal) {
-            modal.style.display = "none";
-        }
-    });
-    </script>
-    
 
 </body>
 </html>
