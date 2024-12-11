@@ -1,5 +1,11 @@
 <?php
 require 'config.php';
+require '../../PHPMailer/src/PHPMailer.php';
+require '../../PHPMailer/src/SMTP.php';
+require '../../PHPMailer/src/Exception.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 try {
     $pdo = config::getConnexion();
@@ -8,6 +14,7 @@ try {
         $id_evenement = (int)$_GET['id_evenement'];
         $id_user = (int)$_POST['id_user'];
         $password = $_POST['password'];
+        $notes = $_POST['notes']; // Capture the notes input
 
         // Validate user credentials
         $userQuery = "SELECT * FROM utilisateurs WHERE id_user = :id_user AND mot_de_passe = :password";
@@ -48,14 +55,49 @@ try {
             if ($currentRegistrations >= $eventCapacity) {
                 echo "Event is fully booked.";
             } else {
-                // Register user
-                $insertQuery = "INSERT INTO inscription (id_evenement, id_user) VALUES (:id_evenement, :id_user)";
+                // Register user with notes
+                $insertQuery = "INSERT INTO inscription (id_evenement, id_user, notes) VALUES (:id_evenement, :id_user, :notes)";
                 $insertStmt = $pdo->prepare($insertQuery);
                 $insertStmt->bindParam(':id_evenement', $id_evenement, PDO::PARAM_INT);
                 $insertStmt->bindParam(':id_user', $id_user, PDO::PARAM_INT);
+                $insertStmt->bindParam(':notes', $notes, PDO::PARAM_STR);
                 $insertStmt->execute();
 
                 echo "Registration successful!";
+
+                // Send confirmation email
+                try {
+                    $mail = new PHPMailer(true);
+
+                    // Server settings
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com'; // Replace with your SMTP host
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'lola07517@gmail.com'; // Replace with your email
+                    $mail->Password = 'bdhv wqeu ypiu wgky';   // Replace with your email password
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                    $mail->Port = 587;
+
+                    // Recipient and sender
+                    $mail->setFrom('your-email@example.com', 'Event Organizer');
+                    $mail->addAddress($user['email'], $user['nom']); // Use user's email and name
+
+                    // Email content
+                    $mail->isHTML(true);
+                    $mail->Subject = 'Event Registration Confirmation';
+                    $mail->Body = "
+                        <h1>Registration Successful!</h1>
+                        <p>Dear {$user['nom']},</p>
+                        <p>You have successfully registered for the event. Thank you for joining us!</p>
+                        <p>Event ID: $id_evenement</p>
+                        <p>Notes: $notes</p>
+                    ";
+
+                    $mail->send();
+                    echo " Confirmation email sent.";
+                } catch (Exception $e) {
+                    echo " Registration successful, but email could not be sent. Error: {$mail->ErrorInfo}";
+                }
             }
         }
     } elseif (isset($_GET['id_evenement'])) {
@@ -166,13 +208,15 @@ try {
                     <center><div id="errorMessages" style="color: red; margin-bottom: 10px;"></div>
                     <h1>Register for Event</h1></center>
             <center><form id="registerform" method="POST">
-                <input type="hidden" name="id_evenement" value="<?= $id_evenement; ?>">
-                <label for="id_user">User ID:</label>
-                <input type="text" name="id_user" id="id_user" ><br><br>
-                <label for="password">Password:</label>
-                <input type="password" name="password" id="password" ><br><br>
-                <button type="submit" style="background-color:#9465d4; color: white;">Register</button>
-            </form></center>
+            <input type="hidden" name="id_evenement" value="<?= $id_evenement; ?>">
+            <label for="id_user">User ID:</label>
+            <input type="text" name="id_user" id="id_user" required><br><br>
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required><br><br>
+            <label for="notes">Notes:</label><br>
+            <textarea name="notes" id="notes" rows="4" cols="50" placeholder="Add notes here (optional)"></textarea><br><br>
+            <button type="submit" style="background-color:#9465d4; color: white;">Register</button>
+        </form></center>
                     
 </div>
                 

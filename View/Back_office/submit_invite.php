@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Execute the statement
         if ($stmt->execute()) {
-            header("Location: events.php?message=success");
+            header("Location: eventreg.php?message=success");
         } else {
             echo "Failed to submit the invitation.";
         }

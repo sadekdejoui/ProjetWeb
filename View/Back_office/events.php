@@ -6,11 +6,17 @@ try {
 
     // Base query: fetch all events by default
     $query = "SELECT * FROM evénements";
+    $conditions = []; // Store query conditions
+    $parameters = []; // Store parameters for binding
 
     // Check if filtering parameters are provided
-    if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
-        $query .= " WHERE date BETWEEN :start_date AND :end_date";
+    if (!empty($_GET['start_date']) && !empty($_GET['end_date'])) {
+        $conditions[] = "date BETWEEN :start_date AND :end_date";
+        $parameters[':start_date'] = $_GET['start_date'];
+        $parameters[':end_date'] = $_GET['end_date'];
     }
+
+    // Check if sorting is requested
     if (isset($_GET['sort_by'])) {
         $sortBy = $_GET['sort_by'];
         $validSortColumns = ['titre', 'date', 'heure'];
@@ -19,12 +25,16 @@ try {
         }
     }
 
+    // Append conditions to the query
+    if (!empty($conditions)) {
+        $query .= " WHERE " . implode(" AND ", $conditions);
+    }
+
     $stmt = $pdo->prepare($query);
 
     // Bind filtering parameters if provided
-    if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
-        $stmt->bindParam(':start_date', $_GET['start_date']);
-        $stmt->bindParam(':end_date', $_GET['end_date']);
+    foreach ($parameters as $key => $value) {
+        $stmt->bindValue($key, $value);
     }
 
     $stmt->execute();
@@ -32,6 +42,7 @@ try {
 } catch (Exception $e) {
     die("Error: " . $e->getMessage());
 }
+
 
 // Handle deletion logic (unchanged)
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
@@ -53,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
         $deleteStmt->execute();
 
         if ($deleteStmt->rowCount() > 0) {
-            header("Location: events.php?message=success");
+            header("Location: allevent.php?message=success");
             exit;
         }
     }
@@ -208,7 +219,14 @@ $availability = $stmt2->fetchAll(PDO::FETCH_ASSOC);
                             </ul>
                         </li>
                         <li class="active">
-                            <a title="Landing Page" href="events.php" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Event</span></a>
+                            <a title="Landing Page" class="has-arrow" href="allevent.php" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Event</span></a>
+
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="All Professors" href="all-professors.html"><span class="mini-sub-pro">All Professors</span></a></li>
+                                <li><a title="Add Professor" href="add-professor.html"><span class="mini-sub-pro">Add Professor</span></a></li>
+                                <li><a title="Edit Professor" href="edit-professor.html"><span class="mini-sub-pro">Edit Professor</span></a></li>
+                                <li><a title="Professor Profile" href="professor-profile.html"><span class="mini-sub-pro">Professor Profile</span></a></li>
+                            </ul>
                         </li>
                         <li>
                             <a class="has-arrow" href="all-professors.html" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Professors</span></a>
@@ -1006,7 +1024,7 @@ $availability = $stmt2->fetchAll(PDO::FETCH_ASSOC);
                                                 <li><a href="widgets.html">Widgets</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="events.php">Event</a></li>
+                                        <li><a href="allevent.php">Event</a></li>
                                         <li><a data-toggle="collapse" data-target="#demoevent" href="#">Professors <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
                                             <ul id="demoevent" class="collapse dropdown-header-top">
                                                 <li><a href="all-professors.html">All Professors</a>
@@ -1248,7 +1266,8 @@ $availability = $stmt2->fetchAll(PDO::FETCH_ASSOC);
             </table>
             <div class="event-buttons" style="padding: 20px; text-align: center;">
 
-            <form method="GET" action="events.php">
+
+            <form method="GET" class="formdate" action="allevent.php">
     <div>
         <label for="start_date">Start Date:</label>
         <input type="date" id="start_date" name="start_date">
@@ -1308,7 +1327,7 @@ $availability = $stmt2->fetchAll(PDO::FETCH_ASSOC);
     </tbody>
 </table>
 <div class="event-buttons" style="padding: 20px; text-align: center;">
-        <form method="GET" action="events.php">
+        <form method="GET" action="allevent.php">
     <center><div>
         <label for="search_name">Search by Name:</label>
         <input type="text" id="search_name" name="search_name" placeholder="Enter user name">

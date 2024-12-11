@@ -266,7 +266,7 @@ $list = $utilisateur->listUsers2();  // Get the list of users from the controlle
                             </ul>
                         </li>
                         <li>
-                            <a title="Landing Page" href="..\Back_office\events.php" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Event</span></a>
+                            <a title="Landing Page" href="..\Back_office\allevent.php" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Event</span></a>
                         </li>
                         
                         <li class="active">
@@ -517,7 +517,7 @@ $list = $utilisateur->listUsers2();  // Get the list of users from the controlle
                                                 <li><a href="..\Back_office\widgets.html">Widgets</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="..\Back_office\events.php">Event</a></li>
+                                        <li><a href="..\Back_office\allevent.php">Event</a></li>
                                         
                                         <li><a data-toggle="collapse" data-target="#demopro" href="#">Utilisateurs <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
                                             <ul id="demopro" class="collapse dropdown-header-top">

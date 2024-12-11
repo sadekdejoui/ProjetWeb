@@ -92,7 +92,13 @@
                             </ul>
                         </li>
                         <li class="active">
-                            <a title="Landing Page" href="events.php" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Event</span></a>
+                            <a title="Landing Page" class="has-arrow" href="" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Event</span></a>
+
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="List of events" href="allevent.php"><span class="mini-sub-pro">All events</span></a></li>
+                                <li><a title="Event Registrations" href="eventreg.php"><span class="mini-sub-pro">Event Registrations</span></a></li>
+                                <li><a title="Event Availability" href="eventplaces.php"><span class="mini-sub-pro">Event Availability</span></a></li>
+                            </ul>
                         </li>
                         <li>
                             <a class="has-arrow" href="all-professors.html" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Professors</span></a>
@@ -1139,7 +1145,7 @@
   <div class="container">
     
     <h4>Ajouter un évenement</h4>
-    <form action="submit_event.php" id="eventForm" method="post">
+    <form action="submit_event.php" id="eventForm" method="post" enctype="multipart/form-data">
       <div class="form-group">
         <input type="text" name="titre" class="form-style" placeholder="Titre de l'événement" id="titre" autocomplete="off">
       </div>
@@ -1157,6 +1163,10 @@
       </div>
       <div class="form-group">
         <input type="number" name="capacite" placeholder="Capacité" class="form-style" id="capacite" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="image">Ajouter une image</label>
+        <input type="file" name="image" class="form-style" id="image" accept="image/*">
       </div>
       <div>
       <button type="submit" class="btn mt-4">Soumettre</button>

@@ -138,44 +138,31 @@ try {
 </form>
                 </div>
                 <div class="container my-5">
-    <div class="row g-4">
-        <?php if (!empty($events)) : ?>
-            <?php foreach ($events as $event) : ?>
-                <div class="col-lg-4 col-md-6">
-                    <div class="card shadow-sm">
-                        <!-- Placeholder image for now -->
-                        <img src="1.jpeg" class="card-img-top" alt="<?= htmlspecialchars($event['titre']); ?>">
-                        <div class="card-body">
+                <div class="row g-4"> 
+    <?php if (!empty($events)) : ?>
+        <?php foreach ($events as $event) : ?>
+            <div class="col-lg-4 col-md-6">
+                <div class="card shadow-sm">
+                    <!-- Image that links to the event details page -->
+                    <a href="event_details.php?id=<?= $event['id_evenement']; ?>">
+                        <img src="<?= !empty($event['image_path']) ? htmlspecialchars($event['image_path']) : '1.jpeg'; ?>" 
+                             class="card-img-top" 
+                             alt="<?= htmlspecialchars($event['titre']); ?>">
+                    </a>
+                    <!-- Title that links to the event details page -->
+                    <div class="card-body text-center">
+                        <a href="event_details.php?id=<?= $event['id_evenement']; ?>" class="card-title-link">
                             <h5 class="card-title"><?= htmlspecialchars($event['titre']); ?></h5>
-                            <p class="card-date">
-                                <strong>Date:</strong> <?= htmlspecialchars($event['date']); ?><br>
-                                <strong>Time:</strong> <?= htmlspecialchars($event['heure']); ?>
-                            </p>
-                            <p class="card-text">
-                            <strong>Description:</strong><?= htmlspecialchars($event['description']); ?>
-                            </p>
-                            <p class="card-location">
-                                <strong>Location:</strong> <?= htmlspecialchars($event['emplacement']); ?>
-                            </p>
-                            <p class="card-capacity">
-                                <strong>Capacity:</strong> <?= htmlspecialchars($event['capacité_maximale']); ?>
-                            </p>
-                            <form action="register.php" method="GET" style="display: inline;">
-                            <input type="hidden" name="id_evenement" value="<?= $event['id_evenement']; ?>">
-                            <button type="submit" class="btn btn-primary">Register</button>
-                        </form>
-                        <form action="testt.php" method="GET" style="display: inline;">
-                            <input type="hidden" name="id_evenement" value="<?= $event['id_evenement']; ?>">
-                            <button type="submit" class="btn btn-danger">Cancel Registration</button>
-                        </form>
-                        </div>
+                        </a>
                     </div>
                 </div>
-            <?php endforeach; ?>
-        <?php else : ?>
-            <p class="text-center">No events available.</p>
-        <?php endif; ?>
-    </div>
+            </div>
+        <?php endforeach; ?>
+    <?php else : ?>
+        <p class="text-center">No events available.</p>
+    <?php endif; ?>
+</div>
+</div>
 </div>
                 
                 

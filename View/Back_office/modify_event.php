@@ -1,6 +1,7 @@
 <?php
 require 'config.php';
 
+// Fetch the event details if `id` is set
 if (isset($_GET['id'])) {
     $id = (int)$_GET['id'];
 
@@ -22,6 +23,7 @@ if (isset($_GET['id'])) {
     die("Invalid request.");
 }
 
+// Handle the form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $titre = $_POST['titre'];
     $description = $_POST['description'];
@@ -29,11 +31,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $heure = $_POST['heure'];
     $emplacement = $_POST['emplacement'];
     $capacite_maximale = (int)$_POST['capacite_maximale'];
+    $imagePath = $event['image_path']; // Default to the existing image path
 
+    // Handle the image upload
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+        $uploadDir = '../../images/';
+        
+        // Ensure the directory exists
+        if (!file_exists($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+
+        $imageName = basename($_FILES['image']['name']);
+        $newImagePath = $uploadDir . $imageName;
+
+        // Validate image type
+        $validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+        $imageType = $_FILES['image']['type'];
+
+        if (!in_array($imageType, $validImageTypes)) {
+            die("Invalid image type. Only JPG, JPEG, and PNG are allowed.");
+        }
+
+        // Move the uploaded file
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $newImagePath)) {
+            $imagePath = $newImagePath; // Update the image path
+        } else {
+            die("Failed to upload the new image.");
+        }
+    }
+
+    // Update the event in the database
     try {
         $updateQuery = "UPDATE evénements 
                         SET titre = :titre, description = :description, date = :date, 
-                            heure = :heure, emplacement = :emplacement, capacité_maximale = :capacite_maximale 
+                            heure = :heure, emplacement = :emplacement, 
+                            capacité_maximale = :capacite_maximale, image_path = :imagePath
                         WHERE id_evenement = :id";
         $updateStmt = $pdo->prepare($updateQuery);
         $updateStmt->bindParam(':titre', $titre, PDO::PARAM_STR);
@@ -42,9 +75,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $updateStmt->bindParam(':heure', $heure, PDO::PARAM_STR);
         $updateStmt->bindParam(':emplacement', $emplacement, PDO::PARAM_STR);
         $updateStmt->bindParam(':capacite_maximale', $capacite_maximale, PDO::PARAM_INT);
+        $updateStmt->bindParam(':imagePath', $imagePath, PDO::PARAM_STR);
         $updateStmt->bindParam(':id', $id, PDO::PARAM_INT);
         $updateStmt->execute();
-        header("Location: events.php?message=update_success");
+
+        header("Location: allevent.php?message=update_success");
         exit();
     } catch (Exception $e) {
         die("Error: " . $e->getMessage());
@@ -145,7 +180,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </ul>
                         </li>
                         <li class="active">
-                            <a title="Landing Page" href="events.php" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Event</span></a>
+                            <a title="Landiqng Page" class="has-arrow" href="" aria-expanded="false"><span class="educate-icon educate-event icon-wrap sub-icon-mg" aria-hidden="true"></span> <span class="mini-click-non">Event</span></a>
+
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="All Professors" href="all-professors.html"><span class="mini-sub-pro">All Professors</span></a></li>
+                                <li><a title="Add Professor" href="add-professor.html"><span class="mini-sub-pro">Add Professor</span></a></li>
+                                <li><a title="Edit Professor" href="edit-professor.html"><span class="mini-sub-pro">Edit Professor</span></a></li>
+                                <li><a title="Professor Profile" href="professor-profile.html"><span class="mini-sub-pro">Professor Profile</span></a></li>
+                            </ul>
                         </li>
                         <li>
                             <a class="has-arrow" href="all-professors.html" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Professors</span></a>
@@ -943,7 +985,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                 <li><a href="widgets.html">Widgets</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="events.php">Event</a></li>
+                                        <li><a href="allevent.php">Event</a></li>
                                         <li><a data-toggle="collapse" data-target="#demoevent" href="#">Professors <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
                                             <ul id="demoevent" class="collapse dropdown-header-top">
                                                 <li><a href="all-professors.html">All Professors</a>
@@ -1192,28 +1234,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <div class="container">
     
     <h4>Modifier un évenement</h4>
-    <form action="" id="eventForm2" method="POST">
-        <div class="form-group mt-2">
-            <input type="text" name="titre" id="titre" class="form-style" placeholder="Titre" value="<?= htmlspecialchars($event['titre']);?>" >
-        </div>
-        <div class="form-group mt-2">
-            <textarea name="description" id="description" class="form-style" placeholder="Description" ><?= htmlspecialchars($event['description']);?></textarea>
-        </div>
-        <div class="form-group mt-2">
-            <input type="date" name="date" id="date" class="form-style" value="<?= htmlspecialchars($event['date']); ?>">
-        </div>
-        <div class="form-group mt-2">
-            <input type="time" name="heure" id="heure" class="form-style" value="<?= htmlspecialchars($event['heure']); ?>">
-        </div>
-        <div class="form-group mt-2">
-            <input type="text" name="emplacement" id="place" class="form-style" placeholder="Emplacement" value="<?= htmlspecialchars($event['emplacement']); ?>">
-        </div>
-        <div class="form-group mt-2">
-            <input type="number" name="capacite_maximale" id="capacite" class="form-style" placeholder="Capacité maximale" value="<?= htmlspecialchars($event['capacité_maximale']); ?>">
-        </div>
-        <button type="submit" href="events.php" class="btn mt-4">Sauvegarder</button>
-        <a href="events.php" class="btn mt-4">Retour</a>
-    </form>
+    <form action="" id="eventForm2" method="POST" enctype="multipart/form-data">
+    <div class="form-group mt-2">
+        <input type="text" name="titre" id="titre" class="form-style" placeholder="Titre" value="<?= htmlspecialchars($event['titre']); ?>" >
+    </div>
+    <div class="form-group mt-2">
+        <textarea name="description" id="description" class="form-style" placeholder="Description"><?= htmlspecialchars($event['description']); ?></textarea>
+    </div>
+    <div class="form-group mt-2">
+        <input type="date" name="date" id="date" class="form-style" value="<?= htmlspecialchars($event['date']); ?>">
+    </div>
+    <div class="form-group mt-2">
+        <input type="time" name="heure" id="heure" class="form-style" value="<?= htmlspecialchars($event['heure']); ?>">
+    </div>
+    <div class="form-group mt-2">
+        <input type="text" name="emplacement" id="place" class="form-style" placeholder="Emplacement" value="<?= htmlspecialchars($event['emplacement']); ?>">
+    </div>
+    <div class="form-group mt-2">
+        <input type="number" name="capacite_maximale" id="capacite" class="form-style" placeholder="Capacité maximale" value="<?= htmlspecialchars($event['capacité_maximale']); ?>">
+    </div>
+    <div class="form-group mt-2">
+        <label for="image">Image actuelle :</label><br>
+        <?php if (!empty($event['image_path'])): ?>
+            <img src="<?= htmlspecialchars($event['image_path']); ?>" alt="Event Image" style="max-width: 200px;">
+        <?php else: ?>
+            <p>Aucune image</p>
+        <?php endif; ?>
+        <input type="file" name="image" id="image" class="form-style mt-2">
+    </div>
+    <button type="submit" class="btn mt-4">Sauvegarder</button>
+    <a href="allevent.php" class="btn mt-4">Retour</a>
+</form>
   </div>
 
 
