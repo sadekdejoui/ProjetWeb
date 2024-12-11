@@ -72,6 +72,10 @@ if (isset($_POST["loglastname"])  || $_POST["logname"] || $_POST["logdate1"] || 
     
     // Update only the necessary fields
     $utilisateur->updateSelectedFields($user, $email);
+
+    $actionId=$user2['id'];
+    $msg="Updated profile";
+    $utilisateur->logUploadActivity($actionId, $msg); // Assuming logUploadActivity is the function to log activity
     
     header('Location: admin.php');
 }  

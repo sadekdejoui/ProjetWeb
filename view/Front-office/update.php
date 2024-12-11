@@ -24,7 +24,7 @@ if (isset($_POST["loglastname"]) || isset($_POST["logname"]) || isset($_POST["lo
     $name = !empty($_POST["logname"]) ? $_POST["logname"] : $user2['prenom'];
     $date = !empty($_POST["logdate"]) ? $_POST["logdate"] : $user2['date_nai'];
     $tel = !empty($_POST["logtel"]) ? (int)$_POST["logtel"] : (int)$user2['tel'];
-    $psw = !empty($_POST["logpass"]) ? $_POST["logpass"] : $user2['psw']; 
+    $psw = !empty($_POST["logpass"]) ? password_hash($_POST["logpass"], PASSWORD_DEFAULT) : $user2['psw']; 
     
     // Default photo value (current photo)
     $photo = $user2['photo'];
@@ -82,6 +82,12 @@ if (isset($_POST["loglastname"]) || isset($_POST["logname"]) || isset($_POST["lo
 
     // Update only the necessary fields in the database
     $utilisateur->updateSelectedFields($user, $email);
+
+    $actionId=$user2['id'];
+    $msg="Updated profile";
+    $utilisateur->logUploadActivity($actionId, $msg); // Assuming logUploadActivity is the function to log activity
+    header('Location: account.php');
+        
 
     // Redirect to the account page (optional)
     header('Location: account.php');

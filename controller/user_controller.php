@@ -246,40 +246,12 @@ class utilisateur_controller{
             return null;  // Return null in case of an error
         }
     }        
-    
-    public function deactivateUtilisateur($id){
-        $db = config::getConnexion();
-
-        try {
-            // Step 1: Get the current minimum deactivated ID
-            $sqlMinId = "SELECT MIN(id) AS min_id FROM utilisateur WHERE id >= 99999999";
-            $queryMinId = $db->prepare($sqlMinId);
-            $queryMinId->execute();
-            $result = $queryMinId->fetch();
-            
-            $nextId = $result['min_id'] ? $result['min_id'] - 1 : 99999999; // Start from 99999999 if no deactivated IDs exist
-
-            // Step 2: Update the user's ID and date_mise
-            $sqlUpdate = "UPDATE utilisateur 
-                        SET id = :nextId, date_mise = NOW() 
-                        WHERE id = :id";
-            $queryUpdate = $db->prepare($sqlUpdate);
-            $queryUpdate->bindValue(':nextId', $nextId, PDO::PARAM_INT);
-            $queryUpdate->bindValue(':id', $id, PDO::PARAM_INT);
-            $queryUpdate->execute();
-
-            echo "User account deactivated with ID $nextId, and date_mise updated to the current date!";
-        } 
-        catch (Exception $e) {
-            echo 'Error: ' . $e->getMessage();
-        }
-    }
 
     public function listUsersPaginated($page, $perPage, $search = '', $sort = 'nom', $order = 'asc') {
         $offset = ($page - 1) * $perPage;
     
         // Sanitize input to avoid SQL injection
-        $validColumns = ['nom', 'prenom', 'email', 'date_mise'];
+        $validColumns = ['id', 'nom', 'prenom', 'email', 'date_mise', 'tyype'];
         $sort = in_array($sort, $validColumns) ? $sort : 'nom';
         $order = ($order === 'desc') ? 'desc' : 'asc';
     
@@ -308,7 +280,6 @@ class utilisateur_controller{
         }
     }
     
-    
 
     public function getTotalUsers($search = '') {
         $sql = "SELECT COUNT(*) AS total FROM utilisateur WHERE 1";
@@ -332,10 +303,174 @@ class utilisateur_controller{
             die('Error: ' . $e->getMessage());
         }
     }
+
+    public function updateUserIds($id){
+        $sql = "UPDATE utilisateur 
+                SET id = id - 1 
+                WHERE id > :id";
+
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+            $query->bindValue(':id', $id, PDO::PARAM_INT);
+            $query->execute();
+            return $query->rowCount(); // Return the number of rows updated
+        } catch (Exception $e) {
+            die('Error: ' . $e->getMessage());
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function logUploadActivity($userId, $action) {
+        $sql = "INSERT INTO user_activity (user_id, action, timestamp, status) VALUES (:user_id, :action, NOW(), 'active')";
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+            $query->execute([
+                'user_id' => $userId,
+                'action' => $action
+            ]);
+            return true; // Successfully logged activity
+        } catch (Exception $e) {
+            die('Error: ' . $e->getMessage());
+        }
+    }
+
+    public function getUserActivityCountsByUser($userId, $startDate, $endDate) {
+        $db = config::getConnexion();
+        $sql = "SELECT action, COUNT(*) as count
+                FROM user_activity
+                WHERE user_id = :userId AND timestamp BETWEEN :startDate AND :endDate
+                GROUP BY action";
+        
+        try {
+            $query = $db->prepare($sql);
+            $query->execute([
+                'userId' => $userId,
+                'startDate' => $startDate,
+                'endDate' => $endDate
+            ]);
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            die('Error: ' . $e->getMessage());
+        }
+    }
+
+    public function getUserActivityDetailsByUser($userId) {
+        $db = config::getConnexion();
+        $sql = "SELECT status 
+            FROM user_activity
+            WHERE user_id = :userId
+            ORDER BY timestamp ASC LIMIT 1";
+        
+        try {
+            $query = $db->prepare($sql);
+            $query->execute([
+                'userId' => $userId
+            ]);
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            die('Error: ' . $e->getMessage());
+        }
+    }
+
+    public function deactivateInactiveUsers() {
+        $db = config::getConnexion();
+        $sql = "UPDATE user_activity ua
+                JOIN (
+                    SELECT user_id, MAX(timestamp) AS last_login
+                    FROM user_activity
+                    WHERE action = 'Logged in'
+                    GROUP BY user_id
+                ) AS last_activity
+                ON ua.user_id = last_activity.user_id
+                SET ua.status = 'desactiver'
+                WHERE last_activity.last_login < NOW() - INTERVAL 2 MONTH";
+    
+        try {
+            $query = $db->prepare($sql);
+            $query->execute();
+            return $query->rowCount() . " users deactivated."; // Return number of users deactivated
+        } catch (Exception $e) {
+            die('Error: ' . $e->getMessage());
+        }
+    }
+
+    public function updateActionsToActiveIfLastActive() {
+        $db = config::getConnexion();
+    
+        // Select users whose last action is 'active'
+        $sql = "SELECT user_id
+                FROM user_activity ua
+                WHERE ua.action = 'active'
+                AND ua.timestamp = (SELECT MAX(timestamp) 
+                                     FROM user_activity 
+                                     WHERE user_id = ua.user_id)";
+        
+        try {
+            $query = $db->prepare($sql);
+            $query->execute();
+            
+            $users = $query->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Update all actions for these users to 'active'
+            foreach ($users as $user) {
+                $updateSql = "UPDATE user_activity
+                              SET action = 'active'
+                              WHERE user_id = :user_id";
+                $updateQuery = $db->prepare($updateSql);
+                $updateQuery->execute(['user_id' => $user['user_id']]);
+            }
+    
+            return count($users) . " users' actions have been updated to 'active'.";
+        } catch (Exception $e) {
+            die('Error: ' . $e->getMessage());
+        }
+    }
+    
     
     
     
 
+   
     
 }
 

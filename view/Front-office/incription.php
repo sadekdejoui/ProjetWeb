@@ -1,27 +1,26 @@
 <?php
 session_start();
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+require 'vendor/autoload.php';
 require '../../controller/user_controller.php';
-
 
 
 $user= null;
 // create an instance of the controller 
 $utilisateur = new utilisateur_controller(); //ayet lel classe eli fih kol chyy
+$mail = new PHPMailer(true);  // Instantiate PHPMailer object
 
-
-if (isset($_POST["loglastname"])  && $_POST["logname"] && $_POST["logdate"] && $_POST["logtel"] && $_POST["logpass"]  && $_POST["logemail"] ) {
+if (isset($_POST["loglastname"])  && $_POST["logname"] && $_POST["logdate"] && $_POST["logtel"] && $_POST["logpass"]  && $_POST["logemail"]) {
 
     $email = $_POST["logemail"];
     $logtype = $_POST["logtype"];
     
     $date_nai = new DateTime($_POST['logdate']);
 
-    $date = new DateTime();
-    $date_entre = clone $date; 
+    $date_insc = new DateTime();
+    $date_entre = clone $date_insc; 
     $date_entre->modify('+7 days'); 
-
-    $date_insc = clone $date_entre; 
-    $date_insc->modify('+7 days'); 
 
 
     if ($utilisateur->checkEmailExists($email)) {
@@ -77,26 +76,59 @@ if (isset($_POST["loglastname"])  && $_POST["logname"] && $_POST["logdate"] && $
         exit;
     } 
     else{
+
+        try {
+            //Server settings
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';  // Gmail SMTP server
+            $mail->SMTPAuth = true;
+            $mail->Username = 'lola07517@gmail.com';  // Your Gmail address
+            $mail->Password = 'bdhv wqeu ypiu wgky'; // Your generated App Password (from Google)
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;  // Use TLS encryption
+            $mail->Port = 587;  // SMTP port for TLS (587)
+        
+            // Recipients
+            $mail->setFrom('lola07517@gmail.com', 'Questerra');  // Your email (same as the recipient in this case)
+            $mail->addAddress($email, 'Utilisateur');  // Send email to your Gmail address
+        
+            $token = bin2hex(random_bytes(5)); // Generates a secure 64-character token
+            $mail->isHTML(true);
+            $mail->Subject = 'Verification Email';
+            $mail->Body = "
+            <div style='font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6;'>
+                <h2 style='color: #4CAF50;'>Verification Email</h2>
+                <p>Bonjour,</p>
+                <p>Nous avons reçu une demande pour s'inscrire dans Questeera.</p>
+                <p>Votre jeton : {$token}</p>
+                <p>Merci,</p>
+                <p>L'équipe Questeera</p>   
+            </div>
+            ";        
+        
+            // Send email
+            $mail->send();
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
+        
         $lastUserId = $utilisateur->getLastUserId(); // Function to get the last user ID
         $newUserId = $lastUserId + 1; // Increment the ID for the new user
         $photoData = file_get_contents('img/pfp.png');
-        $user = new utilisateur(
-            $newUserId,
-            $_POST["logname"],
-            $_POST["loglastname"],
-            $_POST["logtel"],
-            $_POST["logemail"],
-            $_POST["logpass"],
-            $logtype,
-            $date_nai,
-            $date_entre,
-            $date_insc,
-            new DateTime(),
-            $photoData
-        );
-        $utilisateur->addUser($user); //bel fonction sabina fi waset base
-        $_SESSION['email'] = $email;
-        header('Location: account.php');
+        $_SESSION['id1']= $newUserId;
+        $_SESSION['name1']= $_POST["logname"];
+        $_SESSION['lasname1']= $_POST["loglastname"];
+        $_SESSION['tel1']= $_POST["logtel"];
+        $_SESSION['mail1']= $_POST["logemail"];
+        $_SESSION['pass1']= $_POST["logpass"];
+        $_SESSION['type1']= $logtype;
+        $_SESSION['dateN1']= $date_nai;
+        $_SESSION['dateE1']= $date_entre;
+        $_SESSION['dateI1']= $date_insc;
+        $_SESSION['photo1']= $photoData;
+        $_SESSION['token1']= $token;
+
+
+        header('Location: verifemail.php');
     }
 }
 

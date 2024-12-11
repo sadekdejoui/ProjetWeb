@@ -128,4 +128,64 @@ class utilisateur {
         $this->photo = $photo;
     }
 }
+
+class user_activity {
+    private ?int $id;
+    private ?int $user_id;
+    private ?string $action;
+    private ?DateTime $timestamp;
+    private ?string $status;
+
+    // Constructor
+    public function __construct(?int $id, ?int $user_id, ?string $action, ?DateTime $timestamp = null, ?string $status = 'active') {
+        $this->id = $id;
+        $this->user_id = $user_id;
+        $this->action = $action;
+        $this->timestamp = $timestamp ?? new DateTime();
+        $this->status = $status;
+    }
+
+    // Getters and Setters
+    public function getId(): ?int {
+        return $this->id;
+    }
+
+    public function setId(?int $id): void {
+        $this->id = $id;
+    }
+
+    public function getUserId(): ?int {
+        return $this->user_id;
+    }
+
+    public function setUserId(?int $user_id): void {
+        $this->user_id = $user_id;
+    }
+
+    public function getAction(): ?string {
+        return $this->action;
+    }
+
+    public function setAction(?string $action): void {
+        $this->action = $action;
+    }
+
+    public function getTimestamp(): ?DateTime {
+        return $this->timestamp;
+    }
+
+    public function setTimestamp(?DateTime $timestamp): void {
+        $this->timestamp = $timestamp;
+    }
+
+    public function getStatus(): ?string {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): void {
+        $this->status = $status;
+    }
+}
 ?>
+
+

@@ -1,8 +1,6 @@
 <?php
 session_start();
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-require 'vendor/autoload.php';
+
 require '../../controller/user_controller.php'; // Include the controller
 
 $user = null;
@@ -14,52 +12,22 @@ if (isset($_POST["logemail1"]) && isset($_POST["logpass1"])) {
     $email = filter_var($_POST["logemail1"], FILTER_SANITIZE_EMAIL);
     $password = htmlspecialchars($_POST["logpass1"], ENT_QUOTES, 'UTF-8');
 
-    if (isset($_POST["mdpoublie"])) {
-        try {
-            //Server settings
-            $email->isSMTP();
-            $email->Host = 'smtp.example.com'; // SMTP server
-            $email->SMTPAuth = true;
-            $email->Username = 'your_email@example.com';  // Your email address
-            $email->Password = 'your_email_password'; // Your email password
-            $email->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $email->Port = 587;
-        
-            //Recipients
-            $email->setFrom('your_email@example.com', 'Mailer');
-            $email->addAddress('recipient@example.com', 'Joe User'); // Add recipient
-        
-            //Content
-            $email->isHTML(true);
-            $email->Subject = 'Here is the subject';
-            $email->Body    = 'This is the HTML message body <b>in bold!</b>';
-            $email->AltBody = 'This is the plain text message body for non-HTML email clients';
-        
-            $email->send();
-            echo 'Message has been sent';
-        } catch (Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-        }
-    }
-
     // Fetch user data by email
     $user = $utilisateur->showUser($email);
     
+    
     if ($user) {
+        $_SESSION['idaction'] = $user['id'];
         // Check if the password key exists
-        if ($password==$user['psw']) { 
+        if (password_verify($password,$user['psw'])) { 
             // Redirect based on user type
-            $tyype = $user['tyype']; // Assuming 'tyype' is a valid column in the DB
+            $_SESSION['tyype']=$user['tyype']; // Assuming 'tyype' is a valid column in the DB
             $_SESSION['email'] = $user['email'];
-            if ($tyype == "Professeur" || $tyype == "Etudiant") {
-                header('Location: account.php');
-                exit();
-            } elseif ($tyype == "Admin") {
-                $query = http_build_query(['email' => $user['email']]);
-                header('Location: http://localhost/Projet%20Web/view/Back_office/admin.php');
-                exit;
-            }
-        } else {
+            $_SESSION['tel4'] = $user['tel'];
+            header('Location: login2.php');
+            exit;
+        }
+        else {
             echo "
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
@@ -109,10 +77,16 @@ if (isset($_POST["logemail1"]) && isset($_POST["logpass1"])) {
                     }, 3000);
                 });
             </script>";
+            // Assuming user id is stored in session
+            $actionId=$_SESSION['idaction'];
+            $msg="Failed login attempt";
+            $utilisateur->logUploadActivity($actionId, $msg); // Assuming logUploadActivity is the function to log activity
             exit;
+           
         }
     } else {
-        echo "
+        echo"
+        
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Change the body background color
@@ -161,6 +135,7 @@ if (isset($_POST["logemail1"]) && isset($_POST["logpass1"])) {
                 }, 3000);
             });
         </script>";
+        
         exit;
     }
 }

@@ -1,9 +1,67 @@
 <?php
+    session_start();
     require '../../controller/user_controller.php'; 
     $utilisateur = new utilisateur_controller(); 
-    $email = $_GET['email'];
+    if(!isset($_SESSION['email2'])){
+        header("Location: http://localhost/Projet%20Web/view/Front-office/login.html");
+        exit();
+    }
+
+
+
+
+
+
+
+
+
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
+        $email = $_POST['email'];
+        $_SESSION['email5'] = $email;
+        // Use $email to fetch user details or perform actions
+    } else {
+        // Handle cases where the email is not provided
+        $email = $_SESSION['email5'];
+    }
     $list = $utilisateur->showUser($email);
+    // Set the user type
+    $type = $list['tyype'];
     $ch=$list["tyype"];
+    $imageData = $utilisateur->getUserPhotoByEmail($email);
+    
+
+    // Initialize the image source (base64-encoded) for displaying in HTML
+    $imageSrc = '';
+
+    if ($imageData) {
+        // Get the image information using getimagesizefromstring
+        $imageInfo = getimagesizefromstring($imageData);
+
+        if ($imageInfo) {
+            // Determine the appropriate image type based on the image data
+            switch ($imageInfo['mime']) {
+                case 'image/jpeg':
+                    $imageType = 'image/jpeg';
+                    break;
+                case 'image/png':
+                    $imageType = 'image/png';
+                    break;
+                case 'image/gif':
+                    $imageType = 'image/gif';
+                    break;
+                default:
+                    $imageType = 'image/jpeg';  // Default to JPEG if type is unknown
+                    break;
+            }
+
+            // Encode the binary data to base64 to embed it in an HTML tag
+            $base64Image = base64_encode($imageData);
+
+            // Create a data URL for the image
+            $imageSrc = 'data:' . $imageType . ';base64,' . $base64Image;
+        }
+    }
 ?>
 
 <!doctype html>
@@ -641,7 +699,11 @@
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                         
                         <div class="profile-info-inner">
-                            <img src="" class="card-img-top" alt="Profile Picture" style="width: 350px; height: 30    0px; margin: 0 auto; display: block;">
+                            <?php if ($imageSrc): ?>
+                                    <img src="<?php echo $imageSrc; ?>" alt="Profile Photo" class="card-img-top">
+                                <?php else: ?>
+                                    <p>No profile photo available.</p>
+                                <?php endif; ?>
                         <div class="card-body">
                             <center>
                                 <h5 class="card-title" style="font-family: 'Pacifico', cursive; font-weight: bold; margin-top: 20px; color: #ac81f2;">
@@ -651,7 +713,7 @@
                             <p class="card-text">Type: <?php echo $ch; ?></p>
                             <p class="card-text">Phone: <?php echo $list['tel']; ?></p>
                             <p>Email: <?php echo $list['email']; ?></p>
-                            <p>Password: <?php echo $list['psw']; ?></p>
+                            <p>Password: ******</p>
                             <p>Date De Naissance: <?php echo $list['date_nai']; ?></p>
                             <p>Date d'Entretien: <?php echo $list['date_entre']; ?></p>
                             <p>Date D'Inscription: <?php echo $list['date_insc']; ?></p>
@@ -671,7 +733,7 @@
                                 <div class="product-tab-list tab-pane fade active in" id="description">
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                            <form action="update.php" method="POST" class="" onsubmit="return verif2()">
+                                            <form action="update.php" method="POST" class="" onsubmit="return verif2()" enctype="multipart/form-data">
                                                 <div class="review-content-section">
                                                     <div class="row">
                                                         <div class="col-lg-6">
@@ -695,7 +757,7 @@
                                                                             <i class="fa fa-download"></i>
                                                                     </label>
                                                                     <div class="file-button" style="background-color: #ac81f2; border-color: #ac81f2; border: 1px solid #ac81f2;">
-                                                                        <input type="file" onchange="document.getElementById('prepend-big-btn').value = this.value;" style="background-color: #ac81f2; border-color: #ac81f2; border: 1px solid #ac81f2;">
+                                                                        <input type="file" onchange="document.getElementById('prepend-big-btn').value = this.value;"  id="logphoto" name="logphoto" accept="image/*" style="background-color: #ac81f2; border-color: #ac81f2; border: 1px solid #ac81f2;">
                                                                         Browse
                                                                     </div>
                                                                     <input type="text" id="prepend-big-btn" placeholder="no file selected">
@@ -721,8 +783,8 @@
                                                     <div class="row">
                                                         <div class="col-lg-12">
                                                             <div class="payment-adress mg-t-15">
-                                                            <input type="hidden" name="email" value="<?php echo htmlspecialchars($list['email']); ?>">
-                                                            <button type="submit" class="btn btn-primary" style="background-color: #ac81f2; border: 1px solid #ac81f2; margin: 10px;">Update</button>
+                            
+                                                                <button type="submit" class="btn btn-primary" style="background-color: #ac81f2; border: 1px solid #ac81f2; margin: 10px;">Update</button>
 
                                                                 
                                                             </div>
@@ -813,6 +875,7 @@
             const tel = document.getElementById("logtel");
             const motDePasse = document.getElementById("logpass");
             const email = document.getElementById("logemail");
+            const photo = document.getElementById("logphoto");
 
             // Regular expressions
             const nameRegex = /^([A-Z][a-z]{0,29})(\s[A-Z][a-z]{0,29})*$/; // Each word starts with uppercase, followed by lowercase, max 30 chars.
@@ -855,6 +918,15 @@
                     );
                 } else {
                     updates.push("Le mot de passe est valide.");
+                }
+            }
+
+            if (photo.value.trim()) {
+                const photoValue = photo.value.toLowerCase();
+                if (!photoValue.endsWith(".png") && !photoValue.endsWith(".jpeg") && !photoValue.endsWith(".jpg")) {
+                    errors.push("La photo doit être au format .png ou .jpeg.");
+                } else {
+                    updates.push("La photo est valide.");
                 }
             }
                 

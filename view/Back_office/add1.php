@@ -1,6 +1,11 @@
 <?php
 require '../../controller/user_controller.php';
+session_start();
 
+if(!isset($_SESSION['email'])){
+    header("Location: http://localhost/Projet%20Web/view/Front-office/login.html");
+    exit();
+}
 
 
 $user= null;
@@ -15,6 +20,7 @@ if (isset($_POST["loglastname"])  && $_POST["logname"] && $_POST["logdate1"]  &&
     $date_nai = new DateTime($_POST['logdate1']);
     $date_entre = new DateTime($_POST['logdate2']);
     $date_insc = new DateTime($_POST['logdate3']);
+    $password = password_hash($_POST['logpass'], PASSWORD_DEFAULT);
 
     if ($utilisateur->checkEmailExists($email)) {
         echo "
@@ -71,20 +77,28 @@ if (isset($_POST["loglastname"])  && $_POST["logname"] && $_POST["logdate1"]  &&
     else{
         $lastUserId = $utilisateur->getLastUserId(); // Function to get the last user ID
         $newUserId = $lastUserId + 1; // Increment the ID for the new user
+        $photoData = file_get_contents('img/pfp.png');
         $user = new utilisateur(
             $newUserId,
             $_POST["logname"],
             $_POST["loglastname"],
             $_POST["logtel"],
             $_POST["logemail"],
-            $_POST["logpass"],
+            $password,
             $logtype,
             $date_nai,
             $date_entre,
             $date_insc,
-            new DateTime()
+            new DateTime(),
+            $photoData
         );
         $utilisateur->addUser($user); //bel fonction sabina fi waset base
+    
+        
+        $list = $utilisateur->showUser($_SESSION['email']);
+        $actionId=$list['id'];
+        $msg="Added a user";
+        $utilisateur->logUploadActivity($actionId, $msg); // Assuming logUploadActivity is the function to log activity
         
         header('Location: students.php');
     }

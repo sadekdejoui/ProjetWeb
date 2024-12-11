@@ -1,23 +1,48 @@
 <?php
+session_start();
 require '../../controller/user_controller.php';
 $utilisateur = new utilisateur_controller();
 
-// Get the current page from the URL (default to 1)
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$perPage = 5; // Max users per page
+if(!isset($_SESSION['email'])){
+    header("Location: http://localhost/Projet%20Web/view/Front-office/login.html");
+    exit();
+}
 
-// Get the search term from the form
-$search = isset($_GET['search']) ? $_GET['search'] : '';
-$sort = isset($_GET['sort']) ? $_GET['sort'] : 'nom'; // Default sort column
-$order = isset($_GET['order']) ? $_GET['order'] : 'asc'; // Default sort order
+// Update the session values if provided via POST
+if (isset($_POST['page'])) {
+    $_SESSION['page'] = (int)$_POST['page'];
+}
+if (isset($_POST['search'])) {
+    $_SESSION['search'] = $_POST['search'];
+}
+if (isset($_POST['sort'])) {
+    $_SESSION['sort'] = $_POST['sort'];
+}
+if (isset($_POST['order'])) {
+    $_SESSION['order'] = $_POST['order'];
+}
+
+// Retrieve the values from the session, with defaults
+$page = isset($_SESSION['page']) ? $_SESSION['page'] : 1;
+$search = isset($_SESSION['search']) ? $_SESSION['search'] : '';
+$sort = isset($_SESSION['sort']) ? $_SESSION['sort'] : 'nom'; // Default sort column
+$order = isset($_SESSION['order']) ? $_SESSION['order'] : 'asc'; // Default sort order
+
+$perPage = 5; // Max users per page
 
 // Fetch users based on search and pagination
 $list = $utilisateur->listUsersPaginated($page, $perPage, $search, $sort, $order);
 
+
 // Get total users for pagination
 $totalUsers = $utilisateur->getTotalUsers();
 $totalPages = ceil($totalUsers / $perPage);
+
+$utilisateur->deactivateInactiveUsers();  // Call the function to deactivate inactive users
+$utilisateur->updateActionsToActiveIfLastActive();  // Updates actions for users whose last action was 'active'
 ?>
+
+
 
 <!doctype html>
 <html class="no-js" lang="en">
@@ -708,11 +733,13 @@ $totalPages = ceil($totalUsers / $perPage);
 
 
             <div style="padding: 30px 30px 30px 30px;">
-                <form method="GET" action="students.php">
-                    <input type="text" name="search" placeholder="Search by name or email" value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+                <form method="POST" action="students.php">
+                    <input type="text" name="search" placeholder="Search by name or email" 
+                        value="<?= isset($_SESSION['search']) ? htmlspecialchars($_SESSION['search']) : '' ?>">
                     <button type="submit">Search</button>
                 </form>
             </div>
+
 
 
 
@@ -757,70 +784,136 @@ $totalPages = ceil($totalUsers / $perPage);
             <table class="styled-table">
                 <thead>
                     <tr>
-                        <th><a href="?sort=nom&order=<?= (isset($_GET['order']) && $_GET['order'] === 'asc') ? 'desc' : 'asc' ?>">Nom</a></th>
-                        <th><a href="?sort=prenom&order=<?= (isset($_GET['order']) && $_GET['order'] === 'asc') ? 'desc' : 'asc' ?>">Prénom</a></th>
-                        <th><a href="?sort=email&order=<?= (isset($_GET['order']) && $_GET['order'] === 'asc') ? 'desc' : 'asc' ?>">Email</a></th>
-                        <th>Type</th>
-                        <th><a href="?sort=date_mise&order=<?= (isset($_GET['order']) && $_GET['order'] === 'asc') ? 'desc' : 'asc' ?>">Date</a></th>
+                        <th>
+                            <form method="POST" action="students.php" style="display: inline;">
+                                <input type="hidden" name="sort" value="id">
+                                <input type="hidden" name="order" value="<?= (isset($_POST['order']) && $_POST['order'] === 'asc') ? 'desc' : 'asc' ?>">
+                                <button type="submit" class="sort-button">Id</button>
+                            </form>
+                        </th>
+                        <th>
+                            <form method="POST" action="students.php" style="display: inline;">
+                                <input type="hidden" name="sort" value="nom">
+                                <input type="hidden" name="order" value="<?= (isset($_POST['order']) && $_POST['order'] === 'asc') ? 'desc' : 'asc' ?>">
+                                <button type="submit" class="sort-button">Nom</button>
+                            </form>
+                        </th>
+                        <th>
+                            <form method="POST" action="students.php" style="display: inline;">
+                                <input type="hidden" name="sort" value="prenom">
+                                <input type="hidden" name="order" value="<?= (isset($_POST['order']) && $_POST['order'] === 'asc') ? 'desc' : 'asc' ?>">
+                                <button type="submit" class="sort-button">Prénom</button>
+                            </form>
+                        </th>
+                        <th>
+                            <form method="POST" action="students.php" style="display: inline;">
+                                <input type="hidden" name="sort" value="email">
+                                <input type="hidden" name="order" value="<?= (isset($_POST['order']) && $_POST['order'] === 'asc') ? 'desc' : 'asc' ?>">
+                                <button type="submit" class="sort-button">Email</button>
+                            </form>
+                        </th>
+                        <th>
+                            <form method="POST" action="students.php" style="display: inline;">
+                                <input type="hidden" name="sort" value="tyype">
+                                <input type="hidden" name="order" value="<?= (isset($_POST['order']) && $_POST['order'] === 'asc') ? 'desc' : 'asc' ?>">
+                                <button type="submit" class="sort-button">Type</button>
+                            </form>
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            <form method="POST" action="students.php" style="display: inline;">
+                                <input type="hidden" name="sort" value="date_mise">
+                                <input type="hidden" name="order" value="<?= (isset($_POST['order']) && $_POST['order'] === 'asc') ? 'desc' : 'asc' ?>">
+                                <button type="submit" class="sort-button">Date</button>
+                            </form>
+                        </th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    
-                       
-                <?php foreach ($list as $user): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($user['nom']) ?></td>
-                        <td><?= htmlspecialchars($user['prenom']) ?></td>
-                        <td><?= htmlspecialchars($user['email']) ?></td>
-                        <td><?= htmlspecialchars($user['tyype']) ?></td>
-                        <td><?= htmlspecialchars($user['date_mise']) ?></td>
-                        <td>
-                            <!-- Afficher Button -->
-                            <button class="action-button" style="width: 80px;" 
-                                    onclick="window.location.href='sprofile.php?email=<?= urlencode($user['email']) ?>';">
-                                Afficher
-                            </button>
+                <tbody>       
+                    <?php foreach ($list as $user): ?>
+                        <?php
+                        // Fetch user activities
+                        $userActivities = $utilisateur->getUserActivityDetailsByUser($user['id']); 
+                        ?>
+                        <tr>
+                            <td><?= htmlspecialchars($user['id']) ?></td>
+                            <td><?= htmlspecialchars($user['nom']) ?></td>
+                            <td><?= htmlspecialchars($user['prenom']) ?></td>
+                            <td><?= htmlspecialchars($user['email']) ?></td>
+                            <td><?= htmlspecialchars($user['tyype']) ?></td>
+                            <td>
+                                <?php 
+                                // Display status of activities
+                                if (!empty($userActivities)) {
+                                    foreach ($userActivities as $activity) {
+                                        echo htmlspecialchars($activity['status']) . "<br>";
+                                    }
+                                } else {
+                                    echo "No activities";
+                                }
+                                ?>
+                            </td>
+                            <td><?= htmlspecialchars($user['date_mise']) ?></td>
+                            <td>
+                                <!-- Afficher Button -->
+                                <form method="POST" action="sprofile.php">
+                                    <input type="hidden" name="email" value="<?= htmlspecialchars($user['email']) ?>">
+                                    <button type="submit" class="action-button" style="width: 80px;">Afficher</button>
+                                </form>
 
-                            <!-- Block Form -->
-                            <form action="delete.php" method="POST" style="display: inline;">
-                                <input type="hidden" name="id" value="<?= htmlspecialchars($user['id']) ?>">
-                                <button type="submit" class="action-button" style="width: 80px;">Block</button>
-                            </form>
-                            
-                            <!-- Desactiver Form -->
-                            <form action="desactiver.php" method="POST" style="display: inline;">
-                                <input type="hidden" name="id" value="<?= htmlspecialchars($user['id']) ?>">
-                                <button type="submit" class="action-button" style="margin-top: 3px; width: 80px;">Desactiver</button>
-                            </form>
-                            
-                            <!-- Activer Form -->
-                            <form action="activer.php" method="POST" style="display: inline;">
-                                <input type="hidden" name="id" value="<?= htmlspecialchars($user['id']) ?>">
-                                <button type="submit" class="action-button" style="margin-top: 3px; width: 80px;">Activer</button>
-                            </form>
-                        </td>
-                    </tr>
+                                <!-- Block Form -->
+                                <form action="delete.php" method="POST" style="display: inline;">
+                                    <input type="hidden" name="email" value="<?= htmlspecialchars($user['email']) ?>">
+                                    <button type="submit" class="action-button" style="width: 80px;">Delete</button>
+                                </form>
+
+                                <form action="show.php" method="POST" style="display: inline;">
+                                    <input type="hidden" name="email" value="<?= htmlspecialchars($user['email']) ?>">
+                                    <button type="submit" class="action-button" style="width: 80px;">Show</button>
+                                </form>
+                            </td>
+                        </tr>
                     <?php endforeach; ?>
 
-                        
-                 
                 </tbody>
-            </table>
-            <div class="pagination">
-                <?php if ($page > 1): ?>
-                    <a href="?page=<?= $page - 1 ?>&sort=<?= $sort ?>&order=<?= $order ?>&search=<?= urlencode($search) ?>">Previous</a>
-                <?php endif; ?>
+        </div>
 
-                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                    <a href="?page=<?= $i ?>&sort=<?= $sort ?>&order=<?= $order ?>&search=<?= urlencode($search) ?>"
-                    class="<?= $i === $page ? 'active' : '' ?>"><?= $i ?></a>
-                <?php endfor; ?>
+        <div class="pagination">
+                            <?php if ($page > 1): ?>
+                                <form method="POST" action="students.php" style="display: inline;">
+                                    <input type="hidden" name="page" value="<?= $page - 1 ?>">
+                                    <input type="hidden" name="sort" value="<?= $sort ?>">
+                                    <input type="hidden" name="order" value="<?= $order ?>">
+                                    <input type="hidden" name="search" value="<?= htmlspecialchars($search) ?>">
+                                    <button type="submit">Previous</button>
+                                </form>
+                            <?php endif; ?>
 
-                <?php if ($page < $totalPages): ?>
-                    <a href="?page=<?= $page + 1 ?>&sort=<?= $sort ?>&order=<?= $order ?>&search=<?= urlencode($search) ?>">Next</a>
-                <?php endif; ?>
+                            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                                <form method="POST" action="students.php" style="display: inline;">
+                                    <input type="hidden" name="page" value="<?= $i ?>">
+                                    <input type="hidden" name="sort" value="<?= $sort ?>">
+                                    <input type="hidden" name="order" value="<?= $order ?>">
+                                    <input type="hidden" name="search" value="<?= htmlspecialchars($search) ?>">
+                                    <button type="submit" class="<?= $i === $page ? 'active' : '' ?>"><?= $i ?></button>
+                                </form>
+                            <?php endfor; ?>
+
+                            <?php if ($page < $totalPages): ?>
+                            <form method="POST" action="students.php" style="display: inline;">
+                                <input type="hidden" name="page" value="<?= $page + 1 ?>">
+                                <input type="hidden" name="sort" value="<?= $sort ?>">
+                                <input type="hidden" name="order" value="<?= $order ?>">
+                                <input type="hidden" name="search" value="<?= htmlspecialchars($search) ?>">
+                                <button type="submit">Next</button>
+                            </form>
+                        <?php endif; ?>
             </div>
+
+
 
 
 

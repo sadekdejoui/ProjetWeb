@@ -5,6 +5,11 @@ require '../../controller/user_controller.php';
 // Get the email parameter from the URL
 $email = $_SESSION['email'];
 
+if(!isset($_SESSION['email'])){
+    header("Location: login.html");
+    exit();
+}
+
 // Create an instance of the utilisateur_controller class
 $utilisateur = new utilisateur_controller();
 
@@ -107,7 +112,7 @@ if ($imageData) {
                     </button>
                     <div class="collapse navbar-collapse" id="navbarCollapse">
                         <div class="navbar-nav mx-auto py-0">
-                            <a href="..\Front-office\index.html" class="nav-item nav-link">Accueil</a>
+                            <a href="..\Front-office\index2.html" class="nav-item nav-link">Accueil</a>
                             <a href="..\Front-office\blog.html" class="nav-item nav-link">Blog</a>
                             <a href="..\Front-office\Cours.html" class="nav-item nav-link">Cours</a>
                             <a href="..\Front-office\ecahnge.html" class="nav-item nav-link">Questions</a>
@@ -115,7 +120,7 @@ if ($imageData) {
                             <a href="..\Front-office\contact.html" class="nav-item nav-link">Complaint</a>
                         </div>
                     </div>
-                    <button class="dropdown-button"><a href="..\Front-office\index.html"><p style="color: black; margin-top: 12px;">Back</p></a></button>  
+                    
                         
                 </nav>
             </div>
@@ -148,7 +153,7 @@ if ($imageData) {
                                 <p>Type: <?php echo $type;?></p>
                                 <p class="card-text">Phone: <?php echo $list['tel']; ?></p>
                                 <p>Email: <?php echo $list['email']; ?></p>
-                                <p>Password: <?php echo $list['psw']; ?></p>
+                                <p>Password: *******</p>
                                 <p>Date De Naissance: <?php echo $list['date_nai']; ?></p>
 
                             </div>
@@ -244,7 +249,7 @@ if ($imageData) {
                             </div>
                             <div class="col-md-6 text-center text-md-end">
                                 <div class="footer-menu">
-                                    <a href="..\Front-office\index.html">Accueille</a>
+                                    <a href="..\Front-office\index2.html">Accueille</a>
                                 </div>
                             </div>
                         </div>

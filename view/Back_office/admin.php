@@ -6,6 +6,11 @@
     $list = $utilisateur->showUser($email);
     $imageData = $utilisateur->getUserPhotoByEmail($email);
 
+    if(!isset($_SESSION['email'])){
+        header("Location: http://localhost/Projet%20Web/view/Front-office/login.html");
+        exit();
+    }
+
     // Initialize the image source (base64-encoded) for displaying in HTML
     $imageSrc = '';
 
@@ -236,7 +241,7 @@
                             <ul class="submenu-angle" aria-expanded="false">
                                 <li><a title="All Students" href="..\Back_office\students.php"><span class="mini-sub-pro">All Utilisateurs</span></a></li>
                                 <li><a title="Add Students" href="..\Back_office\add-student.html"><span class="mini-sub-pro">Add Utilisateur</span></a></li>
-                               <li><a title="Students Profile" href="..\Back_office\sprofile.php"><span class="mini-sub-pro">Utilisateur Profile</span></a></li>
+                              
                             </ul>
                         </li>
                         <li>
@@ -487,8 +492,7 @@
                                                 </li>
                                                 <li><a href="..\Back_office\add-student.html">Add Utilisateur</a>
                                                 </li>
-                                                <li><a href="..\Back_office\sprofile.php">Student Profile</a>
-                                                </li>
+                                                
                                             </ul>
                                         </li>
                                         <li><a data-toggle="collapse" data-target="#democrou" href="#">Courses <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
@@ -683,7 +687,7 @@
                             </center>
                             <p class="card-text">Phone: <?php echo $list['tel']; ?></p>
                             <p>Email: <?php echo $list['email']; ?></p>
-                            <p>Password: <?php echo $list['psw']; ?></p>
+                            <p>Password: *********</p>
                             <p>Date De Naissance: <?php echo $list['date_nai']; ?></p>
                             <p>Date De Dernière Mise à Jour: <?php echo $list['date_mise']; ?></p>
                         </div>
