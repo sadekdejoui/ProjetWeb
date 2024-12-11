@@ -1,7 +1,6 @@
 <?php
 // submit_article.php
 
-// submit_article.php
 
 // Connexion à la base de données
 $dsn = 'mysql:host=localhost;dbname=articles;charset=utf8';
@@ -31,9 +30,11 @@ try {
             if (in_array($fileExtension, $allowedfileExtensions) && $fileSize < 2 * 1024 * 1024) { // Limite de 2 Mo
                 // Créez un nom de fichier unique
                 $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
-                $uploadFileDir = 'C:/xampp/htdocs/Projet Web - Copie 1 - Copie/View/Front-office/uploads/'; // Répertoire d'upload
-                $dest_path = $uploadFileDir . $newFileName;
+                $uploadFileDir = 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\View\Front-office\blog\uploads/'; // Répertoire d'upload
+                                $uploadFileDir = 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\View\back-office\uploads/';
 
+                $dest_path = $uploadFileDir . $newFileName;
+                
                 if (move_uploaded_file($fileTmpPath, $dest_path)) {
                     $imagePath = 'uploads/' . $newFileName; // Enregistrez le chemin relatif
                 } else {

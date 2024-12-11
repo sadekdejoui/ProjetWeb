@@ -384,7 +384,7 @@ Page</a></li>
             </tr>
             <tr>
                 <td colspan="2" align="center">
-                    <input type="submit" class="btn" value="Mettre à jour">
+                    <input type="submit" class="btn btn_primary" value="Mettre à jour">
                     <a href="ListArticles.php" class="btn btn-cancel">Annuler</a>
                 </td>
             </tr>

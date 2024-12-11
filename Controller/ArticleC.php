@@ -11,8 +11,9 @@ class articleC
     }
 
     // Ajouter un nouvel article
-    public function addArticle($titre, $contenu, $auteur, $image)
-    {
+    public function addArticle($titre, $contenu, $auteur, $image = null)
+{
+    try {
         $query = "INSERT INTO articles (titre, contenu, auteur, date_publication, image) 
                   VALUES (:titre, :contenu, :auteur, NOW(), :image)";
         $stmt = $this->conn->prepare($query);
@@ -22,7 +23,12 @@ class articleC
         $stmt->bindParam(':image', $image);
         
         $stmt->execute();
+        echo "Article ajouté avec succès.";
+    } catch (PDOException $e) {
+        echo "Erreur : " . $e->getMessage();
     }
+}
+
 
     // Modifier un article existant
     public function updateArticle($id, $titre, $contenu, $image = null)
@@ -62,6 +68,28 @@ class articleC
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function getArticleById($id) {
+        $query = "SELECT * FROM articles WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC); // Retourne un seul article
+    }
+    public function searchArticles($search) {
+        // Préparer la requête SQL pour rechercher des articles par titre ou auteur
+        $query = "SELECT * FROM articles WHERE titre LIKE :search OR auteur LIKE :search";
+        $stmt = $this->conn->prepare($query);
+        
+        // Utiliser des jokers pour la recherche
+        $searchParam = "%" . $search . "%";
+        $stmt->bindParam(':search', $searchParam, PDO::PARAM_STR);
+        
+        // Exécuter la requête
+        $stmt->execute();
+        
+        // Récupérer tous les articles correspondants
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

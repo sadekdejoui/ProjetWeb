@@ -27,5 +27,26 @@ class CommentaireC {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function incrementLikes($id) {
+        $sql = "UPDATE commentaires SET likes = likes + 1 WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+    }
+
+    // Nouvelle méthode pour incrémenter les dislikes
+    public function incrementDislikes($id) {
+        $sql = "UPDATE commentaires SET dislikes = dislikes + 1 WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+    }
+    public function likeCommentaire($id) {
+        $this->incrementLikes($id);
+    }
+
+    public function dislikeCommentaire($id) {
+        $this->incrementDislikes($id);
+    }
 }
 ?>

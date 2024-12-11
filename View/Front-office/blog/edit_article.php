@@ -34,10 +34,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $titre = $_POST['titre'];
     $auteur = $_POST['auteur'];
     $contenu = $_POST['contenu'];
+    $imagePath = $article['image']; // Conserver l'ancienne image par défaut
+
+    // Vérifiez si un fichier a été téléchargé
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
+        $fileTmpPath = $_FILES['image']['tmp_name'];
+        $fileName = $_FILES['image']['name'];
+        $fileSize = $_FILES['image']['size'];
+        $fileType = $_FILES['image']['type'];
+        $fileNameCmps = explode(".", $fileName);
+        $fileExtension = strtolower(end($fileNameCmps));
+
+        // Vérifiez l'extension du fichier
+        $allowedfileExtensions = array('jpg', 'gif', 'png', 'jpeg');
+        if (in_array($fileExtension, $allowedfileExtensions)) {
+            // Déplacez le fichier téléchargé vers le dossier souhaité
+            $uploadFileDir = './uploads/';
+            $dest_path = $uploadFileDir . $fileName;
+
+            if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                $imagePath = $dest_path; // Mettre à jour le chemin de l'image
+            } else {
+                echo "Erreur lors du téléchargement de l'image.";
+            }
+        } else {
+            echo "Extension de fichier non autorisée.";
+        }
+    }
+
 
     // Préparez la requête pour mettre à jour l'article
-    $stmt = $conn->prepare("UPDATE articles SET titre = ?, auteur = ?, contenu = ? WHERE id = ?");
-    $stmt->execute([$titre, $auteur, $contenu, $id]);
+    $stmt = $conn->prepare("UPDATE articles SET titre = ?, auteur = ?, contenu = ?, image = ? WHERE id = ?");
+    $stmt->execute([$titre, $auteur, $contenu, $imagePath, $id]);
 
     header("Location: affichage_articles.php?id=" . $id);// Redirigez vers la page du blog après la mise à jour
     exit;
@@ -187,20 +215,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div>
         <ul id="error-messages" style="color: red;"></ul> <!-- Conteneur pour les messages d'erreur -->
     </div>
-        <form method="POST" action="" onsubmit="validateForm(event)">
+    <form method="POST" action="" onsubmit="return validateForm()">
         <input type="hidden" name="id" value="<?php echo htmlspecialchars($article['id']); ?>">
-        <label for="titre">Titre :</label>
-        <input type="text" name="titre" value="<?php echo htmlspecialchars($article['titre']); ?>">
-        <br>
-        <label for="auteur">Auteur :</label>
-        <input type="text" name="auteur" value="<?php echo htmlspecialchars($article['auteur']); ?>">
-        <br>
-        <label for="contenu">Contenu :</label>
-        <textarea name="contenu"><?php echo htmlspecialchars($article['contenu']); ?></textarea>
-        <br>
-        <button type="submit" class="btn btn-primary">Mettre à jour</button>
-        </form>
-    </div>
+
+        <div class="mb-3">
+            <label for="titre" class="form-label">Titre :</label>
+            <input type="text" class="form-control" id="titre" name="titre" value="<?php echo htmlspecialchars($article['titre']); ?>" maxlength="100">
+            <p id="titre-error" style="color: red; display: none;"></p> <!-- Message d'erreur pour le titre -->
+        </div>
+
+        <div class="mb-3">
+            <label for="auteur" class="form-label">Auteur :</label>
+            <input type="text" class="form-control" id="auteur" name="auteur" value="<?php echo htmlspecialchars($article['auteur']); ?>" maxlength="50">
+            <p id="auteur-error" style="color: red; display: none;"></p> <!-- Message d'erreur pour l'auteur -->
+        </div>
+
+        <div class="mb-3">
+            <label for="contenu" class="form-label">Contenu :</label>
+            <textarea class="form-control" id="contenu" name="contenu" rows="5"><?php echo htmlspecialchars($article['contenu']); ?></textarea>
+            <p id="contenu-error" style="color: red; display: none;"></p> <!-- Message d'erreur pour le contenu -->
+        </div>
+        <div class="mb-3">
+                    <label for="image" class="form-label">Image :</label>
+                    <input type="file" class="form-control" id="image" name="image">
+                    <p class="text-muted">Laissez vide si vous ne souhaitez pas changer l'image.</p>
+                </div>
+
+        <div class="mb-3 text-center">
+            <button type="submit" class="btn btn-primary">Mettre à jour</button>
+            <input type="reset" class="btn btn-primary" value="Réinitialiser">
+        </div>
+    </form>
+    <a href="ListArticles.php" class="btn btn-link">Retour à la liste</a>
+</div>
 <!-- Footer Start -->
 <div class="container-fluid bg-primary text-light footer wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5 px-lg-5">

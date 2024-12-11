@@ -29,11 +29,11 @@ try {
             $stmt->execute([$article_id, $auteur, $contenu]);
 
             // Redirigez vers l'article après l'ajout du commentaire
-            header("Location: blog.php?success=Commentaire ajouté avec succès!");
+            header("Location: affichage_articles.php?id=" . $article_id . "&success=Commentaire ajouté avec succès!");
             exit; // Terminer le script après redirection
         } else {
             // Gérer le cas où les données ne sont pas définies
-            header("Location: blog.php?error=Données manquantes.");
+            header("Location: affichage_articles.php?error=Données manquantes.");
             exit;
         }
     }

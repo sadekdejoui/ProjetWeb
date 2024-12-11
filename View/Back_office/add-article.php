@@ -30,7 +30,7 @@ if (
             $_POST["auteur"]
         );
         // Ajouter l'article à la base de données
-        $articleC->addArticle($article->getTitre(), $article->getContenu(), $article->getAuteur());
+        $articleC->addArticle($article->getTitre(), $article->getContenu(), $article->getAuteur(), null);
         header('Location: ListArticles.php'); // Rediriger vers la liste des articles
     } else {
         $error = "Informations manquantes"; // Message d'erreur si des informations sont manquantes

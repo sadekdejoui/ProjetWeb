@@ -42,13 +42,13 @@ class Article
     }
     public function getNombreDeVues()
     {
-        return $this->nombreDeVues; // Getter pour le nombre de vues
+        return $this->nombre_Vues; // Getter pour le nombre de vues
     }
 
     // Méthode pour incrémenter le nombre de vues
     public function incrementerVues()
     {
-        $this->nombreDeVues++;
+        $this->nombre_Vues++;
     }
 }
 ?>

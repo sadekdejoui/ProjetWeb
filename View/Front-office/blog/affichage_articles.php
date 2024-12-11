@@ -121,11 +121,10 @@
                     echo "<p><strong>Auteur :</strong> " . htmlspecialchars($article['auteur']) . "</p>";
                     if (!empty($article['image'])) {
                         echo "<img src='" . htmlspecialchars($article['image']) . "' alt='Image de l'article' style='max-width: 100%; height: auto;'>";
-                    }else{
+                    } else {
                         echo '<p><em>Aucune image disponible pour cet article.</em></p>';
                     }
-                    echo "<p>" . nl2br(htmlspecialchars($article['contenu'])) . "</p>";
-                    echo "<p><strong>Publié le :</strong>" . htmlspecialchars($article['date_publication']) . "</p>";
+                    echo "<p class='article-content'>" . nl2br(htmlspecialchars($article['contenu'])) . "</p>";                    echo "<p><strong>Publié le :</strong>" . htmlspecialchars($article['date_publication']) . "</p>";
                     echo "<p><strong>Nombre de vues :</strong> " . htmlspecialchars($article['nombre_vues']) . "</p>"; // Afficher le nombre de vues
                     echo '<a href="edit_article.php?id=' . $article['id'] . '" class="btn btn-primary" style="margin-right: 10px;">Modifier</a>';
                     echo '<a href="supprimer_article.php?id=' . $article['id'] . '" class="btn btn-primary" onclick="return confirm(\'Voulez-vous vraiment supprimer cet article ?\')">Supprimer</a>';
@@ -184,27 +183,29 @@ if (isset($article) && $article) {
     $commentaires = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
 ?>
-    <div class="container ">
-    <h3>Commentaires</h3>
-    <?php
-    if (isset($commentaires) && $commentaires) {
-        foreach ($commentaires as $commentaire) {
-            echo "<div class='comment'>";
-            echo "<p><strong>" . htmlspecialchars($commentaire['auteur']) . "</strong> : " . nl2br(htmlspecialchars($commentaire['contenu'])) . "</p>";
-            echo "<small>Posté le " . $commentaire['date_creation'] . "</small>";
-            echo "<div class='btn-group' role='group' aria-label='Actions' style='margin-left: 20px;'>"; // Ajout de margin-left ici
-            echo "<a href='modif_comment.php?id=" . $commentaire['id'] . "' class='btn btn-primary me-2'>Modifier</a>";
-            echo "<a href='supprimer_comment.php?id=" . $commentaire['id'] . "' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer ce commentaire ?\");' class='btn btn-primary'>Supprimer</a>";
-            echo "</div>";
-            echo "</div><hr>";
+    <div class="container">
+        <h3>Commentaires</h3>
+        <?php
+        if ($commentaires) {
+            foreach ($commentaires as $commentaire) {
+                echo "<div class='comment'>";
+                echo "<p><strong>" . htmlspecialchars($commentaire['auteur']) . "</strong>: " . nl2br(htmlspecialchars($commentaire['contenu'])) . "</p>";
+                echo "<small>Posté le " . htmlspecialchars($commentaire['date_creation']) . "</small>";
+                echo "<p><strong>" . htmlspecialchars($commentaire['likes']) . " Likes</strong> | <strong>" . htmlspecialchars($commentaire['dislikes']) . " Dislikes</strong></p>";
+                echo "<div class='btn-group' role='group' aria-label='Actions' style='margin-left: 20px;'>";
+                echo "<button class='btn btn-success me-2 like-button' data-id='" . $commentaire['id'] . "'>Like</button>";
+                echo "<button class='btn btn-danger dislike-button' data-id='" . $commentaire['id'] . "'>Dislike</button>";
+                echo "<a href='modif_comment.php?id=" . $commentaire['id'] . "' class='btn btn-primary me-2'>Modifier</a>";
+                echo "<a href='supprimer_comment.php?id=" . $commentaire['id'] . "' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer ce commentaire ?\");' class='btn btn-primary'>Supprimer</a>";
+                echo "</div>";
+                echo "</div><hr>";
+            }
+        } else {
+            echo "<p>Aucun commentaire pour cet article.</p>";
         }
-    } else {
-        echo "<p>Aucun commentaire pour cet article.</p>";
     }
-}
     ?>
-</div>
-
+    </div>
 <!-- CSS Personnalisé (Optionnel) -->
 <style>
     .margin-left {
@@ -276,8 +277,56 @@ php
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-secondary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 </div>
+<style>
+    .article-content p {
+        word-wrap: break-word; /* Pour les navigateurs qui supportent cette propriété */
+        overflow-wrap: break-word; /* Pour les navigateurs modernes */
+    }
+</style>
 
-<!-- JavaScript Libraries -->
+...
+
+echo "<p class='article-content'>" . nl2br(htmlspecialchars($article['contenu'])) . "</p>";
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Gestion des clics sur le bouton Like
+        $(document).on('click', '.like-button', function() {
+            var commentaireId = $(this).data('id');
+            $.ajax({
+                url: 'update_comment_likes.php',
+                type: 'POST',
+                data: { id: commentaireId, action: 'like' },
+                success: function(response) {
+                    var data = JSON.parse(response);
+                    if (data.success) {
+                        var likesCount = $('#comment-' + commentaireId).find('.likes-count');
+                        likesCount.text(parseInt(likesCount.text()) + 1 + ' Likes');
+                    }
+                }
+            });
+        });
+
+        // Gestion des clics sur le bouton Dislike
+        $(document).on('click', '.dislike-button', function() {
+            var commentaireId = $(this).data('id');
+            $.ajax({
+                url: 'update_comment_likes.php',
+                type: 'POST',
+                data: { id: commentaireId, action: 'dislike' },
+                success: function(response) {
+                    var data = JSON.parse(response);
+                    if (data.success) {
+                        var dislikesCount = $('#comment-' + commentaireId).find('.dislikes-count');
+                        dislikesCount.text(parseInt(dislikesCount.text()) + 1 + ' Dislikes');
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+    <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/lib/wow/wow.js"></script>

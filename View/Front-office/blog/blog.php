@@ -1,3 +1,29 @@
+<?php
+// Inclure le fichier pour récupérer les articles
+include 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\View\Front-office\get_articles.php';
+
+// Récupérer les paramètres de recherche et de tri
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+$sort = isset($_GET['sort']) ? $_GET['sort'] : 'id';
+$order = isset($_GET['order']) && $_GET['order'] === 'desc' ? 'desc' : 'asc';
+
+// Filtrer les articles en fonction de la recherche
+if (!empty($search)) {
+    $articles = array_filter($articles, function($article) use ($search) {
+        return stripos($article['titre'], $search) !== false; // Recherche insensible à la casse
+    });
+}
+
+// Appliquer le tri
+usort($articles, function($a, $b) use ($sort, $order) {
+    if ($sort === 'titre') {
+        return $order === 'asc' ? strcmp($a['titre'], $b['titre']) : strcmp($b['titre'], $a['titre']);
+    } elseif ($sort === 'date_publication') {
+        return $order === 'asc' ? strtotime($a['date_publication']) - strtotime($b['date_publication']) : strtotime($b['date_publication']) - strtotime($a['date_publication']);
+    }
+    return $order === 'asc' ? $a['id'] - $b['id'] : $b['id'] - $a['id']; // Tri par ID par défaut
+});
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -86,42 +112,50 @@
         </div>
     </div>
     <!-- Navbar End -->
-
-        <!-- Blog Section Start -->
-        <div class="container py-5">
-            <h1 class="text-center mb-5">Articles de Blog</h1>
-            <div class="row">
-                <?php
-                // Inclure le fichier pour récupérer les articles
-                include 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\View\Front-office\get_articles.php';
-
-                // Vérifier si la variable $articles contient des articles
-                if (count($articles) > 0) {
-                    // Afficher chaque article
-                    foreach ($articles as $article) {
-                        echo '<div class="col-lg-4 col-md-6 mb-4">';
-                        echo '<div class="card">';
-                        echo '<img class="card-img-top" src="' . htmlspecialchars($article['image']) . '" alt="Blog Image">';                        echo '<div class="card-body">';
-                        echo '<h5 class="card-title">' . htmlspecialchars($article['titre']) . '</h5>';
-                        echo '<p class="card-text">' . htmlspecialchars($article['contenu']) . '</p>';
-                        echo '<p class="text-muted">Publié le ' . $article['date_publication'] . '</p>';
-                        echo '<a href="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/blog/affichage_articles.php?id=' . $article['id'] . '" class="btn btn-primary me-2">Lire la suite</a>';
-                
-                // Afficher l'icône d'œil et le nombre de vues
-          
+     <!-- Formulaire de recherche et de tri -->
+<div class="container py-5">
+    <form method="GET" action="" class="d-flex justify-content-between mb-4">
+        <input type="text" name="search" placeholder="Rechercher un article..." class="form-control me-2" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+        <select name="sort" class="form-select me-2">
+            <option value="id" <?php echo (isset($_GET['sort']) && $_GET['sort'] === 'id') ? 'selected' : ''; ?>>Trier par ID</option>
+            <option value="titre" <?php echo (isset($_GET['sort']) && $_GET['sort'] === 'titre') ? 'selected' : ''; ?>>Trier par Titre</option>
+            <option value="date_publication" <?php echo (isset($_GET['sort']) && $_GET['sort'] === 'date_publication') ? 'selected' : ''; ?>>Trier par Date de Publication</option>
+        </select>
+        <select name="order" class="form-select me-2">
+            <option value="asc" <?php echo (isset($_GET['order']) && $_GET['order'] === 'asc') ? 'selected' : ''; ?>>Ordre Ascendant</option>
+            <option value="desc" <?php echo (isset($_GET['order']) && $_GET['order'] === 'desc') ? 'selected' : ''; ?>>Ordre Descendant</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+    </form>
+</div>
+<div class="container py-5">
+    <h1 class="text-center mb-5">Articles de Blog</h1>
+    <div class="row">
+        <?php
+        // Vérifier si la variable $articles contient des articles
+        if (count($articles) > 0) {
+            // Afficher chaque article
+            foreach ($articles as $article) {
+                echo '<div class="col-lg-4 col-md-6 mb-4">';
+                echo '<div class="card h-100">'; // Utiliser h-100 pour uniformiser la hauteur des cartes
+                echo '<img class="card-img-top" src="' . htmlspecialchars($article['image']) . '" alt="Blog Image">';
+                echo '<div class="card-body">';
+                echo '<h5 class="card-title">' . htmlspecialchars($article['titre']) . '</h5>';
+                echo '<p class="card-text">' . htmlspecialchars($article['contenu']) . '</p>';
+                echo '<p class="text-muted">Publié le ' . htmlspecialchars($article['date_publication']) . '</p>';
+                echo '<a href="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/blog/affichage_articles.php?id=' . $article['id'] . '" class="btn btn-primary me-2">Lire la suite</a>';
                 echo '<i class="fas fa-eye me-2"></i>'; // Ajout d'une marge à droite de l'icône
                 echo htmlspecialchars($article['nombre_vues']) . ' vues';
-                
-                echo '</div>'; // Fin de d-flex
                 echo '</div>'; // Fin de card-body
                 echo '</div>'; // Fin de card
-                    }
-                } else {
-                    echo '<div class="col-12"><p class="text-center">Aucun article trouvé.</p></div>';
-                }
-                ?>
-            </div>
-        </div>
+                echo '</div>'; // Fin de col
+            }
+        } else {
+            echo '<div class="col-12"><p class="text-center">Aucun article trouvé.</p></div>';
+        }
+        ?>
+    </div>
+</div>
         <!-- Blog Section End -->
 
         <!-- Ajouter un Article Button Section Start -->
@@ -133,67 +167,106 @@
         <!-- Ajouter un Article Button Section End -->
 
         <!-- Footer Start -->
-        <div class="container-fluid bg-primary text-light footer wow fadeIn" data-wow-delay="0.1s">
-            <div class="container py-5 px-lg-5">
-                <div class="row g-5">
-                    <div class="col-md-6 col-lg-3">
-                        <p class="section-title text-white h5 mb-4">Address<span></span></p>
-                        <p><i class="fa fa-map-marker-alt me-3"></i>2083 Cité La Gazelle, Ariana, Tunisia</p>
-                        <p><i class="fa fa-phone-alt me-3"></i>+016 23 989 000</p>
-                        <p><i class="fa fa-envelope me-3"></i>questerra@gmail.com</p>
-                        <div class="d-flex pt-2">
-                            <a class="btn btn-outline-light btn-social" href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-outline-light btn-social" href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a>
-                            <a class="btn btn-outline-light btn-social" href="https://www.linkedin.com/"><i class="fab fa-linkedin-in"></i></a>
-                        </div>
+    <div class="container-fluid bg-primary text-light footer wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5 px-lg-5">
+            <div class="row g-5">
+                <div class="col-md-6 col-lg-3">
+                    <p class="section-title text-white h5 mb-4">Address<span></span></p>
+                    <p><i class="fa fa-map-marker-alt me ```php
+                    <i class="fa fa-map-marker-alt me-3"></i>2083 Cité La Gazelle, Ariana, Tunisia</p>
+                    <p><i class="fa fa-phone-alt me-3"></i>+016 23 989 000</p>
+                    <p><i class="fa fa-envelope me-3"></i>questerra@gmail.com</p>
+                    <div class="d-flex pt-2">
+                        <a class="btn btn-outline-light btn-social" href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light btn-social" href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a>
+                        <a class="btn btn-outline-light btn-social" href="https://www.linkedin.com/"><i class="fab fa-linkedin-in"></i></a>
                     </div>
-                    <div class="col-md-6 col-lg-3">
-                        <p class="section-title text-white h5 mb-4">Lien rapide<span></span></p>
-                        <a href="blog.php" class=" nav-item nav-link active">Blog</a>
-                        <a class="btn btn-link" href="cours.php">Cours</a>
-                        <a class="btn btn-link" href="questions.php">Questions</a>
-                        <a class="btn btn-link" href="evenement.php">Evénement</a>
-                        <a class="btn btn-link" href="contact.php" class="nav-item nav-link">Complaint</a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <p class="section-title text-white h5 mb-4">Lien rapide<span></span></p>
+                    <a href="blog.php" class="nav-item nav-link active">Blog</a>
+                    <a class="btn btn-link" href="cours.php">Cours</a>
+                    <a class="btn btn-link" href="questions.php">Questions</a>
+                    <a class="btn btn-link" href="evenement.php">Evénement</a>
+                    <a class="btn btn-link" href="contact.php" class="nav-item nav-link">Complaint</a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <p class="section-title text-white h5 mb-4">Founders<span></span></p>
+                    <div class="row g-2">
+                        <p>Akrem Jouini</p>
+                        <p>Firas Ben Hamouda</p>
+                        <p>Imen Goutali</p>
+                        <p>Maram Bessaoud</p>
+                        <p>Mohamed Sadek Dejoui</p>
+                        <p>Nader Abdellaoui</p>
                     </div>
-                    <div class="col-md-6 col-lg-3">
-                        <p class="section-title text-white h5 mb-4">Founders<span></span></p>
-                        <div class="row g-2">
-                            <p>Akrem Jouini</p>
-                            <p>Firas Ben Hamouda</p>
-                            <p>Imen Goutali</p>
-                            <p>Maram Bessaoud</p>
-                            <p>Mohamed Sadek Dejoui</p>
-                            <p>Nader Abdellaoui</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <p class="section-title text-white h5 mb-4">Rapport<span></span></p>
-                        <div class="position-relative w-100 mt-3">
-                            <input class="form-control border-0 rounded-pill w-100 ps-4 pe-5" type="text" placeholder="Votre email" style="height: 48px;">
-                            <button type="button" class="btn shadow-none position-absolute top-0 end-0 mt-1 me-2"><i class="fa fa-paper-plane text-primary fs-4"></i></button>
-                        </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <p class="section-title text-white h5 mb-4">Rapport<span></span></p>
+                    <div class="position-relative w-100 mt-3">
+                        <input class="form-control border-0 rounded-pill w-100 ps-4 pe-5" type="text" placeholder="Votre email" style="height: 48px;">
+                        <button type="button" class="btn shadow-none position-absolute top-0 end-0 mt-1 me-2"><i class="fa fa-paper-plane text-primary fs-4"></i></button>
                     </div>
                 </div>
             </div>
-            <div class="container px-lg-5">
-                <div class="copyright">
-                    <div class="row">
-                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        </div>
-                        <div class="col-md-6 text-center text-md-end">
-                            <div class="footer-menu">
-                                <a href="index.php">Accueil</a>
-                            </div>
+        </div>
+        <div class="container px-lg-5">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <div class="footer-menu">
+                            <a href="index.php">Accueil</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Footer End -->
-
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-secondary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-secondary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+    
+<style>
+        .pdf-container {
+    width: 80%; /* Largeur du conteneur */
+    max-width: 800px; /* Largeur maximale */
+    margin: 20px auto; /* Centrer le conteneur */
+    border: 2px solid #2ecc71; /* Bordure verte */
+    border-radius: 8px; /* Coins arrondis */
+    overflow: hidden; /* Masquer le débordement */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+    background-color: #fff; /* Couleur de fond blanche */
+}
+
+.pdf-container iframe {
+    width: 100%; /* Prendre toute la largeur du conteneur */
+    height: 600px; /* Hauteur fixe pour l'iframe */
+    border: none; /* Supprimer la bordure de l'iframe */
+}
+
+.pdf-container p {
+    text-align: center; /* Centrer le texte */
+    margin-top: 10px; /* Espace au-dessus du texte */
+}
+
+.pdf-container a {
+    display: inline-block; /* Afficher comme un bloc pour le padding */
+    padding: 10px 20px; /* Espacement interne */
+    background-color: #2ecc71; /* Couleur de fond verte */
+    color: white; /* Couleur du texte */
+    text-decoration: none; /* Supprimer le soulignement */
+    border-radius: 5px; /* Coins arrondis */
+    transition: background-color 0.3s; /* Transition pour la couleur de fond */
+}
+
+.pdf-container a:hover {
+    background-color: #27ae60; /* Couleur de fond au survol */
+}
+</style>
 
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

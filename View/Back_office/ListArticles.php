@@ -9,8 +9,32 @@ $conn = config::getConnexion();
 // Créer une instance de articleC
 $articleC = new articleC($conn);
 
+$sort = isset($_GET['sort']) ? $_GET['sort'] : 'id'; // Tri par défaut
+$order = isset($_GET['order']) && $_GET['order'] === 'desc' ? 'desc' : 'asc'; // Ordre par défaut
+
 // Récupérer tous les articles
 $articles = $articleC->getAllArticles();
+
+
+
+// Appliquer le tri
+usort($articles, function($a, $b) use ($sort, $order) {
+    if ($sort === 'titre') {
+        return $order === 'asc' ? strcmp($a['titre'], $b['titre']) : strcmp($b['titre'], $a['titre']);
+    } elseif ($sort === 'date_publication') {
+        return $order === 'asc' ? strtotime($a['date_publication']) - strtotime($b['date_publication']) : strtotime($b['date_publication']) - strtotime($a['date_publication']);
+    }
+    return $order === 'asc' ? $a['id'] - $b['id'] : $b['id'] - $a['id']; // Tri par ID par défaut
+});
+// Vérifier si une recherche est effectuée
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+
+// Filtrer les articles en fonction de la recherche
+if (!empty($search)) {
+    $articles = array_filter($articles, function($article) use ($search) {
+        return stripos($article['titre'], $search) !== false; // Recherche insensible à la casse
+    });
+}
 ?>
 
 <!DOCTYPE html>
@@ -202,6 +226,86 @@ $articles = $articleC->getAllArticles();
         .add-button:hover {
             background-color: #27ae60;
         }
+        .search-form {
+            display: flex;
+            justify-content: center; /* Centre le formulaire */
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            padding: 10px;
+            border: 2px solid #2ecc71; /* Couleur de la bordure */
+            border-radius: 5px; /* Coins arrondis */
+            width: 300px; /* Largeur du champ de recherche */
+            font-size: 16px; /* Taille de la police */
+            transition: border-color 0.3s; /* Transition pour la couleur de la bordure */
+        }
+
+        .search-input:focus {
+            border-color: #27ae60; /* Couleur de la bordure au focus */
+            outline: none; /* Supprime le contour par défaut */
+        }
+
+        .search-button {
+            padding: 10px 15px;
+            background-color: #2ecc71; /* Couleur de fond du bouton */
+            color: white; /* Couleur du texte */
+            border: none; /* Supprime la bordure */
+            border-radius: 5px; /* Coins arrondis */
+            cursor: pointer; /* Change le curseur au survol */
+            margin-left: 10px; /* Espace entre le champ et le bouton */
+            font-size: 16px; /* Taille de la police */
+            transition: background-color 0.3s; /* Transition pour la couleur de fond */
+        }
+
+        .search-button:hover {
+            background-color: #27ae60; /* Couleur de fond du bouton au survol */
+        }
+
+        .search-button:focus {
+            outline: none; /* Supprime le contour par défaut */
+        }
+        /* Styles pour le formulaire de tri */
+.sort-form {
+    display: flex;
+    justify-content: center; /* Centre le formulaire */
+    margin-bottom: 20px;
+}
+
+.sort-form label {
+    margin: 0 10px; /* Espace entre les labels et les sélecteurs */
+    font-weight: bold; /* Met le texte en gras */
+}
+
+.sort-form select {
+    padding: 10px;
+    border: 2px solid #2ecc71; /* Couleur de la bordure */
+    border-radius: 5px; /* Coins arrondis */
+    font-size: 16px; /* Taille de la police */
+    margin-right: 10px; /* Espace entre les sélecteurs */
+    transition: border-color 0.3s; /* Transition pour la couleur de la bordure */
+}
+
+.sort-form select:focus {
+    border-color: #27ae60; /* Couleur de la bordure au focus */
+    outline: none; /* Supprime le contour par défaut */
+}
+
+.sort-form button {
+    padding: 10px 15px;
+    background-color: #2ecc71; /* Couleur de fond du bouton */
+    color: white; /* Couleur du texte */
+    border: none; /* Supprime la bordure */
+    border-radius: 5px; /* Coins arrondis */
+    cursor: pointer; /* Change le curseur au survol */
+    font-size: 16px; /* Taille de la police */
+    transition: background-color 0.3s; /* Transition pour la couleur de fond */
+}
+
+.sort-form button:hover {
+    background-color: #27ae60; /* Couleur de fond du bouton au survol */
+}
+
     </style>
 </head>
 <body>
@@ -398,13 +502,35 @@ Page</a></li>
                 </div>
             </div>
             <!-- Mobile Menu end -->
-    <h1 align="center">Liste des Articles</h1>
-    <table>
+            <h1 align="center">Liste des Articles</h1>
+
+            <form method="GET" action="" class="search-form" style="text-align: center; margin-bottom: 20px;">
+        <input type="text" name="search" placeholder="Rechercher un article..." class="search-input" value="<?php echo htmlspecialchars($search); ?>">
+        <button type="submit" class="search-button">Rechercher</button>
+    </form>
+
+    <form method="GET" action="" class="sort-form">
+    <label for="sort">Trier par:</label>
+    <select name="sort" id="sort">
+        <option value="id" <?php echo $sort === 'id' ? 'selected' : ''; ?>>ID</option>
+        <option value="titre" <?php echo $sort === 'titre' ? 'selected' : ''; ?>>Titre</option>
+        <option value="date_publication" <?php echo $sort === 'date_publication' ? 'selected' : ''; ?>>Date de Publication</option>
+    </select>
+
+    <label for="order">Ordre:</label>
+    <select name="order" id="order">
+        <option value="asc" <?php echo $order === 'asc' ? 'selected' : ''; ?>>Ascendant</option>
+        <option value="desc" <?php echo $order === 'desc' ? 'selected' : ''; ?>>Descendant</option>
+    </select>
+
+    <button type="submit">Appliquer</button>
+</form>
+
+    <table style="width: 80%; margin: 0 auto; border-collapse: collapse;">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Titre</th>
-                <th>Contenu</th>
                 <th>Auteur</th>
                 <th>Date de Publication</th>
                 <th>Actions</th>
@@ -417,26 +543,27 @@ Page</a></li>
                 // Afficher chaque article
                 foreach ($articles as $article) {
                     echo "<tr>";
-                    echo "<td>" . $article['id'] . "</td>";
-            echo "<td><a href='http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/blog/affichage_articles.php?id=" . $article['id'] . "'>" . $article['titre'] . "</a></td>";
-                    echo "<td>" . $article['contenu'] . "</td>";
-                    echo "<td>" . $article['auteur'] . "</td>";
-                    echo "<td>" . $article['date_publication'] . "</td>";
+                    echo "<td>" . htmlspecialchars($article['id']) . "</td>";
+                    echo "<td><a href='read_article.php?id=" . htmlspecialchars($article['id']) . "'>" . htmlspecialchars($article['titre']) . "</a></td>";
+                    echo "<td>" . htmlspecialchars($article['auteur']) . "</td>";
+                    echo "<td>" . htmlspecialchars($article['date_publication']) . "</td>";
                     echo "<td class='action-buttons'>
-                            <a href='delete-article.php?id=" . $article['id'] . "'>Supprimer</a>
-                          </td>";
+                        <a href='delete-article.php?id=" . htmlspecialchars($article['id']) . "'>Supprimer</a>
+                        <span style='margin: 0 10px;'>|</span>
+                        <a href='read_article.php?id=" . htmlspecialchars($article['id']) . "'>Commentaires</a>
+                      </td>";
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='6' align='center'>Aucun article trouvé.</td></tr>";
+                echo "<tr><td colspan='5' align='center'>Aucun article trouvé.</td></tr>";
             }
             ?>
         </tbody>
     </table>
 
-    <a href="add-article.php" style="display:block; text-align:center; margin-top:20px;margin-left: 200px; margin-right: 100px;">
+<a href="add-article.php" style="display:block; text-align:center; margin-top:20px;margin-left: 200px; margin-right: 100px;">
     <button class="add-button">Ajouter un article</button>
-    </a>
+</a>
     
 </body>
 </html>

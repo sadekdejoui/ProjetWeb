@@ -17,7 +17,7 @@ if (isset($_GET['id'])) {
     $commentaireC->deleteCommentaire($commentaire_id);
     
     // Rediriger vers la page de gestion des commentaires ou une autre page
-    header('Location: gestion_blog.php'); // Changez cela selon votre structure de page
+    header('Location: ListArticles.php.php'); // Changez cela selon votre structure de page
     exit();
 } else {
     // Si aucun ID n'est fourni, rediriger ou afficher un message d'erreur
