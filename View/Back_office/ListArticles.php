@@ -351,7 +351,7 @@ if (!empty($search)) {
                     </li>
                     <!-- Blog section -->
                     <li>
-                        <a title="Blog" href="gestion_blog.php" aria-expanded="false"><span class="educate-icon educate-interface icon-wrap"></span> <span class="mini-click-non">Blog</span></a>
+                        <a title="Blog" href="ListArticles.php" aria-expanded="false"><span class="educate-icon educate-interface icon-wrap"></span> <span class="mini-click-non">Blog</span></a>
 
                     </li>
                     <!-- Forum section -->

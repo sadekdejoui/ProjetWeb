@@ -31,7 +31,6 @@ try {
                 // Créez un nom de fichier unique
                 $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
                 $uploadFileDir = 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\View\Front-office\blog\uploads/'; // Répertoire d'upload
-                                $uploadFileDir = 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\View\back-office\uploads/';
 
                 $dest_path = $uploadFileDir . $newFileName;
                 

@@ -112,6 +112,13 @@ usort($articles, function($a, $b) use ($sort, $order) {
         </div>
     </div>
     <!-- Navbar End -->
+    <div class="pdf-container">
+    <!-- Intégration du fichier PDF comme cours -->
+    <iframe src="Questerra.pdf"></iframe>
+    <p>
+        <a href="Questerra.pdf" download>Télécharger ce cours</a>
+    </p>
+</div>
      <!-- Formulaire de recherche et de tri -->
 <div class="container py-5">
     <form method="GET" action="" class="d-flex justify-content-between mb-4">
