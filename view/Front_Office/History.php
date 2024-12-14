@@ -70,10 +70,10 @@ $complaints=$c->showComplaint($id);
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav mx-auto py-0">
                         <a href="../Front_Office/index.php" class="nav-item nav-link">Accueil</a>
-                        <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\imen\blog.html" class="nav-item nav-link ">Blog</a>
-                        <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\akrem\Cours.html" class="nav-item nav-link ">Cours</a>
-                        <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\firas\ecahnge.html" class="nav-item nav-link ">Questions</a>
-                        <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\nader\event.html" class="nav-item nav-link ">Evénement</a>
+                        <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front_Office\les taches\imen\blog.html" class="nav-item nav-link ">Blog</a>
+                        <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front_Office\les taches\akrem\Cours.html" class="nav-item nav-link ">Cours</a>
+                        <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front_Office\les taches\firas\ecahnge.html" class="nav-item nav-link ">Questions</a>
+                        <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front_Office\les taches\nader\event.html" class="nav-item nav-link ">Evénement</a>
                         <a href="../Front_Office/contact.php" class="nav-item nav-link active">Complaint</a>
                       
                     </div>
@@ -83,8 +83,8 @@ $complaints=$c->showComplaint($id);
                         
                         <button class="dropdown-button">Settings</button>
                         <div class="dropdown-content">
-                          <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\sadek\account.html">Mon compte</a>
-                          <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\sadek\index.html">Se déconnecter</a>
+                          <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front_Office\les taches\sadek\account.html">Mon compte</a>
+                          <a href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front_Office\les taches\sadek\index.html">Se déconnecter</a>
                         </div>
                       </div>
                       <div class="dropdowncomplaint">
@@ -170,11 +170,11 @@ $complaints=$c->showComplaint($id);
             </div>
             <div class="col-md-6 col-lg-3">
                 <p class="section-title text-white h5 mb-4">Lien rapide<span></span></p>
-                <a class="btn btn-link" href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\imen\blog.html">Blog</a>
-                <a class="btn btn-link" href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\akrem\Cours.html">    Cours</a>
-                <a class="btn btn-link" href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\firas\ecahnge.html">Questions</a>
-                <a class="btn btn-link" href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\nader\event.html">Evénement</a>
-                <a class="btn btn-link" href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front-office\les taches\maram\contact.html" class="nav-item nav-link">Complaint</a>
+                <a class="btn btn-link" href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front_Office\les taches\imen\blog.html">Blog</a>
+                <a class="btn btn-link" href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front_Office\les taches\akrem\Cours.html">    Cours</a>
+                <a class="btn btn-link" href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front_Office\les taches\firas\ecahnge.html">Questions</a>
+                <a class="btn btn-link" href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front_Office\les taches\nader\event.html">Evénement</a>
+                <a class="btn btn-link" href="C:\Users\bessa\Downloads\wetransfer_projet-web_2024-11-16_2230\Projet Web\view\Front_Office\les taches\maram\contact.html" class="nav-item nav-link">Complaint</a>
             </div>
             <div class="col-md-6 col-lg-3">
                 <p class="section-title text-white h5 mb-4">Founders<span></span></p>
@@ -257,7 +257,7 @@ $complaints=$c->showComplaint($id);
         }
     }
 </script>
-<script src="../Front_Office/js/contactScript.js"></script>
+<!--<script src="../Front_Office/js/contactScript.js"></script>-->
 
 </body>
 

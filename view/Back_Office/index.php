@@ -3,6 +3,12 @@ require '../../config.php';
 require_once '../../model/Formulaire.php';
 include_once '../../Controller/FormulaireC.php';
 include_once '../../Controller/NotificationC.php';
+//imen
+require_once '../../model/article.php';
+require_once '../../model/commentaire.php';
+include_once '../../Controller/ArticleC.php';
+include_once '../../Controller/CommentaireC.php';
+
 session_start();
 $c=new FormulaireC();
 $notif=new NotificationC();
@@ -217,7 +223,7 @@ $all_notifs=$notif->showNotifAdminUnseen();
                         </li>
                         <!-- Blog section -->
                         <li>
-                            <a title="Blog" href="gestion_blog.html" aria-expanded="false"><span class="educate-icon educate-interface icon-wrap"></span> <span class="mini-click-non">Blog</span></a>
+                            <a title="Blog" href="ListArticles.php" aria-expanded="false"><span class="educate-icon educate-interface icon-wrap"></span> <span class="mini-click-non">Blog</span></a>
 
                         </li>
                         <!-- Forum section -->

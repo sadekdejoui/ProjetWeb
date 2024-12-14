@@ -96,18 +96,9 @@
 
 
 const dropdownButton = document.querySelector('.dropdown-button');
-const dropdownButtonComplaint = document.querySelector('.dropdowncomplaint-button');
 const dropdownContent = document.querySelector('.dropdown-content');
-const dropdownContentComplaint = document.querySelector('.dropdowncomplaint-content');
 
 dropdownButton.addEventListener('click', () => {
-  dropdownContent.classList.toggle('show');   
+  dropdownContent.classList.toggle('show');   
 
 });
-dropdownButtonComplaint.addEventListener('click', () => {
-    dropdownContentComplaint.classList.toggle('show');   
-  
-  });
-
-
-/*Control saisie formulaire de reclamation*/

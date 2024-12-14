@@ -370,7 +370,7 @@ button.submit-btn:hover {
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav mx-auto py-0">
                         <a href="../Front_Office/index.php" class="nav-item nav-link active">Home</a>
-                        <a href="../Front_Office/les taches/imen/blog.html" class="nav-item nav-link">Blog</a>
+                        <a href="../Front_Office/blog/blog.php" class="nav-item nav-link">Blog</a>
                         <a href="../Front_Office/les taches/akrem/Cours.html" class="nav-item nav-link">Courses</a>
                         <a href="../Front_Office/les taches/firas/ecahnge.html" class="nav-item nav-link">Questions</a>
                         <a href="../Front_Office/les taches/nader/event.html" class="nav-item nav-link">Events</a>
@@ -945,7 +945,7 @@ window.addEventListener('click', (event) => {
 
     <!-- Template Javascript -->
     <script src="../Front_Office/js/main.js"></script>
-    <script src="../Front_Office/contactScript.js"></script>
+    <!--<script src="../Front_Office/contactScript.js"></script>-->
 
 
 
