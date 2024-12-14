@@ -1,6 +1,6 @@
 <?php
-include 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\config.php'; // Inclure la configuration de la base de données
-include 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\Controller\articleC.php'; // Inclure le contrôleur des articles
+include 'C:\xampp\htdocs\ReProjet\config.php'; // Inclure la configuration de la base de données
+include 'C:\xampp\htdocs\ReProjet\Controller\articleC.php'; // Inclure le contrôleur des articles
 
 // Créer une instance de la connexion
 $conn = config::getConnexion();

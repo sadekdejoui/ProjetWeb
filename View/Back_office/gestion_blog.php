@@ -1,8 +1,8 @@
 <?php
 // Inclure les fichiers nécessaires
-include 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\config.php';  // Inclure la configuration de la base de données
-require_once 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\Controller\ArticleC.php';  // Inclure la classe articleC
-require_once 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\Controller\CommentaireC.php';  // Inclure la classe articleC
+include 'C:\xampp\htdocs\ReProjet\config.php';  // Inclure la configuration de la base de données
+require_once 'C:\xampp\htdocs\ReProjet\Controller\ArticleC.php';  // Inclure la classe articleC
+require_once 'C:\xampp\htdocs\ReProjet\Controller\CommentaireC.php';  // Inclure la classe articleC
 
 // Créer une instance de la connexion
 $conn = config::getConnexion();
@@ -560,7 +560,7 @@ Page</a></li>
             <a href="listArticles.php">
                 <button class="view-all">Afficher tous les articles</button>
             </a>
-            <a href="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Back_office/add-article.php">
+            <a href="http://localhost/ReProjet/View/Back_office/add-article.php">
                     <button class="add-article">Ajouter un article</button>
             </a>
         </div>
@@ -581,7 +581,7 @@ Page</a></li>
             <td><?php echo htmlspecialchars($commentaire['auteur']); ?></td>
             <td><?php echo htmlspecialchars($commentaire['contenu']); ?></td>
             <td><?php echo htmlspecialchars($commentaire['date_creation']); ?></td>
-            <td><a href="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/blog/affichage_articles.php?id=<?php echo htmlspecialchars($commentaire['article_id']); ?>"><?php echo htmlspecialchars($commentaire['article_titre']); ?></a></td>            <td>
+            <td><a href="http://localhost/ReProjet/View/Front-office/blog/affichage_articles.php?id=<?php echo htmlspecialchars($commentaire['article_id']); ?>"><?php echo htmlspecialchars($commentaire['article_titre']); ?></a></td>            <td>
                 <a href="delete_comment.php?id=<?php echo $commentaire['id']; ?>" class="delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');">
                   <button class="delete">Supprimer</button>
                  </a>

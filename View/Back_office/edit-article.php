@@ -1,8 +1,8 @@
 <?php
 // Inclure les fichiers nécessaires
-include 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\config.php'; // Inclure la configuration de la base de données
-include 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\Model\article.php'; // Inclure la classe Article
-include 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\Controller\articleC.php'; // Inclure la classe articleC
+include 'C:\xampp\htdocs\ReProjet\config.php'; // Inclure la configuration de la base de données
+include 'C:\xampp\htdocs\ReProjet\Model\article.php'; // Inclure la classe Article
+include 'C:\xampp\htdocs\ReProjet\Controller\articleC.php'; // Inclure la classe articleC
 
 // Vérifier si l'ID est passé dans l'URL
 if (isset($_GET['id'])) {

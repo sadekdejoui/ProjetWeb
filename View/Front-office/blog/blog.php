@@ -1,6 +1,6 @@
 <?php
 // Inclure le fichier pour récupérer les articles
-include 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\View\Front-office\get_articles.php';
+include 'C:\xampp\htdocs\ReProjet\View\Front-office\get_articles.php';
 
 // Récupérer les paramètres de recherche et de tri
 $search = isset($_GET['search']) ? $_GET['search'] : '';
@@ -35,7 +35,7 @@ usort($articles, function($a, $b) use ($sort, $order) {
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/blog/img/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="http://localhost/ReProjet/View/Front-office/blog/img/favicon.ico">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,17 +47,17 @@ usort($articles, function($a, $b) use ($sort, $order) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/lib/animate/animate.min.css" rel="stylesheet">
-    <link href="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="http://localhost/ReProjet/View/Front-office/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="http://localhost/ReProjet/View/Front-office/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="http://localhost/ReProjet/View/Front-office/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://localhost/ReProjet/View/Front-office/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <!-- Template Stylesheet -->
-    <link href="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/css/style.css" rel="stylesheet">
+    <link href="http://localhost/ReProjet/View/Front-office/css/style.css" rel="stylesheet">
 </head>
 <body>
     <div class="container-xxl bg-white p-0">
@@ -74,7 +74,7 @@ usort($articles, function($a, $b) use ($sort, $order) {
             <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
                 <a href="" class="navbar-brand p-0">
                     <div class="logo-container">
-                        <img src="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/img/logo.png" alt="Logo de Questerra">
+                        <img src="http://localhost/ReProjet/View/Front-office/img/logo.png" alt="Logo de Questerra">
                         <h1 class="m-0">Questerra</h1>
                     </div>
                 </a>
@@ -150,7 +150,7 @@ usort($articles, function($a, $b) use ($sort, $order) {
                 echo '<h5 class="card-title">' . htmlspecialchars($article['titre']) . '</h5>';
                 echo '<p class="card-text">' . htmlspecialchars($article['contenu']) . '</p>';
                 echo '<p class="text-muted">Publié le ' . htmlspecialchars($article['date_publication']) . '</p>';
-                echo '<a href="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/blog/affichage_articles.php?id=' . $article['id'] . '" class="btn btn-primary me-2">Lire la suite</a>';
+                echo '<a href="http://localhost/ReProjet/View/Front-office/blog/affichage_articles.php?id=' . $article['id'] . '" class="btn btn-primary me-2">Lire la suite</a>';
                 echo '<i class="fas fa-eye me-2"></i>'; // Ajout d'une marge à droite de l'icône
                 echo htmlspecialchars($article['nombre_vues']) . ' vues';
                 echo '</div>'; // Fin de card-body
@@ -278,15 +278,15 @@ usort($articles, function($a, $b) use ($sort, $order) {
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/lib/wow/wow.js"></script>
-<script src="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/lib/easing/easing.min.js"></script>
-<script src="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/lib/waypoints/waypoints.min.js"></script>
-<script src="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/lib/counterup/counterup.min.js"></script>
-<script src="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/lib/owlcarousel/owl.carousel.min.js"></script>
-<script src="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/lib/isotope/isotope.pkgd.min.js"></script>
-<script src="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/lib/lightbox/js/lightbox.min.js"></script>
+<script src="http://localhost/ReProjet/View/Front-office/lib/wow/wow.js"></script>
+<script src="http://localhost/ReProjet/View/Front-office/lib/easing/easing.min.js"></script>
+<script src="http://localhost/ReProjet/View/Front-office/lib/waypoints/waypoints.min.js"></script>
+<script src="http://localhost/ReProjet/View/Front-office/lib/counterup/counterup.min.js"></script>
+<script src="http://localhost/ReProjet/View/Front-office/lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="http://localhost/ReProjet/View/Front-office/lib/isotope/isotope.pkgd.min.js"></script>
+<script src="http://localhost/ReProjet/View/Front-office/lib/lightbox/js/lightbox.min.js"></script>
 
    <!-- Template Javascript -->
-<script src="http://localhost/Projet%20Web%20-%20Copie%201%20-%20Copie/View/Front-office/js/main.js"></script>
+<script src="http://localhost/ReProjet/View/Front-office/js/main.js"></script>
 </body>
 </html>

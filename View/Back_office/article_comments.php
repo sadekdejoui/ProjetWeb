@@ -1,7 +1,7 @@
 <?php
 // Inclure les fichiers nécessaires
-include 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\config.php';  // Inclure la configuration de la base de données
-require_once 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\Controller\CommentaireC.php';  // Inclure la classe CommentaireC
+include 'C:\xampp\htdocs\ReProjet\config.php';  // Inclure la configuration de la base de données
+require_once 'C:\xampp\htdocs\ReProjet\Controller\CommentaireC.php';  // Inclure la classe CommentaireC
 
 // Créer une instance de la connexion
 $conn = config::getConnexion();

@@ -1,7 +1,7 @@
 <?php
-include 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\config.php';  // Include database configuration
-require_once 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\Controller\ArticleC.php';  // Include ArticleC class
-require_once 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\Controller\CommentaireC.php';  // Include CommentaireC class
+include 'C:\xampp\htdocs\ReProjet\config.php';  // Include database configuration
+require_once 'C:\xampp\htdocs\ReProjet\Controller\ArticleC.php';  // Include ArticleC class
+require_once 'C:\xampp\htdocs\ReProjet\Controller\CommentaireC.php';  // Include CommentaireC class
 
 $conn = config::getConnexion(); // Database connection
 

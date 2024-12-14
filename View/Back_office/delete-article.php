@@ -1,6 +1,6 @@
 <?php
 // Inclure la configuration de la base de données
-include 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\config.php';
+include 'C:\xampp\htdocs\ReProjet\config.php';
 
 // Vérifier si l'ID de l'article est passé via l'URL
 if (isset($_GET['id'])) {

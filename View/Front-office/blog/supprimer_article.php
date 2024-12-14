@@ -1,6 +1,6 @@
 <?php
 // delete_article.php
-include 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\View\Front-office\get_articles.php'; // Inclure le fichier pour récupérer les articles
+include 'C:\xampp\htdocs\ReProjet\View\Front-office\get_articles.php'; // Inclure le fichier pour récupérer les articles
 
 if (isset($_GET['id'])) {
     $id = (int)$_GET['id']; // Convertir en entier pour éviter les injections

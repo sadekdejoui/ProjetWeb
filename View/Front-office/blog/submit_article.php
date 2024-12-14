@@ -30,7 +30,7 @@ try {
             if (in_array($fileExtension, $allowedfileExtensions) && $fileSize < 2 * 1024 * 1024) { // Limite de 2 Mo
                 // Créez un nom de fichier unique
                 $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
-                $uploadFileDir = 'C:\xampp\htdocs\Projet Web - Copie 1 - Copie\View\Front-office\blog\uploads/'; // Répertoire d'upload
+                $uploadFileDir = 'C:\xampp\htdocs\ReProjet\View\Front-office\blog\uploads/'; // Répertoire d'upload
 
                 $dest_path = $uploadFileDir . $newFileName;
                 
