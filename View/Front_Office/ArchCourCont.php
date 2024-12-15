@@ -6,22 +6,38 @@ require "C:\\xampp\\htdocs\\akrem web\\Controller\\coursesC.php";
 try {
     $db = config::getConnexion();
 
-    // Fetch courses for the fr category
-    $category = "Architecture"; // The category you want to filter
-    $query = $db->prepare("SELECT * FROM courses WHERE category = :category");
-    $query->execute(['category' => $category]);
+    // Set the category to English
+    $category = "Architecture"; 
+
+    // Base query to fetch courses for the English category
+    $queryStr = "SELECT * FROM courses WHERE category = :category";
+
+    // Check if a module is selected in the query string
+    $selectedModule = isset($_GET['id_module']) ? $_GET['id_module'] : null;
+
+    // Append module filter if a specific module is selected
+    if ($selectedModule) {
+        $queryStr .= " AND id_module = :id_module";
+    }
+
+    // Prepare the query
+    $query = $db->prepare($queryStr);
+
+    // Bind parameters
+    $params = ['category' => $category];
+    if ($selectedModule) {
+        $params['id_module'] = $selectedModule;
+    }
+
+    // Execute the query
+    $query->execute($params);
     $courses = $query->fetchAll(PDO::FETCH_ASSOC);
+
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage();
     exit;
-    $selectedModule = isset($_GET['id_module']) ? $_GET['id_module'] : 'all';
 }
-// Get the selected module from the URL query string
-$selectedModule = isset($_GET['id_module']) ? $_GET['id_module'] : null;
 
-// Fetch filtered courses based on selected module
-$courseC = new courseC();
-$courses = $courseC->filterCourses($selectedModule);
 
 ?>
 <!DOCTYPE html>
@@ -315,47 +331,70 @@ $courses = $courseC->filterCourses($selectedModule);
                 </div>
             </div>
         </div>
-        <div class="filter-buttons">
-        <button onclick="filterCourses('all')">All</button>
-        <button onclick="filterCourses('1')">Module 1</button>
-        <button onclick="filterCourses('2')">Module 2</button>
-        <button onclick="filterCourses('3')">Module 3</button>
-        <button onclick="filterCourses('4')">Module 4</button>
-        <button onclick="filterCourses('5')">Module 5</button>
-    </div>
-       
-         <!-- Course Details Start -->
-         <div class="container">
-            <h1>Architecture Category Courses</h1>
-            <div class="course-list">
-        <?php foreach ($courses as $course): ?>
-            <div class="course-card">
-                <h2><?php echo htmlspecialchars($course['title']); ?></h2>
-                <p><span>Category:</span> <?php echo htmlspecialchars($course['category']); ?></p>
-                <p><span>Price:</span> $<?php echo htmlspecialchars($course['price']); ?></p>
-                <p><span>Duration:</span> <?php echo htmlspecialchars($course['duration']); ?></p>
-                <p><span>Description:</span> <?php echo htmlspecialchars($course['description']); ?></p>
-                <p><span>Module:</span> <?php echo htmlspecialchars($course['id_module']); ?></p>
-            </div>
-        <?php endforeach; ?>
-    </div>
+         <!-------------Filtres les modules yebda ----------------->
+         <div class="filter-buttons">
+            <button onclick="filterCourses('all')">All</button>
+            <button onclick="filterCourses('1')">Module 1</button>
+            <button onclick="filterCourses('2')">Module 2</button>
+            <button onclick="filterCourses('3')">Module 3</button>
+            <button onclick="filterCourses('4')">Module 4</button>
+            <button onclick="filterCourses('5')">Module 5</button>
         </div>
-        <script>
-    function filterCourses(id_module) {
-    const urlParams = new URLSearchParams(window.location.search);
-    
-    // Set or update the id_module parameter in the URL
-    if (id_module === 'all') {
-        urlParams.delete('id_module'); // Remove id_module if 'All' is selected
-    } else {
-        urlParams.set('id_module', id_module); // Set id_module for filtering
-    }
-    
-    window.location.search = urlParams.toString(); // Reload the page with the updated URL
-}
+           <!-- Course Details Start -->
+        <div class="container">
+            <h1>French Category Courses</h1>
+            <div class="course-list">
+        <?php if (!empty($courses)) { ?>
+            <?php foreach ($courses as $course) { ?>
+                <div class="course-card" data-module="<?php echo htmlspecialchars($course['id_module']); ?>">
+                    <div class="full-details">
+                        <h2><span>Title:</span> <?php echo htmlspecialchars($course['title']); ?></h2>
+                        <p><span>Category:</span> <?php echo htmlspecialchars($course['category']); ?></p>
+                        <p><span>Price:</span> $<?php echo htmlspecialchars($course['price']); ?></p>
+                        <p><span>Duration:</span> <?php echo htmlspecialchars($course['duration']); ?></p>
+                        <p><span>Description:</span> <?php echo htmlspecialchars($course['description']); ?></p>
+                        <p><span>Module:</span> <?php echo htmlspecialchars($course['id_module']); ?></p>
+                    </div>
+                    <div class="simple-details" style="display: none;">
+                        <h2><span>Title:</span> <?php echo htmlspecialchars($course['title']); ?></h2>
+                        <p><span>Description:</span> <?php echo htmlspecialchars($course['description']); ?></p>
+                    </div>
+                </div>
+            <?php } ?>
+        <?php } else { ?>
+            <p>No courses available for the French category.</p>
+        <?php } ?>
+    </div>
+</div>
 
-</script>
+<script>
+    function filterCourses(moduleId) {
+        const courseCards = document.querySelectorAll('.course-card');
         
+        // Loop through each course card to apply filtering logic
+        courseCards.forEach(card => {
+            const fullDetails = card.querySelector('.full-details');
+            const simpleDetails = card.querySelector('.simple-details');
+            const courseModule = card.getAttribute('data-module'); // Get the module of the course
+
+            if (moduleId === 'all') {
+                // If 'All Modules' is selected, show all courses with full details
+                card.style.display = 'block';
+                fullDetails.style.display = 'block';
+                simpleDetails.style.display = 'none';
+            } else if (courseModule === moduleId) {
+                // Show only the title and description for courses in the selected module
+                card.style.display = 'block'; // Show the card
+                fullDetails.style.display = 'none'; // Hide full details
+                simpleDetails.style.display = 'block'; // Show title and description
+            } else {
+                // Hide courses that are not in the selected module
+                card.style.display = 'none';
+            }
+        });
+    }
+</script>
+  <!-------------Filtres les modules wfee----------------->
         <!-- Course Details End -->
        <!-- Footer Start -->
 <div class="container-fluid bg-primary text-light footer wow fadeIn" data-wow-delay="0.1s">

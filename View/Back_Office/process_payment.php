@@ -1,10 +1,9 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+require 'vendor\autoload.php';
 
-require 'phpmailer/src/Exception.php';
-require 'phpmailer/src/PHPMailer.php';
-require 'phpmailer/src/SMTP.php';
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Retrieve form data
@@ -35,13 +34,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'akremjouini524@gmaill.com'; // Replace with your email
-        $mail->Password = 'abcd efgh ijkl mnop.';   // Replace with your app password
+        $mail->Username = 'lola07517@gmaill.com'; // Replace with your email
+        $mail->Password = 'bdhv wqeu ypiu wgky.';   // Replace with your app password
         $mail->SMTPSecure = 'tls';              // Use TLS encryption
         $mail->Port = 587;                      // Port for TLS
 
         // Email settings
-        $mail->setFrom('akremjouini524@gmail.com', 'Course Payment'); // Replace with your sender's email
+        $mail->setFrom('lola07517@gmail.com', 'Course Payment'); // Replace with your sender's email
         $mail->addAddress($studentEmail);                        // Recipient's email
         $mail->isHTML(true);
         $mail->Subject = 'Confirmation de paiement pour le cours';

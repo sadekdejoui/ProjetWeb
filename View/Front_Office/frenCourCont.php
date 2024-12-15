@@ -6,15 +6,39 @@ require "C:\\xampp\\htdocs\\akrem web\\Controller\\coursesC.php";
 try {
     $db = config::getConnexion();
 
-    // Fetch courses for the fr category
-    $category = "French"; // The category you want to filter
-    $query = $db->prepare("SELECT * FROM courses WHERE category = :category");
-    $query->execute(['category' => $category]);
+    // Set the category to English
+    $category = "French"; 
+
+    // Base query to fetch courses for the English category
+    $queryStr = "SELECT * FROM courses WHERE category = :category";
+
+    // Check if a module is selected in the query string
+    $selectedModule = isset($_GET['id_module']) ? $_GET['id_module'] : null;
+
+    // Append module filter if a specific module is selected
+    if ($selectedModule) {
+        $queryStr .= " AND id_module = :id_module";
+    }
+
+    // Prepare the query
+    $query = $db->prepare($queryStr);
+
+    // Bind parameters
+    $params = ['category' => $category];
+    if ($selectedModule) {
+        $params['id_module'] = $selectedModule;
+    }
+
+    // Execute the query
+    $query->execute($params);
     $courses = $query->fetchAll(PDO::FETCH_ASSOC);
+
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage();
     exit;
 }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,7 +72,28 @@ try {
    
     <!-- Template Stylesheet -->
     <link href="..\Front_Office\css\style.css" rel="stylesheet">
-
+    <style>
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .filter-buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #6c63ff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .filter-buttons button:hover {
+            background-color: #ffd891;
+            color: #333;
+        }
+        
+    </style>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -260,30 +305,70 @@ try {
             </div>
         </div>
 
-        
+         <!-------------Filtres les modules yebda ----------------->
+         <div class="filter-buttons">
+            <button onclick="filterCourses('all')">All</button>
+            <button onclick="filterCourses('1')">Module 1</button>
+            <button onclick="filterCourses('2')">Module 2</button>
+            <button onclick="filterCourses('3')">Module 3</button>
+            <button onclick="filterCourses('4')">Module 4</button>
+            <button onclick="filterCourses('5')">Module 5</button>
+        </div>
            <!-- Course Details Start -->
         <div class="container">
             <h1>French Category Courses</h1>
             <div class="course-list">
-                <?php if (!empty($courses)) { ?>
-                    <?php foreach ($courses as $course) { ?>
-                        <div class="course-card">
-                            <h2><?php echo htmlspecialchars($course['title']); ?></h2>
-                            <p><span>Category:</span> <?php echo htmlspecialchars($course['category']); ?></p>
-                            <p><span>Price:</span> $<?php echo htmlspecialchars($course['price']); ?></p>
-                            <p><span>Duration:</span> <?php echo htmlspecialchars($course['duration']); ?></p>
-                            <p><span>Description:</span> <?php echo htmlspecialchars($course['description']); ?></p>
-                            <p><span>Module:</span> <?php echo htmlspecialchars($course['id_module']); ?></p>
-                        </div>
-                    <?php } ?>
-                <?php } else { ?>
-                    <p>No courses available for the French category.</p>
-                <?php } ?>
-            </div>
-        </div>
-        
-        <!-- Course Details End -->
+        <?php if (!empty($courses)) { ?>
+            <?php foreach ($courses as $course) { ?>
+                <div class="course-card" data-module="<?php echo htmlspecialchars($course['id_module']); ?>">
+                    <div class="full-details">
+                        <h2><span>Title:</span> <?php echo htmlspecialchars($course['title']); ?></h2>
+                        <p><span>Category:</span> <?php echo htmlspecialchars($course['category']); ?></p>
+                        <p><span>Price:</span> $<?php echo htmlspecialchars($course['price']); ?></p>
+                        <p><span>Duration:</span> <?php echo htmlspecialchars($course['duration']); ?></p>
+                        <p><span>Description:</span> <?php echo htmlspecialchars($course['description']); ?></p>
+                        <p><span>Module:</span> <?php echo htmlspecialchars($course['id_module']); ?></p>
+                    </div>
+                    <div class="simple-details" style="display: none;">
+                        <h2><span>Title:</span> <?php echo htmlspecialchars($course['title']); ?></h2>
+                        <p><span>Description:</span> <?php echo htmlspecialchars($course['description']); ?></p>
+                    </div>
+                </div>
+            <?php } ?>
+        <?php } else { ?>
+            <p>No courses available for the French category.</p>
+        <?php } ?>
+    </div>
+</div>
 
+<script>
+    function filterCourses(moduleId) {
+        const courseCards = document.querySelectorAll('.course-card');
+        
+        // Loop through each course card to apply filtering logic
+        courseCards.forEach(card => {
+            const fullDetails = card.querySelector('.full-details');
+            const simpleDetails = card.querySelector('.simple-details');
+            const courseModule = card.getAttribute('data-module'); // Get the module of the course
+
+            if (moduleId === 'all') {
+                // If 'All Modules' is selected, show all courses with full details
+                card.style.display = 'block';
+                fullDetails.style.display = 'block';
+                simpleDetails.style.display = 'none';
+            } else if (courseModule === moduleId) {
+                // Show only the title and description for courses in the selected module
+                card.style.display = 'block'; // Show the card
+                fullDetails.style.display = 'none'; // Hide full details
+                simpleDetails.style.display = 'block'; // Show title and description
+            } else {
+                // Hide courses that are not in the selected module
+                card.style.display = 'none';
+            }
+        });
+    }
+</script>
+  <!-------------Filtres les modules wfee----------------->
        <!-- Footer Start -->
 <div class="container-fluid bg-primary text-light footer wow fadeIn" data-wow-delay="0.1s">
     <div class="container py-5 px-lg-5">
