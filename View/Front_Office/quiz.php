@@ -153,12 +153,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-radius: 5px;
         }
         button {
-            background-color: #007BFF;
+            background-color: #ac81f2;
             color: #fff;
             cursor: pointer;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #ffd891;
         }
     </style>
 </head>
@@ -321,7 +321,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </div>
 <!-- Footer End -->
-!-- Back to Top -->
+<!-- Back to Top -->
 <a href="#" class="btn btn-lg btn-secondary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 </div>
 

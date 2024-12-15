@@ -18,25 +18,35 @@ class CourseC
 
     // Method to add a course
     public function add($course)
-{
-    $sql = "INSERT INTO courses (title, category, price, duration, description, id_module) 
-            VALUES (:title, :category, :price, :duration, :description, :id_module)";
-    $db = config::getConnexion();
-    try {
-        $query = $db->prepare($sql);
-        $query->execute([
-            'title' => $course->getTitle(),
-            'category' => $course->getCategory(),
-            'price' => $course->getPrice(),
-            'duration' => $course->getDuration(),
-            'description' => $course->getDescription(),
-            'id_module' => $course->getIdModule()  // Ajouter l'ID du module
-        ]);
-        echo "Course added successfully!";
-    } catch (Exception $e) {
-        die('Error: ' . $e->getMessage());
+    {
+        $sql = "INSERT INTO courses (title, category, price, duration, description, id_module) 
+                VALUES (:title, :category, :price, :duration, :description, :id_module)";
+        
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+            
+            $success = $query->execute([
+                'title' => $course->getTitle(),
+                'category' => $course->getCategory(),
+                'price' => $course->getPrice(),
+                'duration' => $course->getDuration(),
+                'description' => $course->getDescription(),
+                'id_module' => $course->getIdModule()
+            ]);
+            
+            if ($success) {
+                echo "Course added successfully!";
+            } else {
+                echo "Failed to execute query!";
+                print_r($query->errorInfo()); // Display error information
+            }
+        } catch (Exception $e) {
+            die('Error: ' . $e->getMessage());
+        }
     }
-}
+    
+    
 
 
     // Method to update a course

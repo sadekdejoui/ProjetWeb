@@ -127,40 +127,127 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>English Quiz</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-        }
-        h1 {
-            color: #333;
-        }
-        form {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        input, button {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            background-color: #007BFF;
-            color: #fff;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+      body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.form-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin: 10px 0 5px;
+    color: #555;
+    text-align: left;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+textarea {
+    height: 80px;
+}
+
+input[type="radio"] {
+    margin-right: 5px;
+}
+
+.question {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.question label {
+    font-weight: normal;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.radio-options {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.radio-options label {
+    font-size: 14px;
+    color: #555;
+}
+
+button {
+    background-color: #ac81f2;
+    color: #fff;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+button:hover {
+    background-color: #ffd891;
+    transform: scale(1.05);
+}
+
+button:active {
+    background-color: #ffaa5c;
+    transform: scale(0.95);
+}
+
+#resultMessage {
+    text-align: center;
+    background-color: #eaf7e9;
+    padding: 20px;
+    border: 1px solid #c5e4c4;
+    border-radius: 10px;
+    color: #2e7d32;
+    margin-top: 20px;
+}
+
+#resultMessage h2 {
+    margin: 0 0 10px;
+}
+
+p {
+    margin: 0;
+    color: #666;
+}
+</style>
 </head>
 <body>
 <div class="container-xxl bg-white p-0">
@@ -332,7 +419,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </div>
 <!-- Footer End -->
-!-- Back to Top -->
+<!-- Back to Top -->
 <a href="#" class="btn btn-lg btn-secondary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 </div>
 
