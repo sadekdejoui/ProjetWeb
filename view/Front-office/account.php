@@ -111,14 +111,15 @@ if ($imageData) {
                         <span class="fa fa-bars"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarCollapse">
-                        <div class="navbar-nav mx-auto py-0">
-                            <a href="..\Front-office\index2.html" class="nav-item nav-link">Accueil</a>
-                            <a href="..\Front-office\blog.html" class="nav-item nav-link">Blog</a>
-                            <a href="..\Front-office\Cours.html" class="nav-item nav-link">Cours</a>
-                            <a href="..\Front-office\ecahnge.html" class="nav-item nav-link">Questions</a>
-                            <a href="..\Front-office\event.html" class="nav-item nav-link">Evénement</a>
-                            <a href="..\Front-office\contact.html" class="nav-item nav-link">Complaint</a>
-                        </div>
+                    <div class="navbar-nav mx-auto py-0">
+                        <a href="..\Front-office\index2.php" class="nav-item nav-link">Home</a>
+                        <a href="..\Front-office\blog.php" class="nav-item nav-link">Blog</a>
+                        <a href="..\Front-office\Cours.html" class="nav-item nav-link">Courses</a>
+                        <a href="..\Front-office\ecahnge.html" class="nav-item nav-link">Questions</a>
+                        <a href="..\Front-office\event.html" class="nav-item nav-link">Events</a>
+                        <a href="contact.php" class="nav-item nav-link">Complaints</a>
+                      
+                    </div>
                     </div>
                     
                         
@@ -215,11 +216,11 @@ if ($imageData) {
                         </div>
                         <div class="col-md-6 col-lg-3">
                             <p class="section-title text-white h5 mb-4">Lien rapide<span></span></p>
-                            <a class="btn btn-link" href="..\Front-office\blog.html">Blog</a>
-                            <a class="btn btn-link" href="..\Front-office\Cours.html">    Cours</a>
-                            <a class="btn btn-link" href="..\Front-office\ecahnge.html">Questions</a>
-                            <a class="btn btn-link" href="..\Front-office\event.html">Evénement</a>
-                            <a class="btn btn-link" href="..\Front-office\contact.html" class="nav-item nav-link">Complaint</a>
+                            <a class="btn btn-link" href="..\Front-office\blog.php">Blog</a>
+                            <a class="btn btn-link" href="..\Front-office\Cours.php">    Cours</a>
+                            <a class="btn btn-link" href="..\Front-office\ecahnge.php">Questions</a>
+                            <a class="btn btn-link" href="..\Front-office\event.php">Evénement</a>
+                        <!-- <a class="btn btn-link" href="../Front_Office/contact.php" class="nav-item nav-link">Complaint</a>-->
                         </div>
                         <div class="col-md-6 col-lg-3">
                             <p class="section-title text-white h5 mb-4">Founders<span></span></p>

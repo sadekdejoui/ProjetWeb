@@ -1,121 +1,54 @@
-document.addEventListener("DOMContentLoaded", function() {
+//zayed doesnt work
 
-    // Function to handle conditional field display based on complaint type
-    function verifierTypeReclamation() {
-        const typeReclamation = document.getElementById("type_reclamation").value;
-        const champProf = document.getElementById("prof");
-        const champService = document.getElementById("service-container");
+    document.addEventListener("DOMContentLoaded", function () {
+        function validateForm(event) {
+            const nom = document.getElementById("nom");
+            const identifiant = document.getElementById("identifiant");
+            const email = document.getElementById("email");
+            const telephone = document.getElementById("telephone");
+            const description = document.getElementById("description");
+            const errorContainer = document.getElementById("error-container");
 
-        // Reset all fields visibility and requirements
-        champProf.required = false;
-        champProf.parentNode.style.display = "none";
-        champService.style.display = "none";
+            // Expressions régulières
+            const nameRegex = /^[A-Za-zÀ-ÿ]+ [A-Za-zÀ-ÿ]+$/;
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            const phoneRegex = /^[0-9]{8}$/;
 
-        if (typeReclamation === "professeur") {
-            champProf.required = true;
-            champProf.parentNode.style.display = "block";  // Display teacher name field
-        } else if (typeReclamation === "cours") {
-            champService.style.display = "block";  // Display course/service field
-        }
-    }
+            // Efface les erreurs existantes
+            errorContainer.innerHTML = "";
 
-    // Validation function for form submission
-    function validateForm(event) {
-        // Get all form elements
-        const nom = document.getElementById("nom");
-        const identifiant = document.getElementById("identifiant");
-        const email = document.getElementById("email");
-        const telephone = document.getElementById("telephone");
-        const typeReclamation = document.getElementById("type_reclamation");
-        const description = document.getElementById("description");
+            let errors = [];
 
-        // Regular Expressions
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        const phoneRegex = /^[0-9]{8}$/; // Validate exactly 8 digits
-        const nameRegex = /^[A-Za-z]+ [A-Za-z]+$/; // Only letters for name and family name
+            // Règles de validation
+            if (!nameRegex.test(nom.value)) {
+                errors.push("Le nom complet doit être composé de deux parties (lettres uniquement) séparées par un espace.");
+            }
+            if (!emailRegex.test(email.value)) {
+                errors.push("Veuillez entrer une adresse email valide (ex: nom@example.com).");
+            }
+            if (!phoneRegex.test(telephone.value)) {
+                errors.push("Le numéro de téléphone doit contenir exactement 8 chiffres.");
+            }
+            if (!nom.value || !identifiant.value || !email.value || !telephone.value || !description.value) {
+                errors.push("Tous les champs sont requis. Veuillez les remplir.");
+            }
 
-        // Check required fields
-        if (!nom.value || !identifiant.value || !email.value || !telephone.value || !typeReclamation.value || !description.value) {
-            showAlert("Please fill in all required fields.");
-            event.preventDefault(); // Prevent form submission
-            return false;
-        }
+            // Affiche les erreurs
+            if (errors.length > 0) {
+                event.preventDefault();
+                errors.forEach((error) => {
+                    const errorMessage = document.createElement("div");
+                    errorMessage.classList.add("error-message");
+                    errorMessage.textContent = error;
+                    errorContainer.appendChild(errorMessage);
+                });
+                console.log("Erreurs de validation : ", errors); // Ajout pour le débogage
+                return false;
+            }
 
-        // Validate Name and Family Name (Only letters allowed)
-        if (!nameRegex.test(nom.value)) {
-            showAlert("Full Name Required.");
-            event.preventDefault(); // Prevent form submission
-            return false;
-        }
-
-        // Validate Email format
-        if (!emailRegex.test(email.value)) {
-            showAlert("Please enter a valid email address.");
-            event.preventDefault(); // Prevent form submission
-            return false;
+            return true;
         }
 
-        // Validate Phone Number (Only 8 digits allowed)
-        if (!phoneRegex.test(telephone.value)) {
-            showAlert("Please enter a valid phone number (8 digits).");
-            event.preventDefault(); // Prevent form submission
-            return false;
-        }
-
-        // If everything is valid, show the confirmation message and hide the form
-        afficherMessageMerci();
-        event.preventDefault(); // Prevent form submission to avoid page reload
-        return false;
-    }
-
-    // Function to show the thank you message
-    function afficherMessageMerci() {
-        document.getElementById("form-container").style.display = "none";
-        document.getElementById("message-merci").style.display = "flex";
-    }
-
-    // Event listener for form submission
-    const form = document.querySelector("form");
-    form.addEventListener("submit", validateForm);
-
-    // Call the verifierTypeReclamation function on page load to initialize visibility
-    verifierTypeReclamation();
-
-    // Add event listener to the complaint type dropdown
-    const typeReclamationSelect = document.getElementById("type_reclamation");
-    typeReclamationSelect.addEventListener("change", verifierTypeReclamation);
-});
-
-// Create a custom alert function
-function showAlert(message) {
-    const alertBox = document.createElement('div');
-    alertBox.classList.add('custom-alert');
-    alertBox.textContent = message;
-
-    // Add the alert box to the body
-    document.body.insertBefore(alertBox, document.body.firstChild);
-
-    // Set a timeout to remove the alert after a few seconds
-    setTimeout(() => {
-        alertBox.remove();
-    }, 5000);
-}
-
-// Create alert style (you can add this in your CSS file or in a <style> tag)
-const style = document.createElement('style');
-style.innerHTML = `
-    .custom-alert {
-        background-color: #f44336;
-        color: white;
-        padding: 15px;
-        text-align: center;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1000;
-        font-size: 16px;
-        font-family: Arial, sans-serif;
-    }
-`;
-document.head.appendChild(style);
+        const form = document.querySelector("form");
+        form.addEventListener("submit", validateForm);
+    });

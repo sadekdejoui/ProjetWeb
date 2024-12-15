@@ -57,159 +57,17 @@
 
 
 
-:root {
-    --primary: #ac81f2;
-    --secondary: #ffd891;
-    --light: #F6F4F9;
-    --dark: #04000B;
-}
-.text-white {
-    color: #FFFFFF !important;
-}
 
-.animated {
-    animation-duration: 1s;
-    animation-fill-mode: both;
-}
-
-.slideInDown {
-    animation-name: slideInDown;
-}
-
-@keyframes slideInDown {
-    from {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.zoomIn {
-    animation-name: zoomIn;
-}
-
-@keyframes zoomIn {
-    from {
-        opacity: 0;
-        transform: scale(0.3);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-.btn {
-    font-weight: 500;
-    transition: .5s;
-}
-
-.btn-secondary {
-    background-color: var(--secondary);
-    border-color: var(--secondary);
-    color: var(--dark);
-}
-
-.btn-light {
-    background-color: var(--light);
-    border-color: var(--light);
-    color: var(--dark);
-}
-
-.btn:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, .5);
-}
-
-.rounded-pill {
-    border-radius: 50px;
-}
 
 /**/
 
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    margin: 0;
-    padding: 0;
-}
-
-/* Container for the entire forum */
-.form-container {
-    width: 80%;
-    max-width: 900px;
-    margin: 30px auto;
-    padding: 40px;
-    background-color: #fff;
-    border-radius: 12px; /* Rounded corners for a more modern look */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-    border: 1px solid #e0e0e0; /* Light border for separation */
-}
-
-/* Header of the form */
-.form-container h2 {
-    text-align: center;
-    color: #333;
-    font-size: 2rem;
-    margin-bottom: 30px;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-/* Form group styling */
-.form-group {
-    margin-bottom: 25px; /* More space between inputs */
-}
-
-/* Labels for inputs */
-.form-group label {
-    font-size: 1.1rem;
-    color: #555;
-    font-weight: 600;
-    margin-bottom: 10px;
-    display: block;
-}
-
-/* Inputs and select dropdown styling */
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="tel"],
-.form-group input[type="date"],
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    color: #333;
-    background-color: #f9f9f9; /* Soft background for inputs */
-    box-sizing: border-box;
-    transition: border-color 0.3s ease, background-color 0.3s ease;
-}
-
-/* Textarea specific styling */
-.form-group textarea {
-    resize: vertical;
-    min-height: 150px;
-}
-
-/* Input focus effect */
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    border-color: var(--primary); /* Highlight border with primary color */
-    background-color: #fff; /* Clear background color when focused */
-    outline: none;
-}
 
 /* Submit button styling */
 .submit-btn {
     width: 100%;
     padding: 15px;
-    background-color: var(--primary);
+    background-color: #ac81f2; /* Primary color */
     color: white;
     border: none;
     border-radius: 8px;
@@ -219,59 +77,69 @@ body {
     transition: all 0.3s ease;
 }
 
-.submit-btn:hover {
-    background-color: var(--secondary); /* Slightly darker hover effect */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+
+
+/*---------------22. Notification-------------------------*/
+#notificationDropdown {
+    font-size: 18px;
+    border: none;
+    outline: none;
+    cursor: pointer;
 }
 
-/* Thank you message styling */
-.merci-message {
-    background-color: var(--primary);
+#notificationDropdown .badge {
+    font-size: 12px;
+    padding: 5px;
+}
+
+.dropdown-menu {
+    width: 250px;
+}
+
+.dropdown-menu .dropdown-item {
+    padding: 10px 15px;
+}
+
+.dropdown-menu .text-center {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.dropdown-menu .text-center:hover {
+    text-decoration: underline;
+}
+
+.dropdowncomplaint {
+    margin-left: 15px;
+}
+
+.dropdowncomplaint-button {
+    background-color: #007bff;
     color: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    font-size: 1.2rem;
-    margin-top: 20px;
-}
-
-/* Styling for checkbox container */
-.mb-3.form-check {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1.5rem;
-}
-
-/* Style for checkbox input */
-.form-check-input {
-    width: 22px;
-    height: 22px;
-    margin-right: 15px;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
     cursor: pointer;
 }
 
-/* Style for label text */
-.form-check-label {
-    font-size: 1rem;
-    color: #555;
-    cursor: pointer;
+.dropdowncomplaint-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    margin-top: 5px;
+    padding: 5px 0;
 }
 
-/* Hover effect for labels */
-.form-check-label:hover {
-    color: var(--primary); /* Change color on hover */
+.dropdowncomplaint-content a {
+    color: #007bff;
+    padding: 8px 15px;
+    display: block;
+    text-decoration: none;
 }
 
-/* Style for checked state of checkbox */
-.form-check-input:checked {
-    background-color: var(--primary);
-    border-color: var(--primary);
+.dropdowncomplaint:hover .dropdowncomplaint-content {
+    display: block;
 }
-
-/* Hover effect for checked state */
-.form-check-input:checked:hover {
-    background-color: #0066cc; /* Darker blue when hovered */
-    border-color: #0066cc;
-}
-

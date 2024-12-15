@@ -103,8 +103,7 @@ h6,
 
 .btn-square,
 .btn-sm-square,
-.btn-lg-square,
- {
+.btn-lg-square{
     padding: 0;
     display: flex;
     align-items: center;
@@ -129,7 +128,7 @@ h6,
 /*** Navbar ***/
 .navbar .dropdown-toggle::after {
     border: none;
-    content: "\f067";
+    content: #f067;
     font-family: "Font Awesome 5 Free";
     font-size: 10px;
     font-weight: bold;
@@ -675,4 +674,52 @@ h6,
   
 .show {
     display: block;
+<<<<<<<< HEAD:view/Front_Office/css/style.css
 }
+
+
+
+.dropdowncomplaint{
+    position: relative;
+    display: inline-block;
+  }
+  
+.dropdowncomplaint-button {
+    background-color: #ffd891;
+    color: black;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: .5s;
+    border-radius: 40px;
+}
+  
+.dropdowncomplaint-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+  
+.dropdowncomplaint-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+  
+.dropdowncomplaint-content a:hover {
+    background-color: #f1f1f1;
+}
+  
+.show {
+    display: block;
+}
+
+========
+}
+>>>>>>>> origin/blog:View/Front_Office/css/style.css

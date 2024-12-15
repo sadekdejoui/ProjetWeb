@@ -215,19 +215,19 @@
     <div class="left-sidebar-pro">
         <nav id="sidebar" class="">
             <div class="sidebar-header">
-                <a href="..\Back_office\index.html"><img class="main-logo" src="..\Back_office\img\logo\logo.png" alt="" /></a>
-                <strong><a href="..\Back_office\index.html"><img src="..\Back_office\img\logo\logosn.png" alt="" /></a></strong>
+                <a href="..\Back_office\index.php"><img class="main-logo" src="..\Back_office\img\logo\logo.png" alt="" /></a>
+                <strong><a href="..\Back_office\index.php"><img src="..\Back_office\img\logo\logosn.png" alt="" /></a></strong>
             </div>
             <div class="left-custom-menu-adp-wrap comment-scrollbar">
                 <nav class="sidebar-nav left-sidebar-menu-pro">
                     <ul class="metismenu" id="menu1">
                         <li>
-                            <a class="has-arrow" href="..\Back_office\index.html">
+                            <a class="has-arrow" href="..\Back_office\index.php">
 								   <span class="educate-icon educate-home icon-wrap"></span>
 								   <span class="mini-click-non">Education</span>
 								</a>
                             <ul class="submenu-angle" aria-expanded="true">
-                                <li><a title="Dashboard v.1" href="..\Back_office\index.html"><span class="mini-sub-pro">Dashboard</span></a></li>
+                                <li><a title="Dashboard v.1" href="..\Back_office\index.php"><span class="mini-sub-pro">Dashboard</span></a></li>
                                 <li><a title="Analytics" href="..\Back_office\analytics.html"><span class="mini-sub-pro">Analytics</span></a></li>
                                 <li><a title="Widgets" href="..\Back_office\widgets.html"><span class="mini-sub-pro">Widgets</span></a></li>
                             </ul>
@@ -392,7 +392,7 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="logo-pro">
-                        <a href="..\Back_office\index.html"><img class="main-logo" src="..\Back_office\img\logo\logo.png" alt="" /></a>
+                        <a href="..\Back_office\index.php"><img class="main-logo" src="..\Back_office\img\logo\logo.png" alt="" /></a>
                     </div>
                 </div>
             </div>
@@ -479,7 +479,7 @@
                                     <ul class="mobile-menu-nav">
                                         <li><a data-toggle="collapse" data-target="#Charts" href="#">Home <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
                                             <ul class="collapse dropdown-header-top">
-                                                <li><a href="..\Back_office\index.html">Dashboard</a></li>
+                                                <li><a href="..\Back_office\index.php">Dashboard</a></li>
                                                 <li><a href="..\Back_office\analytics.html">Analytics</a></li>
                                                 <li><a href="..\Back_office\widgets.html">Widgets</a></li>
                                             </ul>

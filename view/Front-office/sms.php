@@ -19,7 +19,7 @@ $tel = "+216" . preg_replace('/[^0-9]/', '', $_SESSION['tel4']);
 // Generate a secure token
 $token = bin2hex(random_bytes(5));
 $msg = "Bonjour, nous avons reçu une demande pour se connecter dans Questeera. Votre jeton : {$token}";
-
+//$msg ="Baka";
 // Infobip configuration
 $apiURL = "api.infobip.com";
 $apiKey = "d00dd43e1f980cf93566f900237b0630-755ab7bc-f656-46cc-b34f-655274251593";
