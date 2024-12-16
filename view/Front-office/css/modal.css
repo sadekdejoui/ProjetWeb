@@ -1,0 +1,99 @@
+/* Modal background */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark background with increased opacity */
+    z-index: 9999; /* Ensures the modal is above all other content */
+}
+
+/* Modal content */
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 60%; /* Slightly wider for better aesthetic */
+    max-width: 600px; /* Ensures modal doesn't get too wide on large screens */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
+    animation: fadeIn 0.5s ease-out; /* Smooth fade-in animation */
+    text-align: center; /* Center content */
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Close button */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #6a1b9a; /* Purple color */
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+/* Hover effect for the close button */
+.close:hover {
+    color: #9c4dcc; /* Lighter purple shade */
+}
+
+/* Modal header */
+.modal-header {
+    font-size: 24px;
+    color: #6a1b9a; /* Purple header */
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Modal body */
+.modal-body {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+/* Modal footer with buttons */
+.modal-footer {
+    display: flex;
+    justify-content: center; /* Center buttons */
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Button styling */
+.button {
+    padding: 10px 20px;
+    background-color: #6a1b9a; /* Purple background */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+}
+
+.button:hover {
+    background-color: #9c4dcc; /* Lighter purple on hover */
+    transform: scale(1.05); /* Slight scaling effect on hover */
+}
+
+.button:active {
+    transform: scale(1); /* Reset scale when active */
+}

@@ -1,0 +1,145 @@
+.hero-header {
+    margin-bottom: 2rem; /* Reduced bottom margin */
+    padding: 2rem 0; /* Further reduced height of the header */
+    background:
+        url(../img/blob-top-left.png),
+        url(../img/blob-top-right.png),
+        url(../img/blob-bottom-left.png),
+        url(../img/blob-bottom-right.png),
+        url(../img/blob-center.png),
+        url(../img/bg-bottom.png);
+    background-position:
+        left 0px top 0px,
+        right 0px top 0px,
+        left 0px bottom 0px,
+        right 0px bottom 0px,
+        center center,
+        center bottom;
+    background-repeat: no-repeat;
+    text-align: center; /* Center text horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertically center content */
+    align-items: center; /* Center content horizontally */
+    height: 60vh; /* Make the header fill a smaller portion of the viewport */
+}
+
+.hero-header h1 {
+    font-size: 2rem; /* Smaller title font size */
+    margin-bottom: 0.5rem; /* Less space below title */
+    text-align: center;
+}
+
+.hero-header p {
+    font-size: 1.3rem; /* Smaller paragraph text */
+    max-width: 500px; /* Narrower width for better readability */
+    margin: 0 auto; /* Center the paragraph */
+    line-height: 1.4; /* Adjust line spacing */
+    text-align: center; /* Ensure paragraph text is centered */
+}
+
+@media (max-width: 991.98px) {
+    .hero-header {
+        padding: 2rem 0; /* Keep the height reduced for smaller screens */
+    }
+
+    .hero-header h1 {
+        font-size: 1.6rem; /* Even smaller title on mobile */
+    }
+
+    .hero-header p {
+        font-size: 0.8rem; /* Smaller text for mobile */
+        max-width: 400px; /* Adjust max width for mobile */
+    }
+}
+
+
+
+
+
+
+
+/**/
+
+
+
+/* Submit button styling */
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #ac81f2; /* Primary color */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+
+
+/*---------------22. Notification-------------------------*/
+#notificationDropdown {
+    font-size: 18px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+#notificationDropdown .badge {
+    font-size: 12px;
+    padding: 5px;
+}
+
+.dropdown-menu {
+    width: 250px;
+}
+
+.dropdown-menu .dropdown-item {
+    padding: 10px 15px;
+}
+
+.dropdown-menu .text-center {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.dropdown-menu .text-center:hover {
+    text-decoration: underline;
+}
+
+.dropdowncomplaint {
+    margin-left: 15px;
+}
+
+.dropdowncomplaint-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.dropdowncomplaint-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    margin-top: 5px;
+    padding: 5px 0;
+}
+
+.dropdowncomplaint-content a {
+    color: #007bff;
+    padding: 8px 15px;
+    display: block;
+    text-decoration: none;
+}
+
+.dropdowncomplaint:hover .dropdowncomplaint-content {
+    display: block;
+}
