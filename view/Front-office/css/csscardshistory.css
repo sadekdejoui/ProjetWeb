@@ -1,0 +1,89 @@
+/* Container for all cards */
+.complaints-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 cards per row */
+    gap: 20px; /* Space between cards */
+    padding: 20px;
+}
+
+/* Styling for each card */
+.complaint-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #ddd; /* Light border for separation */
+}
+
+.complaint-card:hover {
+    transform: translateY(-10px); /* Lift the card on hover */
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Header for the card */
+.card-header {
+    background-color: #efc1f0;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+/* Body of the card */
+.card-body {
+    padding: 15px;
+    font-size: 14px;
+    color: #333;
+}
+
+.card-body p {
+    margin: 10px 0;
+}
+
+.card-body p strong {
+    color: #f9d2fa;
+}
+
+/* Footer with a button */
+.card-footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #f8f8f8;
+}
+
+.view-details {
+    padding: 8px 15px;
+    background-color: #fbe7c1;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.view-details:hover {
+    background-color: #e386e4;
+}
+
+@media (max-width: 1200px) {
+    .complaints-container {
+        grid-template-columns: repeat(3, 1fr); /* 3 cards per row on medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .complaints-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards per row on small screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .complaints-container {
+        grid-template-columns: 1fr; /* 1 card per row on extra small screens */
+    }
+}

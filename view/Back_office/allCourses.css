@@ -1,0 +1,83 @@
+/* Center the container with a modern look */
+.container {
+    width: 70%;
+    margin: 50px auto;
+    padding: 30px;
+    background: linear-gradient(135deg, #e3f2fd, #ffffff);
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Title styling */
+.container h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #6a1b9a;
+    margin-bottom: 30px;
+}
+
+/* Add course button */
+.add-course {
+    display: inline-block;
+    margin-bottom: 30px;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    color: #ffffff;
+    background: #6a1b9a; /* Purple */
+    border: none;
+    border-radius: 25px;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    box-shadow: 0 5px 15px rgba(106, 27, 154, 0.3);
+}
+
+.add-course:hover {
+    background: #8e24aa; /* Light purple */
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(142, 36, 170, 0.4);
+}
+
+/* Course list styling */
+.course-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.course-item {
+    margin: 20px 0;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    text-align: left;
+    transition: all 0.3s ease;
+}
+
+.course-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.course-item h3 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #424242;
+    margin-bottom: 10px;
+}
+
+.course-links a {
+    margin: 0 15px;
+    font-size: 1.1rem;
+    color: #6a1b9a; /* Purple */
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.course-links a:hover {
+    color: #8e24aa; /* Light purple */
+    transform: scale(1.1);
+}
