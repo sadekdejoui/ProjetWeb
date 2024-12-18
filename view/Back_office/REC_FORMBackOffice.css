@@ -1,0 +1,256 @@
+/* Style global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f9;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* En-tête */
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 2em;
+    color: #4CAF50;
+}
+
+/* Section des filtres */
+.filters {
+    margin-bottom: 30px;
+}
+
+.filters h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.filters form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.filters label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.filters select {
+    padding: 8px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.filters button {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.filters button:hover {
+    background-color: #45a049;
+}
+
+/* Section Total Réclamations */
+.total-reclamations {
+    margin-bottom: 30px;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.total-reclamations span {
+    font-weight: bold;
+}
+
+/* Tableau de bord */
+.dashboard {
+    margin-bottom: 30px;
+}
+
+.dashboard h2 {
+    font-size: 1.5em;
+    color: #333;
+}
+
+.dashboard canvas {
+    margin-top: 20px;
+}
+
+.dashboard ul {
+    list-style-type: none;
+    margin-top: 20px;
+}
+
+.dashboard li {
+    font-size: 1.1em;
+}
+
+/* Liste des réclamations */
+.reclamations-list {
+    margin-top: 20px;
+}
+
+.reclamations-list table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.reclamations-list th, .reclamations-list td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.reclamations-list th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #333;
+}
+
+.reclamations-list td {
+    background-color: #fff;
+}
+
+.status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.status.new {
+    background-color: #ffcc00;
+    color: #fff;
+}
+
+.status.in-progress {
+    background-color: #ffa500;
+    color: #fff;
+}
+
+.status.resolved {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+.status.rejected {
+    background-color: #f44336;
+    color: #fff;
+}
+
+/* Boutons d'action */
+button {
+    padding: 6px 12px;
+    font-size: 0.9em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.view-button {
+    background-color: #2196F3;
+    color: #fff;
+}
+
+.view-button:hover {
+    background-color: #1976D2;
+}
+
+.resolve-button {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+.resolve-button:hover {
+    background-color: #45a049;
+}
+
+.close-button {
+    background-color: #f44336;
+    color: #fff;
+}
+
+.close-button:hover {
+    background-color: #e53935;
+}
+
+/* Détails de la réclamation */
+.reclamation-details {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reclamation-details h3 {
+    margin-bottom: 20px;
+}
+
+.reclamation-details h4 {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.reclamation-details textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    min-height: 100px;
+}
+
+.reclamation-details button {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.reclamation-details button:hover {
+    background-color: #45a049;
+}
+
+/* Pied de page */
+footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9em;
+    color: #888;
+    background-color: #f4f4f4;
+    margin-top: 30px;
+}
+
+footer p {
+    margin: 0;
+}
